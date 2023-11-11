@@ -1,0 +1,319 @@
+@media (max-width: 576px) {
+    .login-icons{
+        width: 16px;
+        height: 16px;
+        position:relative;
+        bottom:35px;
+        left: 85px;
+    }
+    .no-cont-offset{
+        margin-left: -15px;
+    }
+    .no-cont-offset3{
+        margin-left: 20px;
+    }
+    .login-input {
+        width: 100%; /* Adjust width for smaller screens */
+    }
+    .login-top-pad{
+        padding-top: 50px;
+    }
+    ul.sidebar-ul{
+        list-style: none;
+        margin-left : -5px;
+    }
+    .header-user{
+        position: absolute;
+        right: 32px;
+    }
+    .searchbar-des{
+        position: relative;
+        bottom: 37.5px;
+        left: 171px;
+        display: flex;
+        width: 66px;
+        height: 37px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0px 28px 28px 0px;
+        background: var(--neutral-200, #D0D5DD);
+    }
+    .client-top-text{
+        max-width: 150px;
+        width: auto;
+        height: auto;
+        color: #4E4E50;
+        text-align: center;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px; /* 120% */
+        margin-left: 0px;
+    }
+    .box-size{
+        width: auto;
+        height: auto;
+    }
+    .largetext-pos{
+        padding-top: 30px;
+    }
+    .form{
+        margin-left: 10%;
+        padding: 12px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        align-self: stretch;
+        width: 290px;
+    }
+    .book-input{
+        display: flex;
+        height: 36px;
+        width: 252px;
+        padding: 0px 12px;
+        align-items: center;
+        gap: 12px;
+        align-self: stretch;
+        border-radius: 4px;
+        border: 1px solid var(--neutral-300, #B8C0CC);
+        background: var(--shades-white, #FFF);
+    }
+    .book-apt-pos{
+        padding-top: 10px;
+    }
+    .popup-inputs-5{
+        display: flex;
+        height: 90px;
+        width: 252px;
+        padding: 6px 12px 12px 12px;
+        align-items: flex-start;
+        gap: 12px;
+        align-self: stretch;
+        border-radius: 4px;
+        border: 1px solid var(--neutral-300, #B8C0CC);
+        background: var(--shades-white, #FFF);
+    }
+    .andent-button-long{
+        border: transparent;
+        border-radius: 50px;
+        background: var(--primary-blue-500, #6DA7A2);
+        width: 204px;
+        height: 30px;
+        padding: 4px 8px;
+    }
+
+    .uploadpano{
+        margin-left: 9%;
+    }
+    .submitform{
+        margin-left: 5.5%;
+    }
+    .book-mail-icon{
+        position: absolute;
+        transform: translate(222px,-25px);
+    }
+
+    .form-submitted{
+        margin-top: 5px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        width: 300px;
+        height: 124px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border-radius: 8px;
+        background: var(--primary-blue-50, #F8FBFA);
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
+    }
+    .largetext-pos-2{
+        padding-top: 30px;
+        position: relative;
+        left: 15px;
+    } 
+    .largetext-pos-3{
+        position: relative;
+        left: 15px;
+    } 
+    .login-top{
+        display: flex;
+        padding: 8px 32px;
+        align-items: center;
+        background: var(--primary-blue-200, #D3E5E3);
+    }
+
+}
+
+@media (min-width: 576px) and (max-width: 992px) {
+    .login-icons{
+        width: 16px;
+        height: 16px;
+        position:relative;
+        bottom:35px;
+        left: 85px;
+    }
+    .no-cont-offset{
+        margin-left: -15px;
+    }
+    .no-cont-offset3{
+        margin-left: 20px;
+    }
+    .login-input {
+        width: 100%; /* Adjust width for smaller screens */
+    }
+    .login-top-pad{
+        padding-top: 50px;
+    }
+    ul.sidebar-ul{
+        list-style: none;
+        margin-left : -5px;
+    }
+    .header-user{
+        position: absolute;
+        right: 32px;
+    }
+    .searchbar-des{
+        position: relative;
+        bottom: 38px;
+        left: 234px;
+        display: flex;
+        width: 66px;
+        height: 37px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0px 28px 28px 0px;
+        background: var(--neutral-200, #D0D5DD);
+    }
+    .client-top-text{
+        max-width: 150px;
+        width: auto;
+        height: auto;
+        color: #4E4E50;
+        text-align: center;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px; /* 120% */
+        margin-left: 0px;
+    }
+    .box-size{
+        width: auto;
+        height: auto;
+    }
+    .largetext-pos{
+        padding-top: 30px;
+    }
+    .book-apt-pos{
+        margin-left: -5px;
+    }
+    .book-mail-icon{
+        position: absolute;
+        transform: translate(195px,-25px);
+    }
+    .login-top{
+        display: flex;
+        padding: 8px 32px;
+        align-items: center;
+        background: var(--primary-blue-200, #D3E5E3);
+    }
+    
+}
+  
+@media (min-width:992px) {
+    .login-icons{
+        width: 16px;
+        height: 16px;
+        position:relative;
+        bottom:37px;
+        left: 228px;
+    }
+    .no-cont-offset{
+        margin-left: 20px;
+    }
+    .login-input {
+        width: 495px; /* Reset the width for larger screens */
+    }
+    .login-top-pad{
+        padding-top: 150px;
+    }
+    .no-cont-offset3{
+        margin-left: 15px;
+    }
+    ul.sidebar-ul{
+        list-style: none;
+        margin-left : -20px;
+    }
+    .header-user{
+        position: absolute;
+        right: 32px;
+    }
+    .searchbar-des{
+        position: relative;
+        bottom: 38px;
+        left: 234px;
+        display: flex;
+        width: 66px;
+        height: 37px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0px 28px 28px 0px;
+        background: var(--neutral-200, #D0D5DD);
+    }
+    .client-top-text{
+        max-width: 150px;
+        width: auto;
+        height: auto;
+        color: #4E4E50;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 650;
+        line-height: 24px; /* 120% */
+    }
+    .box-size{
+        width: 175px;
+        height: auto;
+    }
+    .icon-position{
+        position: absolute;
+        top:15%;
+        right: 6.5%;
+    }
+    .icon-positionwfile{
+        position: absolute;
+        top:22.6%;
+        right: 6.5%;
+    }
+    .icon-position-2{
+        position: absolute;
+        top:35.3%;
+        right: 6.5%;
+    }
+    .icon-position-2wfile{
+        position: absolute;
+        top:38.2%;
+        right: 6.5%;
+    }
+    .largetext-pos{
+        margin-left: 100px;
+    }
+
+    .book-apt-pos{
+        margin-left: -5px;
+    }
+    .book-mail-icon{
+        position: absolute;
+        transform: translate(195px,-25px);
+    }
+    .login-top{
+        display: flex;
+        padding: 8px 32px;
+        align-items: center;
+        background: var(--primary-blue-200, #D3E5E3);
+    }
+
+}

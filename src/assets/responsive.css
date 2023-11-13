@@ -22,10 +22,6 @@
         list-style: none;
         margin-left : -5px;
     }
-    .header-user{
-        position: absolute;
-        right: 32px;
-    }
     .searchbar-des{
         position: relative;
         bottom: 37.5px;
@@ -147,8 +143,14 @@
         width: 100%;
     }
     .table-parent{
+        position:absolute;
+        left: 0px;
+        right: 0px;
+        overflow: scroll;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100vw;
-        overflow: auto;
     }
     .mob-top-pad{
         padding-top: 15px;
@@ -157,8 +159,29 @@
 }
 
 @media (min-width: 576px) and (max-width: 992px) {
+    .header-size{
+        width: 900px;
+    }
+    .table-container{
+        margin-left: 10px;
+        margin-top: 20px;
+    }
+    .largetext-pos-3{
+        position: relative;
+        left: 15px;
+    } 
+    .largetext-pos-2{
+        padding-top: 30px;
+        position: relative;
+        left: 15px;
+    } 
     .book-input{
         width: 100%;
+    }
+    .table-parent{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .login-icons{
         width: 16px;

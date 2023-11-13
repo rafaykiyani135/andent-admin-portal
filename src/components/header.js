@@ -4,8 +4,17 @@ import save from '../assets/data/save.png'
 import { useState,useEffect } from 'react';
 import arrow from '../assets/data/arrow.png'
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,NavLink } from 'react-router-dom';
 import passicon from '../assets/data/password.png'
+import logosmall from '../assets/data/logosmall.png'
+import dd from '../assets/data/dropdown.png'
+import icon1 from '../assets/data/loginaccs.png'
+import icon2 from '../assets/data/allclients.png'
+import icon3 from '../assets/data/roles.png'
+import icon1active from '../assets/data/loginaccsactive.png'
+import icon2active from '../assets/data/allclientsactive.png'
+import icon3active from '../assets/data/rolesactive.png'
+import { useLocation } from 'react-router-dom';
 
 function Header(){
     
@@ -15,6 +24,17 @@ function Header(){
    // const [path,setPath] = useState("")
     const menuRef=useRef();
     const menuRef2=useRef();
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const location=useLocation();
+    const [path,setPath]=useState(location.pathname)
+
+    useEffect(()=>{
+      setPath(location.pathname)
+    },[setPath,location])
+
+    const toggleDropdown = () => {
+      setIsDropdownVisible(!isDropdownVisible);
+    };
 
     useEffect(()=>{
         let handler = (e)  =>{
@@ -67,16 +87,40 @@ function Header(){
   
     return(
         <div>
-            <div className="row login-top justify-content-start" style={{width: isMobile? "117%":"100%"}}>
-                <div className="col-5 col-lg-5">
-                    <img src={logo} alt="andent logo" className="andent-logo"/>
+            <div className="row login-top justify-content-start header-size">
+            <div className='col-5 d-block d-md-none'>
+                <div className='burger-icon' onClick={toggleDropdown}>
+                    <img src={dd} alt='dropdown-icon' className='dropdown-icon' />
                 </div>
-                <div className="col-lg-2 text-start d-none d-md-block no-cont-offset3 text-center text-md-start" style={{width:"auto"}}>
+                {isDropdownVisible && (
+                    <div className='dropdown-content-navbar open' >
+                    <NavLink to='/accounts' style={{ textDecoration: 'none',color:"#4B5768"}} className='d-flex justify-content-start align-items-center'>
+                    <img src={path==="/accounts"? icon1active : icon1} alt='logged in accounts' className='small-icon'/><span>
+                        <h2 className='sidebar-text'>Login Accounts</h2>
+                    </span>
+                    </NavLink>
+                    <NavLink to='/clients' style={{ textDecoration: 'none'}} className='d-flex justify-content-start align-items-center text-start'>
+                    <img src={path==="/clients"? icon2active : icon2} alt='all clients' className='small-icon'/><span>
+                        <h2 className='sidebar-text' style={{marginTop:"6px"}}>All Client</h2>
+                    </span>
+                    </NavLink>
+                    <NavLink to='/roles' style={{ textDecoration: 'none'}} className='d-flex justify-content-start align-items-center'>
+                    <img src={path==="/roles"? icon3active : icon3} alt='roles' className='small-icon'/><span>
+                        <h2 className='sidebar-text'>Roles</h2>
+                    </span>
+                    </NavLink>
+                    </div>
+                )}
+            </div>
+                <div className="col-1 col-lg-5">
+                    <img src={isMobile? logosmall : logo} alt="andent logo" className={`${isMobile? 'andent-logo-small' : 'andent-logo'}`}/>
+                </div>
+                <div className="col-lg-2 text-start d-none d-lg-block no-cont-offset3 text-center text-md-start" style={{width:"auto"}}>
                     <h1 className="login-top-text">
                         Andent Portal
                     </h1>
                 </div>
-                <div className='col-6 col-lg-3 d-flex justify-content-end align-items-center header-user'>
+                <div className='col-6 col-lg-3 d-flex justify-content-start justify-content-md-end align-items-center header-user'>
                        {//logged in user/employee should be shown here
                        //implement logic when api is integrated
                        }

@@ -66,7 +66,7 @@ function Content() {
     };
 
   return (
-    <div className='client-content'>
+    <div className='client-content' style={{overflowX:"hidden"}}>
       <div className='row justify-content-around align-items-center'>
         <div className='col-lg-5 col-md-12 col-12 largetext-pos-3'>
             <div className='search-bar-container'>
@@ -101,7 +101,7 @@ function Content() {
             <MagicLink sendDataToParent={handleDataFromChild}/>
         </div>
       </div>
-      <div className='table-parent d-flex justify-content-center'>
+      <div className='row table-parent' style={{paddingTop:"20px"}}>
       <Table/>
       </div>
       <div className={`${link? `gen-link` : `d-none`}`} ref={menuRef3}>

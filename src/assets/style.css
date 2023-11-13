@@ -132,6 +132,11 @@
     display: inline-block;
 }
 
+.dropdown-icon{
+    width: 30px;
+    height: 30px;
+}
+
 .dropdown-content {
     margin-top: 20px;
     display: none;
@@ -153,6 +158,8 @@
     z-index: 2000;
     animation: fade-out 0.3s ease-out forwards;
 }
+
+
 
 .dropdown-content.open {
     display: flex;
@@ -260,11 +267,18 @@
 }
 
 .table-container{
+    margin-left: 12px;
     margin-top: 20px;
 }
 
 .andent-table{
     margin-left: 6px;
+    justify-content: center;
+}
+
+.andent-logo-small{
+    width: 50px;
+    height: 50px;
 }
 
 .andent-table th{
@@ -955,4 +969,33 @@
     border-radius: 8px;
     background: var(--primary-blue-50, #F8FBFA);
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
+}
+
+.dropdown-content-navbar {
+    margin-top: 18px;
+    display: none;
+    position: absolute;
+    z-index: 1;
+    width: auto;
+    padding: 12px 12px 12px 12px;
+    flex-direction: column;
+    border-radius: 0px 0px 4px 4px;
+    background: var(--primary-blue-100, #E9F2F1);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
+    /*text*/
+    color: #4B5768;
+    /* Paragraph/P2/Semi Bold */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 19px; /* 118.75% */
+    z-index: 2000;
+    animation: fade-out 0.3s ease-out forwards;
+}
+
+
+
+.dropdown-content-navbar.open {
+    display: flex;
+    animation: fade-in 0.3s ease-in;
 }

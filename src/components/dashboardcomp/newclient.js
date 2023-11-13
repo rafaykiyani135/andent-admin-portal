@@ -74,7 +74,7 @@ function NewClient(){
         </div>
         </div>
         <div className='row justify-content-start' style={{width:'100%'}}>
-            <div className='col-6 col-lg-6 text-start'>
+            <div className='col-12 col-md-6 text-start'>
                 <div>
                 <h2 className='popup-heading-2 text-start'>
                     First Name
@@ -85,10 +85,8 @@ function NewClient(){
                 <h2 className='popup-heading-2 text-start'>
                     Email
                 </h2>
-                <div className='d-flex align-items-center'>
                 <input className='popup-inputs-small' placeholder='Enter email'/>
-                <img src={mail} alt='mail-icon' className='small-icon' style={{position:"absolute",right:"327px"}}/>
-                </div>
+                <img src={mail} alt='mail-icon' className='small-icon client-mail-icon'/>
                 </div>
                 <div style={{ marginTop: "8px" }}>
                 <h2 className='popup-heading-2 text-start'>
@@ -103,7 +101,7 @@ function NewClient(){
                 </select>
                 </div>
             </div>
-            <div className='col-lg-6 col-6 text-start'>
+            <div className='col-md-6 col-12 text-start mob-top-pad'>
                 <div>
                 <h2 className='popup-heading-2 text-start'>
                     Last Name
@@ -114,14 +112,12 @@ function NewClient(){
                 <h2 className='popup-heading-2 text-start'>
                     Number
                 </h2>
-                <div className='d-flex align-items-center'>
                 <input className='popup-inputs-small' placeholder='Enter number'/>
-                <img src={phone} alt='mail-icon' className='small-icon' style={{position:"absolute",right:"40px"}}/>
-                </div>
+                <img src={phone} alt='mail-icon' className='small-icon client-mail-icon'/>
                 </div>
             </div>
             <div className='row justify-content-center text-center' style={{marginTop:"12px"}}>
-            <div className='col-lg-6 col-6 d-flex justify-content-start'>
+            <div className='col-lg-6 col-12 d-flex justify-content-start'>
             {invoice? (
                     <h2 className='popup-heading-3 text-start d-flex align-items-center'>
                         {invoiceName}<a  href={invoice} download={invoiceName} style={{marginLeft:"10px"}}>
@@ -133,7 +129,7 @@ function NewClient(){
                     </h2>
             ) : ("")}
             </div>
-            <div className='col-lg-6 col-6'>
+            <div className='col-lg-6 col-12 d-flex justify-content-start justify-content-md-center'>
             {receipt? (
                     <h2 className='popup-heading-3 text-start d-flex align-items-center justify-content-center'>
                         {receiptName}<a  href={receipt} download={receiptName} style={{marginLeft:"10px"}}>
@@ -191,7 +187,7 @@ function NewClient(){
                         Client Status
                     </h2>
                 </div>
-                <div className='col-6 col-lg-6'>
+                <div className='col-12 col-lg-6'>
                     <select onChange={handleStatusChange} value={clStatus} className='popup-inputs-small-dropdown'>
                             {statuses.map((stat, index) => (
                             <option key={index} value={stat} disabled={index === 0}>
@@ -240,7 +236,7 @@ function NewClient(){
             ))) : ""}
         </div>
         <div className='row justify-content-start' style={{width:"100%"}}>
-            <div className='col-6 col-lg-6 text-start'>
+            <div className='col-12 col-lg-6 text-start d-flex justify-content-center justify-content-md-start'>
             <label className={`andent-button-sm`}>
                 <h2 className='button-text'>
                 Panoramex

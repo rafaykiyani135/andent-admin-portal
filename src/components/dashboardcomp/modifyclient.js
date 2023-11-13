@@ -1,11 +1,11 @@
 import upload from '../../assets/data/upload.png'
 import download from '../../assets/data/download.png'
 import del from '../../assets/data/delete.png'
-import add from '../../assets/data/add.png'
 import minus from '../../assets/data/minus.png'
 import { useState,useEffect } from 'react';
 import mail from '../../assets/data/mailicon.png'
 import phone from '../../assets/data/phone.png'
+import save from '../../assets/data/save.png'
 
 function ModifyClient(props){
 
@@ -91,20 +91,20 @@ function ModifyClient(props){
         </div>
         </div>
         <div className='row justify-content-start' style={{width:'100%'}}>
-            <div className='col-6 col-lg-6 text-start'>
+            <div className='col-12 col-lg-6 text-start'>
                 <div>
                 <h2 className='popup-heading-2 text-start'>
                     First Name
                 </h2>
                 <input className='popup-inputs-small' placeholder={firstName}  />
                 </div>
-                <div style={{marginTop:"8px"}}>
+                <div className='' style={{marginTop:"8px"}}>
                 <h2 className='popup-heading-2 text-start'>
                     Email
                 </h2>
                 <input className='popup-inputs-small' placeholder={props.data.email}/>
+                <img src={mail} alt='mail-icon' className='small-icon client-mail-icon'/>
                 </div>
-                <img src={mail} alt='mail-icon' className='small-icon' style={{position:"fixed" , top:"25%",left:"43.6%"}}/>
                 <div style={{ marginTop: "8px" }}>
                 <h2 className='popup-heading-2 text-start'>
                     Country
@@ -118,7 +118,7 @@ function ModifyClient(props){
                 </select>
                 </div>
             </div>
-            <div className='col-lg-6 col-6 text-start'>
+            <div className='col-lg-6 col-12 text-start mob-top-pad'>
                 <div>
                 <h2 className='popup-heading-2 text-start'>
                     Last Name
@@ -130,8 +130,9 @@ function ModifyClient(props){
                     Number
                 </h2>
                 <input className='popup-inputs-small' placeholder={props.data.number}/>
+                    <img src={phone} alt='mail-icon' className='small-icon client-mail-icon'/>
                 </div>
-                <img src={phone} alt='mail-icon' className='small-icon' style={{position:"fixed" , top:"25%",left:"91%"}}/>
+                
             </div>
             <div className='row justify-content-center text-center' style={{marginTop:"12px"}}>
             <div className='col-lg-6 col-6 d-flex justify-content-start'>
@@ -204,7 +205,7 @@ function ModifyClient(props){
                         Client Status
                     </h2>
                 </div>
-                <div className='col-6 col-lg-6'>
+                <div className='col-12 col-lg-6'>
                     <select onChange={handleStatusChange} value={clStatus} className='popup-inputs-small-dropdown'>
                             {statuses.map((stat, index) => (
                             <option key={index} value={stat} disabled={index === 0}>
@@ -252,7 +253,7 @@ function ModifyClient(props){
                 </h2>
             ))) : ""}
         </div>
-        <div className='row justify-content-start' style={{width:"100%"}}>
+        <div className='row justify-content-center justify-content-md-start' style={{width:"100%"}}>
             <div className='col-6 col-lg-6 text-start'>
             <label className={`andent-button-sm`}>
                 <h2 className='button-text'>
@@ -283,8 +284,8 @@ function ModifyClient(props){
                 <div className='col-6 col-lg-6 text-start d-flex justify-content-end' style={{gap:"24px"}}>
                 <button className='andent-button'>
                     <h2 className='button-text'>
-                            Add Client<span style={{marginLeft:"8px",bottom:"2px",position:"relative"}}>
-                    <img src={add} alt='genlink icon' className='small-icon'/>
+                            Save Changes<span style={{marginLeft:"8px",bottom:"2px",position:"relative"}}>
+                    <img src={save} alt='genlink icon' className='small-icon'/>
                     </span>
                     </h2>
                 </button>

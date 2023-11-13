@@ -12,12 +12,27 @@ function Header(){
     const [isMobile, setIsMobile] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isSettingOpen,setIsSettingOpen] = useState(false)
-    const [path,setPath] = useState("")
+   // const [path,setPath] = useState("")
     const menuRef=useRef();
+    const menuRef2=useRef();
 
     useEffect(()=>{
-        setPath(window.location.pathname);
-    },[])
+        let handler = (e)  =>{
+            if(!menuRef2.current.contains(e.target)){
+                setIsSettingOpen(false)
+            }
+        }
+
+        document.addEventListener("mousedown",handler);
+
+        return()=>{
+            document.removeEventListener("mousedown",handler)
+        }
+    },[setIsSettingOpen])
+
+    // useEffect(()=>{
+    //     setPath(window.location.pathname);
+    // },[])
 
     useEffect(()=>{
         let handler = (e)  =>{
@@ -35,7 +50,7 @@ function Header(){
 
     useEffect(() => {
         function handleWindowSizeChange() {
-        setIsMobile(window.innerWidth < 1400); // Define the width to consider as mobile
+        setIsMobile(window.innerWidth < 600); // Define the width to consider as mobile
         }
 
         // Initial check on component mount
@@ -52,7 +67,7 @@ function Header(){
   
     return(
         <div>
-            <div className="row login-top justify-content-start" style={{width: path==="/roles" && isMobile? '510px' : path==="/clients" && isMobile? '920px' : path==="/accounts" && isMobile? '850px' : '100%'}}>
+            <div className="row login-top justify-content-start" style={{width: isMobile? "117%":"100%"}}>
                 <div className="col-5 col-lg-5">
                     <img src={logo} alt="andent logo" className="andent-logo"/>
                 </div>
@@ -83,7 +98,7 @@ function Header(){
                         {//Dropdown opacity logic
                         }
                        </div>
-                       <div className={`${isSettingOpen? 'setting-popup' : 'd-none'}`}>
+                       <div className={`${isSettingOpen? 'setting-popup' : 'd-none'}`} ref={menuRef2}>
                        <div className='row justify-content-center text-center'>
                             <div className='col-lg-12 col-12'>
                                 <h2 className='popup-heading'>

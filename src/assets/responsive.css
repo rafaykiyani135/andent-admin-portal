@@ -58,14 +58,8 @@
         padding-top: 30px;
     }
     .form{
-        margin-left: 10%;
-        padding: 12px;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 12px;
-        align-self: stretch;
-        width: 290px;
+        width: 300px;
     }
     .book-input{
         display: flex;
@@ -146,10 +140,26 @@
         align-items: center;
         background: var(--primary-blue-200, #D3E5E3);
     }
+    .appointment-ctr{
+        width: 100%;
+    }
+    .book-input{
+        width: 100%;
+    }
+    .table-parent{
+        width: 100vw;
+        overflow: auto;
+    }
+    .mob-top-pad{
+        padding-top: 15px;
+    }
 
 }
 
 @media (min-width: 576px) and (max-width: 992px) {
+    .book-input{
+        width: 100%;
+    }
     .login-icons{
         width: 16px;
         height: 16px;

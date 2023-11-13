@@ -44,7 +44,7 @@ function BookApt(){
                 </div>
                 <div className='form'>
                 <div className='row justify-content-start' style={{width:'100%'}}>
-                <div className='col-12 col-md-6 text-start'>
+                <div className='col-md-6 col-12 text-start'>
                     <div>
                     <h2 className='popup-heading-2 text-start'>
                         First Name

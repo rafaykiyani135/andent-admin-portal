@@ -18,7 +18,7 @@ function Sidebar() {
   },[setPath,location])
 
   return (
-    <div className='sidebar'>
+    <div className='sidebar d-none d-md-block'>
       <ul className='sidebar-ul'>
         <li className='siderbar-li d-flex align-items-center'>
             <NavLink to='/accounts' style={{ textDecoration: 'none'}} className='d-flex justify-content-center align-items-center'>

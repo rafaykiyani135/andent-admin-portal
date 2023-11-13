@@ -81,7 +81,7 @@ function Content() {
                 All clients
             </h2>
         </div>
-        <div className='col-lg-4 col-md-6 col-8 d-flex justify-content-end' style={{gap:"12px"}}>
+        <div className='col-lg-4 col-md-6 col-12 d-flex justify-content-center justify-content-md-end mob-top-pad' style={{gap:"12px"}}>
             <button className='andent-button' onClick={()=>{setMagicOpen(true)}}>
                 <img src={genlink} alt='genlink icon' className='small-icon'/><span>
                     <h2 className='button-text'>
@@ -101,7 +101,9 @@ function Content() {
             <MagicLink sendDataToParent={handleDataFromChild}/>
         </div>
       </div>
+      <div className='table-parent d-flex justify-content-center'>
       <Table/>
+      </div>
       <div className={`${link? `gen-link` : `d-none`}`} ref={menuRef3}>
             <GLink language={dataFromChild}/>
       </div>

@@ -214,6 +214,8 @@
         animation: inv-fade-in 0.5s ease-in;
     }
 
+
+
 }
 
 @media (min-width: 576px) and (max-width: 992px) {
@@ -409,6 +411,10 @@
         padding: 8px 32px;
         align-items: center;
         background: var(--primary-blue-200, #D3E5E3);
+    }
+
+    .cl-table-pos{
+        margin-right: 30px;
     }
 
 }

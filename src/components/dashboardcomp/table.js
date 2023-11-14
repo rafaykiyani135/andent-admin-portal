@@ -116,9 +116,7 @@ function Table(){
                 <tr key={row.id}>
                     <td className="box-size">{index + 1}</td>
                     <td className="box-size">{row.source}</td>
-                    <Link style={{textDecoration:"none",color:"black"}}>
-                    <td onClick={()=>{clickHandler(row)}} className="box-size">{row.clientName}</td>
-                    </Link>
+                    <td className="box-size" onClick={()=>{clickHandler(row)}}>{row.clientName}</td>
                     <td className="box-size">{row.email}</td>
                     <td className="box-size">{row.number}</td>
                     <td className="box-size">

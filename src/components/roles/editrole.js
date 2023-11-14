@@ -1,7 +1,7 @@
 import { useState } from "react";
 import save from '../../assets/data/save.png'
 
-function EditRole(){
+function EditRole(props){
 
     const [permissions, setPermissions] = useState({
         User: { Create: false, Read: false, Update: false, Delete: false },
@@ -26,7 +26,7 @@ function EditRole(){
             <div className="row justify-content-center text-center" style={{width:"100%"}}>
                 <div className="col-lg-12 col-12 text-center">
                     <h2 className='popup-heading-4'>
-                        Permisions / Admin
+                        Permisions / {props.role}
                     </h2>
                 </div>
             </div>

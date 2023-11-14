@@ -8,6 +8,7 @@ function RolesTable(){
 
 
     const [editRole,setEditRole] = useState(false);
+    const [chRole,setChRole] = useState("");
     const menuRef=useRef();
 
     useEffect(()=>{
@@ -29,6 +30,11 @@ function RolesTable(){
         { id: 1, userRole: 'Partner', editPerm: 'Edit Perm'},
         { id: 2, userRole: 'Admin', editPerm: 'Edit Perm'},
     ];
+    
+    const handleClick = (data) =>{
+        setEditRole(true)
+        setChRole(data);
+    }
 
     return(
         <div className="table-container" style={{width:"100% !important",marginLeft:"-4px"}} >
@@ -45,7 +51,7 @@ function RolesTable(){
                 <tr key={row.id}>
                     <td className="box-size-4">{index + 1}</td>
                     <td className="box-size-4">{row.userRole}</td>
-                    <Link onClick={()=>{setEditRole(true)}}>
+                    <Link onClick={()=>{handleClick(row.userRole)}}>
                     <td className="box-size-4">
                         <img src={edit} alt='edit-icon' className='small-icon' />
                     </td>
@@ -55,7 +61,7 @@ function RolesTable(){
             </tbody>
             </table>
             <div className={`${editRole? `addrole` : `d-none`}`} ref={menuRef}>
-                <EditRole/>
+                <EditRole role={chRole}/>
             </div>
         </div>
     )

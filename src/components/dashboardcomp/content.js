@@ -66,6 +66,7 @@ function Content() {
     };
 
   return (
+    <div className='d-flex justify-content-center cl-table-pos' style={{width:"100vw"}}>
     <div className='client-content' style={{overflowX:"hidden"}}>
       <div className='row justify-content-around align-items-center'>
         <div className='col-lg-5 col-md-12 col-12 largetext-pos-3'>
@@ -110,6 +111,7 @@ function Content() {
       <div className={`${newcl? `new-client` : `d-none`}`} ref={menuRef2}>
             <NewClient/>
       </div>
+    </div>
     </div>
   );
 }

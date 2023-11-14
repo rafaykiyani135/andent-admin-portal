@@ -15,6 +15,8 @@ import icon1active from '../assets/data/loginaccsactive.png'
 import icon2active from '../assets/data/allclientsactive.png'
 import icon3active from '../assets/data/rolesactive.png'
 import { useLocation } from 'react-router-dom';
+import user from '../assets/data/user.png'
+
 
 function Header(){
     
@@ -120,14 +122,15 @@ function Header(){
                         Andent Portal
                     </h1>
                 </div>
-                <div className='col-6 col-lg-3 d-flex justify-content-start justify-content-md-end align-items-center header-user'>
+                <div className='col-6 col-lg-3 d-flex justify-content-end justify-content-md-end align-items-center header-user'>
                        {//logged in user/employee should be shown here
                        //implement logic when api is integrated
                        }
                        <Link style={{position:"absolute",marginTop:"12px"}}>
                        <ul onClick={()=>{setIsOpen(!isOpen)}} className='header-user-textbox' ref={menuRef} style={{listStyleType:"none"}}>
                         <li className='text-center'>
-                        Gestri Hali (Admin) <span><img src={arrow} className='small-icon' alt='arrow icon' />
+                        {!isMobile? 'Gestri Hali (Admin)' :  (<img src={user} alt='user icon' style={{width:"35px",height:"35px"}}/>)}
+                        <span style={{marginLeft:'5px'}}><img src={arrow} className='small-icon' alt='arrow icon' />
                         </span>
                         </li>
                         <div className={`dropdown-content ${isOpen ? 'open' : ''} justify-content-end`} >
@@ -167,10 +170,12 @@ function Header(){
                                 </h2>
                             </div>
                             <div className='col-lg-12 col-12 text-start'>
+                            <div className='d-flex align-items-center'>
                                 <input className='popup-inputs' placeholder='Enter Password'/>
+                                <img src={passicon} alt='password-icon' className='small-icon' style={{position:"absolute",right:"40px"}}/>
+                            </div>
                             </div>
                         </div>
-                        <img src={passicon} alt='password-icon' className='small-icon' style={{position:"absolute",bottom:"55%",left:"91%"}}/>
                         <div className='row justify-content-start' style={{width:'100%'}}>
                             <div className='col-12 col-lg-12 text-start'>
                                 <h2 className='popup-heading-2 text-start'>
@@ -178,10 +183,12 @@ function Header(){
                                 </h2>
                             </div>
                             <div className='col-lg-12 col-12 text-start'>
+                                <div className='d-flex align-items-center'>
                                 <input className='popup-inputs' placeholder='Enter Password'/>
+                                <img src={passicon} alt='password-icon' className='small-icon' style={{position:"absolute",right:"40px"}}/>
+                                </div>
                             </div>
                         </div>
-                        <img src={passicon} alt='password-icon' className='small-icon' style={{position:"absolute",bottom:"38.7%",left:"91%"}}/>
                         <div className='row justify-content-start' style={{width:'100%'}}>
                             <div className='col-12 col-lg-12 text-start'>
                                 <h2 className='popup-heading-2 text-start'>
@@ -189,10 +196,12 @@ function Header(){
                                 </h2>
                             </div>
                             <div className='col-lg-12 col-12 text-start'>
+                            <div className='d-flex align-items-center'>
                                 <input className='popup-inputs' placeholder='Re-Enter Password'/>
+                                <img src={passicon} alt='password-icon' className='small-icon' style={{position:"absolute",right:"40px"}}/>
+                                </div>
                             </div>
                         </div>
-                        <img src={passicon} alt='password-icon' className='small-icon' style={{position:"absolute",bottom:"21.9%",left:"91%"}}/>
                         <div className='row justify-content-center' style={{width:'100%'}}>
                             <div className='col-12 col-lg-12 text-start d-flex justify-content-center align-items-center'>
                             <button className='andent-button' onClick={()=>{setIsSettingOpen(false)}}>

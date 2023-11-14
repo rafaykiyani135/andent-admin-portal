@@ -49,7 +49,7 @@ function MagicLink({sendDataToParent}){
                 >
                     <h2 className="magiclink-btn-text" style={{width:"100%"}} onClick={()=>{setIsOpen(!isOpen)}}>
                         <Link style={{textDecoration:"none",color:"#B8C0CC"}} >
-                        {selectedLanguage? selectedLanguage : "Choose Language" }  <span style={{position:"fixed",bottom:"42px",left:"250px"}}>
+                        {selectedLanguage? selectedLanguage : "Choose Language" }  <span className="magiclinkarrow">
                                 <img src={arrow} alt="arrow-icon" className="small-icon"/>
                         </span>
                         </Link>

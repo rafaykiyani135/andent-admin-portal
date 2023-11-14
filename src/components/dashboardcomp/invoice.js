@@ -10,6 +10,7 @@ function Invoice(props){
 
     const [file,setFile] = useState(null)
     const [fileName,setFileName] = useState("")
+    const [desc,setDesc] = useState("Dear sir/maam,\n\nKindly review the attached invoice and let us know if you have any queries.\n\nBest Regards,\nAndent Clinic.")
 
     const handleFileChange = (e) => {
         // Handle file change logic
@@ -52,7 +53,7 @@ function Invoice(props){
                     </h2>
                 </div>
                 <div className='col-lg-12 col-12 text-start'>
-                    <div className='popup-inputs popup-heading-2 d-flex align-items-center'>
+                    <div className='popup-inputs popup-heading-2 d-flex align-items-center invoice-sub-height'>
                         Andent Invoice for your dental procedure 
                         <img src={excl} alt='mail-icon' className="small-icon" style={{position:"absolute",right:"40px"}}/>
                     </div>
@@ -65,7 +66,7 @@ function Invoice(props){
                     </h2>
                 </div>
                 <div className='col-lg-12 col-12 text-start'>
-                    <textarea type='' className='popup-inputs-2' style={{resize:"none"}}></textarea>
+                    <textarea type='' className='popup-inputs-2' value={desc} onChange={(e) => {setDesc(e.target.value)}} style={{resize:"none",fontSize:"14px"}}></textarea>
                 </div>
             </div>
             {file? (<div className='row justify-content-start' style={{width:'100%'}}>

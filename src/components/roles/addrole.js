@@ -24,14 +24,14 @@ function AddRole(){
     return(
         <>
             <div className="row justify-content-center text-start" style={{width:"100%"}}>
-                <div className="col-lg-6 col-5 text-start">
-                    <h2 className='popup-heading-2 text-start'>
+                <div className="col-lg-6 col-12 text-start">
+                    <h2 className='popup-heading-2 text-center text-md-start'>
                         Role Name
                     </h2>
                 </div>
             </div>
             <div className="row justify-content-center text-start" style={{width:"100%"}}>
-                <div className="col-lg-6 col-5 text-start">
+                <div className="col-lg-6 col-12 text-start">
                     <div>
                     <input className='popup-inputs-small' placeholder='Enter Role Name'/>
                     </div>
@@ -45,7 +45,7 @@ function AddRole(){
                     </h2>
                 </div>
             </div>
-
+            <div className="perm-table-mob" style={{width:"100%"}}>
             <div className="perm-table">
             <table>
             <thead>
@@ -76,6 +76,7 @@ function AddRole(){
                 ))}
             </tbody>
             </table>
+            </div>
             </div>
 
             <div className='row justify-content-start d-flex' style={{width:'100%',marginTop:"12px"}}>

@@ -29,7 +29,7 @@ function RolesContent(){
             <div className='row justify-content-start align-items-center'>
             <div className='col-lg-5 col-md-12 col-12'>
                 <button className='andent-button-long' onClick={()=>{setAddRole(true)}}>
-                    <h2 className='button-text'>
+                    <h2 className='large-button-txt'>
                         Add New Role
                     </h2>
                     <span className='d-flex align-items-center'>

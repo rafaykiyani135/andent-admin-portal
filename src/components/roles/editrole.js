@@ -23,6 +23,7 @@ function EditRole(props){
 
     return(
         <>
+        
             <div className="row justify-content-center text-center" style={{width:"100%"}}>
                 <div className="col-lg-12 col-12 text-center">
                     <h2 className='popup-heading-4'>
@@ -30,6 +31,7 @@ function EditRole(props){
                     </h2>
                 </div>
             </div>
+            <div className="perm-table-mob" style={{width:"100%"}}>
             <div className="perm-table">
             <table>
             <thead>
@@ -61,7 +63,7 @@ function EditRole(props){
             </tbody>
             </table>
             </div>
-
+            </div>
             <div className='row justify-content-start d-flex' style={{width:'100%',marginTop:"12px"}}>
                 <div className='col-12 col-lg-12 text-start d-flex justify-content-center' style={{gap:"24px"}}>
                 <button className='andent-button-perm'>

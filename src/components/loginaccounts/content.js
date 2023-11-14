@@ -76,7 +76,7 @@ function LoginContent(){
             <div className='row justify-content-start align-items-center'>
             <div className='col-lg-5 col-md-12 col-12'>
                 <button className='andent-button-long' onClick={()=>{setNewUser(true)}}>
-                    <h2 className='button-text'>
+                    <h2 className='large-button-txt'>
                          Add New User
                     </h2>
                     <span className='d-flex align-items-center'>
@@ -84,7 +84,7 @@ function LoginContent(){
                     </span>
                 </button>
             </div>
-            <div className='col-lg-5 col-md-6 col-5 d-flex align-items-center largetext-pos'>
+            <div className='col-lg-5 col-md-6 col-12 d-flex align-items-center largetext-pos'>
                 <h2 className='accounts-top-text'>
                     User Accounts
                 </h2>
@@ -100,7 +100,7 @@ function LoginContent(){
                 </div>
                 </div>
                 <div className='row justify-content-start' style={{width:'100%'}}>
-                <div className='col-6 col-lg-6 text-start'>
+                <div className='col-12 col-lg-6 text-start'>
                     <div>
                     <h2 className='popup-heading-2 text-start'>
                         User Name
@@ -113,7 +113,7 @@ function LoginContent(){
                     </h2>
                     <div className='popup-inputs-small-dropdown' onClick={()=>{setPartnerDrop(!partnerDrop)}}>
                         {partner? partner : "Select Partner Name"}
-                        <img src={arrow} alt='arrow-icon' className='small-icon' style={{position:"absolute",right:"326px"}}/>
+                        <img src={arrow} alt='arrow-icon' className='small-icon d-none d-md-block' style={{position:"absolute",right:"326px"}}/>
                     </div>
                     <div className={`dropdown-partner ${partnerDrop? 'open' : ''} justify-content-end`} ref={menuRef2} >
                                 <li style={{listStyleType:"none"}} onClick={()=>{handlePartner("Andent")}}>Andent</li>
@@ -121,7 +121,7 @@ function LoginContent(){
                     </div>
                     </div>
                 </div>
-                <div className='col-6 col-lg-6 text-start'>
+                <div className='col-12 col-lg-6 text-start mob-top-pad'>
                     <div className=''>
                     <h2 className='popup-heading-2 text-start'>
                         Email
@@ -181,7 +181,7 @@ function LoginContent(){
                 </div>
             </div>
             </div>
-            <div style={{width:"100%"}}>
+            <div className='useraccounts-table'>
             <UserAccounts/>
             </div> 
         </div>

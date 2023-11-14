@@ -1,7 +1,6 @@
 import edit from '../../assets/data/editperm.png'
 import EditRole from './editrole';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useEffect,useRef } from 'react';
 
 function RolesTable(){
@@ -51,11 +50,9 @@ function RolesTable(){
                 <tr key={row.id}>
                     <td className="box-size-4">{index + 1}</td>
                     <td className="box-size-4">{row.userRole}</td>
-                    <Link onClick={()=>{handleClick(row.userRole)}}>
-                    <td className="box-size-4">
+                    <td className="box-size-4" onClick={()=>{handleClick(row.userRole)}}>
                         <img src={edit} alt='edit-icon' className='small-icon' />
                     </td>
-                    </Link>
                 </tr>
                 ))}
             </tbody>

@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Inter';
+    src: local('Inter'), url(./fonts/Inter.woff) format('woff');
+    /* other formats include: 'woff2', 'truetype, 'opentype',
+                              'embedded-opentype', and 'svg' */
+}
+
+body,
+html {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+

@@ -6,8 +6,8 @@ import del from '../../assets/data/delete.png'
 function UserAccounts(){
 
     let tableData = [
-        { id: 1, userName: 'Magic Link', userEmail: 'JohnDoe@yahoo.com', userRole: 'Partner', delUser: 'Delete'},
-        { id: 2, userName: 'Website', userEmail: 'babarkohli@gmail.com', userRole: 'Admin', delUser: 'Delete'},
+        { id: 1, userName: 'john12', userEmail: 'JohnDoe@yahoo.com', userRole: 'Partner', delUser: 'Delete'},
+        { id: 2, userName: 'babar12', userEmail: 'babarkohli@gmail.com', userRole: 'Admin', delUser: 'Delete'},
     ];
 
     const [dropdownStates, setDropdownStates] = useState(Array(tableData.length).fill(false));

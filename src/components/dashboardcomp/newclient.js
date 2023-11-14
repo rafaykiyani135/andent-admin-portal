@@ -255,9 +255,9 @@ function NewClient(){
             </label>
             </div>
             {pana.length > 1? (<div className='col-6 col-lg-6 text-start d-flex justify-content-end align-items-center'>
-                <u onClick={()=>{setViewMore(true)}}>
+                <u onClick={()=>{setViewMore(!viewMore)}}>
                 <h2 className='popup-heading-2'>
-                    View More Uploads
+                    {viewMore? 'View Less Uploads' : 'View More Uploads'}
                 </h2>
                 </u>
             </div>) : ("")}

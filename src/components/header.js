@@ -7,7 +7,7 @@ import { useRef } from 'react';
 import { Link,NavLink } from 'react-router-dom';
 import passicon from '../assets/data/password.png'
 import logosmall from '../assets/data/logosmall.png'
-import dd from '../assets/data/dropdown.png'
+import dd from '../assets/data/burgerhd.svg'
 import icon1 from '../assets/data/loginaccs.png'
 import icon2 from '../assets/data/allclients.png'
 import icon3 from '../assets/data/roles.png'
@@ -15,7 +15,7 @@ import icon1active from '../assets/data/loginaccsactive.png'
 import icon2active from '../assets/data/allclientsactive.png'
 import icon3active from '../assets/data/rolesactive.png'
 import { useLocation } from 'react-router-dom';
-import user from '../assets/data/user.png'
+import user from '../assets/data/user2.svg'
 
 
 function Header(){
@@ -115,7 +115,7 @@ function Header(){
                 )}
             </div>
                 <div className="col-1 col-lg-5">
-                    <img src={isMobile? logosmall : logo} alt="andent logo" className={`${isMobile? 'andent-logo-small' : 'andent-logo'}`}/>
+                    <img src={window.innerWidth<700? logosmall : logo} alt="andent logo" className={`${isMobile? 'andent-logo-small' : 'andent-logo'}`}/>
                 </div>
                 <div className="col-lg-2 text-start d-none d-lg-block no-cont-offset3 text-center text-md-start" style={{width:"auto"}}>
                     <h1 className="login-top-text">

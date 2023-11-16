@@ -5,6 +5,7 @@ import add from '../../assets/data/add.png'
 import { useState } from 'react';
 import mail from '../../assets/data/mailicon.png'
 import phone from '../../assets/data/phone.png'
+import { useEffect } from 'react';
 
 function NewClient(){
 
@@ -18,12 +19,22 @@ function NewClient(){
     const [receiptName,setReceiptName] = useState("")
     const [selectedCountry, setSelectedCountry] = useState("Country");
     const [clStatus, setclStatus] = useState("Choose Status");
+    const [isMobile,setIsMobile] = useState(false)
 
     const handlePanoChange = (event) => {
         const newFiles = event.target.files;
         const newFilesArray = Array.from(newFiles);
         setPana((prevPana) => [...prevPana, ...newFilesArray]);
     };
+
+    useEffect(()=>{
+        if (window.innerWidth<760){
+            setIsMobile(true);
+        }
+        else{
+            setIsMobile(false);
+        }
+    },[])
 
     const handleCountryChange = (event) => {
         setSelectedCountry(event.target.value);
@@ -81,14 +92,25 @@ function NewClient(){
                 </h2>
                 <input className='popup-inputs-small' placeholder='Enter First Name'/>
                 </div>
-                <div style={{marginTop:"8px"}}>
+                {isMobile? (<div style={{marginTop:"8px"}}>
+                <h2 className='popup-heading-2 text-start'>
+                    Last Name
+                </h2>
+                <input className='popup-inputs-small' placeholder='Enter Last Name'/>
+                </div>) : (<div style={{marginTop:"8px"}}>
                 <h2 className='popup-heading-2 text-start'>
                     Email
                 </h2>
                 <input className='popup-inputs-small' placeholder='Enter email'/>
                 <img src={mail} alt='mail-icon' className='small-icon client-mail-icon'/>
-                </div>
-                <div style={{ marginTop: "8px" }}>
+                </div>)}
+                {isMobile? (<div style={{marginTop:"8px"}}>
+                <h2 className='popup-heading-2 text-start'>
+                    Number
+                </h2>
+                <input className='popup-inputs-small' placeholder='Enter number'/>
+                <img src={phone} alt='mail-icon' className='small-icon client-mail-icon'/>
+                </div>) : (<div style={{ marginTop: "8px" }}>
                 <h2 className='popup-heading-2 text-start'>
                     Country
                 </h2>
@@ -99,22 +121,39 @@ function NewClient(){
                     </option>
                     ))}
                 </select>
-                </div>
+                </div>)}
             </div>
             <div className='col-md-6 col-12 text-start mob-top-pad'>
-                <div>
+                {isMobile? (<div>
+                <h2 className='popup-heading-2 text-start'>
+                    Email
+                </h2>
+                <input className='popup-inputs-small' placeholder='Enter email'/>
+                <img src={mail} alt='mail-icon' className='small-icon client-mail-icon'/>
+                </div>) : (<div>
                 <h2 className='popup-heading-2 text-start'>
                     Last Name
                 </h2>
                 <input className='popup-inputs-small' placeholder='Enter Last Name'/>
-                </div>
-                <div style={{marginTop:"8px"}}>
+                </div>)}
+                {isMobile? (<div style={{ marginTop: "8px" }}>
+                <h2 className='popup-heading-2 text-start'>
+                    Country
+                </h2>
+                <select value={selectedCountry} onChange={handleCountryChange} className='popup-inputs-small-dropdown'>
+                    {countries.map((country, index) => (
+                    <option key={index} value={country} disabled={index === 0}>
+                        {country}
+                    </option>
+                    ))}
+                </select>
+                </div>) : (<div style={{marginTop:"8px"}}>
                 <h2 className='popup-heading-2 text-start'>
                     Number
                 </h2>
                 <input className='popup-inputs-small' placeholder='Enter number'/>
                 <img src={phone} alt='mail-icon' className='small-icon client-mail-icon'/>
-                </div>
+                </div>)}
             </div>
             <div className='row justify-content-center text-center' style={{marginTop:"12px"}}>
             <div className='col-lg-6 col-12 d-flex justify-content-start'>
@@ -147,7 +186,7 @@ function NewClient(){
 
             <label className={`andent-button ${invoice? `button-disabled` : ``}`}>
                 <h2 className='button-text'>
-                    Invoice
+                {isMobile? 'Invoice' : 'Upload Invoice'}
                 </h2>
                 <span className='d-flex align-items-center'>
                     <img src={upload} alt='upload-icon' className='small-icon' />
@@ -165,7 +204,7 @@ function NewClient(){
             <div className='col-lg-6 col-6 d-flex justify-content-center'>
             <label className={`andent-button ${receipt? `button-disabled` : ``}`}>
                 <h2 className='button-text'>
-                    Receipt
+                    {isMobile? 'Receipt' : 'Upload Receipt'}
                 </h2>
                 <span className='d-flex align-items-center'>
                     <img src={upload} alt='upload-icon' className='small-icon' />

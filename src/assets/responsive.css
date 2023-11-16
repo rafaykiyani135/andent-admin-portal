@@ -74,6 +74,7 @@
         flex-direction: column;
         align-items: center;
         gap: 12px;
+        z-index: 20000;
         border-radius: 4px;
         background: var(--primary-blue-100, #E9F2F1);
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
@@ -166,9 +167,8 @@
         animation: fade-out 0.3s ease-out forwards;
     }
     .dropdown-content-client-status{
-        position: absolute;
+        position:absolute;
         display: none;
-        overflow: visible;
         margin-left: -30px;
         width: 149px;
         margin-top: 10px;
@@ -184,7 +184,7 @@
         font-style: normal;
         font-weight: 600;
         line-height: 19px; /* 118.75% */
-        z-index: 4000;
+        z-index: 10000;
         animation: fade-out 0.3s ease-out forwards;
     }
     .perm-table-mob{
@@ -310,7 +310,7 @@
     }
     .client-mail-icon{
         position: absolute;
-        transform: translate(250px,-25px);
+        transform: translate(220px,-25px);
     }
     .arrow-pos{
         position: absolute;
@@ -335,7 +335,7 @@
     .searchbar-des{
         position: relative;
         bottom: 37.5px;
-        left: 171px;
+        left: 234px;
         display: flex;
         width: 66px;
         height: 37px;
@@ -466,12 +466,12 @@
         position:absolute;
         left: 0px;
         right: 0px;
-        overflow: scroll;
-        width: 600px;
+        overflow-x: scroll;
         display: flex;
         justify-content: center;
         align-items: center;
         width: 98vw;
+        height: auto;
     }
     .mob-top-pad{
         padding-top: 15px;
@@ -524,6 +524,7 @@
     .table-container{
         margin-left: 10px;
         margin-top: 20px;
+        height: 100vh;
     }
 
 }
@@ -722,9 +723,9 @@
         margin-top: 16px;
         display: none;
         position: absolute;
-        z-index: 1;
         width: 149px;
         padding: 12px;
+        overflow:auto;
         flex-direction: column;
         align-items: flex-start;
         gap: 5px;
@@ -969,6 +970,10 @@
         position: absolute;
         top:15%;
         right: 6.5%;
+    }
+    .search-icon{
+        margin-left: 24px;
+        margin-top: 8px;
     }
     .icon-positionwfile{
         position: absolute;
@@ -1248,5 +1253,9 @@
     right: 326px;
 }
 
+.search-icon{
+    margin-left: 24px;
+    margin-top: 8px;
+}
 
 }

@@ -178,8 +178,7 @@
 }
 
 .search-bar-container{
-    width: auto;
-    max-width: 301px;
+    width: 301px;
     height: 38px;
 }
 
@@ -204,10 +203,7 @@
     line-height: 17px;
 }
 
-.search-icon{
-    margin-left: 24px;
-    margin-top: 8px;
-}
+
 
 .reduce-opacity {
     opacity: 0.5; /* Adjust opacity as needed */

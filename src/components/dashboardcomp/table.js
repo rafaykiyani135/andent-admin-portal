@@ -170,7 +170,7 @@ function Table(){
                             <li onClick={() => handleStatusSelection(index, 'Procedure Done')}>Procedure Done</li>
                             <li onClick={() => handleStatusSelection(index, 'Contact Again')}>Contact Again</li>
                         </div>
-                        <div className={`${dropdownStates[index]? 'dropdown-overlay' : ''}`}>
+                        <div className={`${dropdownStates[index] && !isMobile? 'dropdown-overlay' : ''}`}>
                         {//Dropdown opacity logic
                         }
                        </div>

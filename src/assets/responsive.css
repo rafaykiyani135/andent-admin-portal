@@ -142,7 +142,7 @@
         animation: fade-out 0.3s ease-out forwards;
     }
     .dropdown-content-accounts{
-        position: relative;
+        position: absolute;
         margin-top: 10px;
         display: none;
         z-index: 1;
@@ -166,7 +166,7 @@
         animation: fade-out 0.3s ease-out forwards;
     }
     .dropdown-content-client-status{
-        position: relative;
+        position: absolute;
         display: none;
         overflow: visible;
         margin-left: -30px;
@@ -191,8 +191,11 @@
         overflow: scroll;
     }
     .useraccounts-table{
-        width: 95vw;
+        position: relative;
         overflow: scroll;
+        justify-content: center;
+        align-items: center;
+        width: 95vw;
     }
     .invoice-sub-height{
         height: 55px;
@@ -307,7 +310,11 @@
     }
     .client-mail-icon{
         position: absolute;
-        transform: translate(260px,-25px);
+        transform: translate(250px,-25px);
+    }
+    .arrow-pos{
+        position: absolute;
+        right: 40px;
     }
     .no-cont-offset{
         margin-left: -15px;
@@ -1072,6 +1079,7 @@
     z-index: 1;
     width: 149px;
     padding: 12px;
+    margin-left: -5px;
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
@@ -1234,6 +1242,10 @@
     font-style: normal;
     font-weight: 400;
     line-height: 17px; /* 121.429% */
+}
+.arrow-pos{
+    position: absolute;
+    right: 326px;
 }
 
 

@@ -113,7 +113,7 @@ function LoginContent(){
                     </h2>
                     <div className='popup-inputs-small-dropdown' onClick={()=>{setPartnerDrop(!partnerDrop)}}>
                         {partner? partner : "Select Partner Name"}
-                        <img src={arrow} alt='arrow-icon' className='small-icon d-none d-md-block' style={{position:"absolute",right:"326px"}}/>
+                        <img src={arrow} alt='arrow-icon' className='small-icon arrow-pos'/>
                     </div>
                     <div className={`dropdown-partner ${partnerDrop? 'open' : ''} justify-content-end`} ref={menuRef2} >
                                 <li style={{listStyleType:"none"}} onClick={()=>{handlePartner("Andent")}}>Andent</li>

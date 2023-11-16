@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import arrow from '../../assets/data/arrow.png'
 import del from '../../assets/data/delete.png'
+import { useEffect } from "react";
 
 function UserAccounts(){
 
@@ -12,6 +13,16 @@ function UserAccounts(){
 
     const [dropdownStates, setDropdownStates] = useState(Array(tableData.length).fill(false));
     const [selectedRole, setSelectedRole] = useState(Array(tableData.length).fill()); // Initialize with empty string
+    const [isMobile,setIsMobile] = useState(false);
+
+    useEffect(()=>{
+        if (window.innerWidth<760){
+            setIsMobile(true);
+        }
+        else{
+            setIsMobile(false);
+        }
+    },[])
 
     const toggleDropdown = (index) => {
         setDropdownStates((prevStates) => {
@@ -75,7 +86,7 @@ function UserAccounts(){
                                 <li onClick={() => handleStatusSelection(index, 'Partner')}>Partner</li>
                             </div>
                             </Link>
-                            <div className={`${dropdownStates[index]? 'dropdown-overlay' : ''}`}>
+                            <div className={`${dropdownStates[index] && !isMobile? 'dropdown-overlay' : ''}`}>
                             {//Dropdown opacity logic
                             }
                         </div>

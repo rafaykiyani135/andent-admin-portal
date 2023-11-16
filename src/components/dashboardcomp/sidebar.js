@@ -23,7 +23,7 @@ function Sidebar() {
         <li className='siderbar-li d-flex align-items-center'>
             <NavLink to='/accounts' style={{ textDecoration: 'none'}} className='d-flex justify-content-center align-items-center'>
             <img src={path==="/accounts"? icon1active : icon1} alt='logged in accounts' className='small-icon'/><span>
-                <h2 className='sidebar-text'>Login Accounts</h2>
+                <h2 className='sidebar-text' style={{width:"150px"}}>Login Accounts</h2>
             </span>
             </NavLink>
         </li>

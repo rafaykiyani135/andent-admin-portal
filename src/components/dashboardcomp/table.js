@@ -14,9 +14,19 @@ function Table(){
     const [modify,setModify] = useState([{
         id:"",source:"",clientName:"",email:"",number:"",invoice:"",status:""
     }]);
+    const [isMac,setIsMac] = useState(false)
 
     const menuRef=useRef();
     const menuRef2=useRef();
+
+    useEffect(()=>{
+        if (window.innerWidth>1000 && window.innerWidth<1500){
+            setIsMac(true);
+        }
+        else{
+            setIsMac(false);
+        }
+    },[])
 
     useEffect(()=>{
         let handler = (e)  =>{
@@ -124,7 +134,7 @@ function Table(){
                         <img src={invoice} alt="invoice-icon" className='small-icon'/>
                         </Link>
                     </td>
-                    <td onClick={() => toggleDropdown(index)} className='text-start' style={{listStyleType:"none"}}>
+                    <td onClick={() => toggleDropdown(index)} className='text-start' style={{listStyleType:"none",width: isMac? "300px" : ""}}>
                         <Link style={{textDecoration:"none",color:"#4B5768"}}>
                         <li className='text-center'>
                             {selectedStatus[index] || ('Update Status')} <img src={arrow} alt='arrow-icon' className='small-icon'/>

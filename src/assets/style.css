@@ -588,11 +588,9 @@
 }
 
 .accounts-content{
-    display: flex;
-    width: 1228px;
-    height: 962px;
     padding: 20px 32px;
     flex-direction: column;
+    align-items: flex-start;
     gap: 16px;
 }
 
@@ -604,16 +602,6 @@
     font-weight: 600;
     line-height: 34px; /* 121.429% */
     letter-spacing: -0.56px;
-}
-
-.box-size-2{
-    width: 83px;
-    height: auto;
-}
-
-.box-size-3{
-    width: 280px;
-    height: auto;
 }
 
 .dropdown-content-accounts.open{
@@ -650,8 +638,6 @@
 
 .roles-content{
     display: flex;
-    width: 1228px;
-    height: 962px;
     padding: 20px 32px;
     flex-direction: column;
     gap: 16px;

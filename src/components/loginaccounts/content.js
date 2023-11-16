@@ -181,7 +181,7 @@ function LoginContent(){
                 </div>
             </div>
             </div>
-            <div className='useraccounts-table'>
+            <div className='useraccounts-table row'>
             <UserAccounts/>
             </div> 
         </div>

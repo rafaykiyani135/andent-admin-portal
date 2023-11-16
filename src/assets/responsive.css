@@ -269,6 +269,16 @@
         width: auto;
         height: auto;
     }
+    .box-size-2{
+        width: auto;
+        height: auto;
+    }
+    
+    .box-size-3{
+        width: auto;
+        height: auto;
+    }
+    
     .largetext-pos{
         padding-top: 30px;
     }
@@ -505,6 +515,16 @@
         width: auto;
         height: auto;
     }
+    .box-size-2{
+        width: 83px;
+        height: auto;
+    }
+    
+    .box-size-3{
+        width: 280px;
+        height: auto;
+    }
+    
     .largetext-pos{
         padding-top: 30px;
     }
@@ -706,6 +726,15 @@
         width: 175px;
         height: auto;
     }
+    .box-size-2{
+        width: 83px;
+        height: auto;
+    }
+    .box-size-3{
+        width: 280px;
+        height: auto;
+    }
+    
     .icon-position{
         position: absolute;
         top:15%;
@@ -923,6 +952,8 @@
 }
 
 .useraccounts-table{
+    padding-top: 20px;
     width: 100%;
 }
+
 }

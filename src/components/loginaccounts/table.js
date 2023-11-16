@@ -46,7 +46,7 @@ function UserAccounts(){
     }
 
     return(
-        <div className="table-container" style={{width:"100% !important",marginLeft:"-4px"}} >
+        <div className="table-container" style={{marginLeft:"-4px"}} >
             <table className='andent-table'>
             <thead>
                 <tr>

@@ -69,11 +69,13 @@ function Content() {
     <div className='d-flex justify-content-center cl-table-pos' style={{width:"100vw"}}>
     <div className='client-content' style={{overflowX:"hidden"}}>
       <div className='row justify-content-around align-items-center'>
-        <div className='col-lg-5 col-md-12 col-12'>
+        <div className='col-lg-5 col-md-12 col-12 d-flex justify-content-center justify-content-md-start'>
             <div className='search-bar-container'>
                 <input placeholder='Search client email' className='searchbar searchbar-text'/>
+                <div className='d-flex '>
                 <div className='searchbar-des d-md-block'>
                     <img src={search} className='small-icon search-icon' alt='search-icon'/>
+                </div>
                 </div>
             </div>
         </div>

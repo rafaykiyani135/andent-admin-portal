@@ -334,9 +334,8 @@
     }
     .searchbar-des{
         position: relative;
-        bottom: 37.5px;
-        left: 234px;
         display: flex;
+        transform: translate(234px,-38px);
         width: 66px;
         height: 37px;
         justify-content: center;

@@ -1,4 +1,4 @@
-import adduser from '../../assets/data/adduser.png'
+import adduser from '../../assets/data/add.png'
 import pass from '../../assets/data/password.png'
 import add from '../../assets/data/addclient.png'
 import UserAccounts from './table';

@@ -150,7 +150,7 @@ function Table(){
                     <td className="box-size">
                         <h2 className='table-text' style={{width:"auto",height:"auto"}}>{row.email}</h2></td>
                     <td className="box-size">
-                        <h2 className='table-text'>{row.number}</h2></td>
+                        <h2 className='table-text'  style={{width:"auto",height:"17px",whiteSpace:"nowrap"}} >{row.number}</h2></td>
                     <td className="box-size">
                         <Link onClick={() => handleInvoiceMaker(row.email)}>
                         <img src={invoice} alt="invoice-icon" className='small-icon'/>
@@ -159,8 +159,8 @@ function Table(){
                     <td onClick={() => toggleDropdown(index)} className='text-start' style={{listStyleType:"none",width: isMac? "300px" : ""}}>
                         <div>
                         <Link style={{textDecoration:"none",color:"#4B5768"}}>
-                        <li className='text-center'>
-                            {selectedStatus[index] || ('Update Status')} <img src={arrow} alt='arrow-icon' className='small-icon'/>
+                        <li className='text-center' style={{whiteSpace:"nowrap"}}>
+                           {selectedStatus[index] || ('Update Status')} <img src={arrow} alt='arrow-icon' className='small-icon'/>
                         </li>
                         </Link>
                         <div className={`dropdown-content-client-status ${dropdownStates[index] ? 'open' : ''} justify-content-end`} >

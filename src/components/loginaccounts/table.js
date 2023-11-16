@@ -65,7 +65,7 @@ function UserAccounts(){
                     <td className="box-size-3">{row.userEmail}</td>
                     <td  onClick={() => toggleDropdown(index)} className='text-start' style={{listStyleType:"none"}}>
                             <Link style={{textDecoration:"none",color:"#4B5768"}}>
-                            <li className='text-center'>
+                            <li className='text-center update-status' >
                                 {selectedRole[index] || row.userRole} <img src={arrow} alt='arrow-icon' className='small-icon'/>
                             </li>
                             </Link>

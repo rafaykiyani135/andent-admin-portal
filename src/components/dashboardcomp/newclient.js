@@ -143,11 +143,11 @@ function NewClient(){
             </div>
             </div>
             <div className='row justify-content-center text-center' style={{marginTop:"12px"}}>
-            <div className='col-lg-6 col-6 d-flex justify-content-start'>
+            <div className='col-lg-6 col-6 d-flex justify-content-center'>
 
             <label className={`andent-button ${invoice? `button-disabled` : ``}`}>
                 <h2 className='button-text'>
-                    Upload Invoice
+                    Invoice
                 </h2>
                 <span className='d-flex align-items-center'>
                     <img src={upload} alt='upload-icon' className='small-icon' />
@@ -165,7 +165,7 @@ function NewClient(){
             <div className='col-lg-6 col-6 d-flex justify-content-center'>
             <label className={`andent-button ${receipt? `button-disabled` : ``}`}>
                 <h2 className='button-text'>
-                    Upload Receipt
+                    Receipt
                 </h2>
                 <span className='d-flex align-items-center'>
                     <img src={upload} alt='upload-icon' className='small-icon' />

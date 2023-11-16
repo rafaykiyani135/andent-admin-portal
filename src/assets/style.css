@@ -1,5 +1,4 @@
 
-
 .andent-logo{
     height: auto;
     max-width: 145px;
@@ -138,6 +137,11 @@
     height: 30px;
 }
 
+.magicdropdown-content.open {
+    display: flex;
+    animation: fade-in 0.3s ease-in;
+}
+
 .dropdown-content.open {
     display: flex;
     animation: fade-in 0.3s ease-in;
@@ -231,17 +235,6 @@
     line-height: 21.6px; /* 120% */
 }
 
-.andent-button{
-    border: transparent;
-    display: flex;
-    padding: 6px 12px 6px 12px;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    border-radius: 50px;
-    background: var(--primary-blue-500, #6DA7A2);
-}
-
 .table-container{
     margin-left: 12px;
     margin-top: 20px;
@@ -276,12 +269,6 @@
     background-color: #F8FBFA;
     border-bottom: 1px solid var(--neutral-200, #D0D5DD);
 }
-
-.box-size{
-    width: 175px;
-    height: auto;
-}
-
 
 
 @keyframes inv-fade-in {
@@ -372,23 +359,6 @@
 .button-disabled{
     background: var(--primary-blue-400, #A7CAC7);
     cursor: not-allowed;
-}
-
-.magiclink{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    width: 435px !important;
-    padding: 32px 16px;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    border-radius: 4px;
-    background: var(--primary-blue-100, #E9F2F1);
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
-    animation: magiclink-anim 0.5s ease-out forwards;
 }
 
 @keyframes magiclink-anim {
@@ -587,13 +557,6 @@
     gap: 8px;
 }
 
-.accounts-content{
-    padding: 20px 32px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-}
-
 .accounts-top-text{
     color: #000;
     text-align: center;
@@ -634,13 +597,6 @@
 .dropdown-partner.open{
     display: flex;
     animation: fade-in 0.3s ease-in;
-}
-
-.roles-content{
-    display: flex;
-    padding: 20px 32px;
-    flex-direction: column;
-    gap: 16px;
 }
 
 .box-size-4{

@@ -10,7 +10,7 @@ function Invoice(props){
 
     const [file,setFile] = useState(null)
     const [fileName,setFileName] = useState("")
-    const [desc,setDesc] = useState("Dear sir/maam,\n\nKindly review the attached invoice and let us know if you have any queries.\n\nBest Regards,\nAndent Clinic.")
+    const [desc,setDesc] = useState("Dear Sir/Ma'am,\n\nKindly review the attached invoice and let us know if you have any queries.\n\nBest Regards,\nAndent Clinic.")
 
     const handleFileChange = (e) => {
         // Handle file change logic
@@ -85,7 +85,7 @@ function Invoice(props){
                 <div className='col-12 col-lg-12 text-start d-flex justify-content-center' style={{gap:"24px"}}>
 
                 <label className={`andent-button ${file? `button-disabled` : ``}`}>
-                <h2 className='button-text'>
+                <h2 className='button-text d-flex text-center'>
                     Upload Invoice
                 </h2>
                 <span className='d-flex align-items-center'>

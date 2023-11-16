@@ -53,7 +53,7 @@ function MagicLink({sendDataToParent}){
                                 <img src={arrow} alt="arrow-icon" className="small-icon"/>
                         </span>
                         </Link>
-                        <div className={`dropdown-content ${isOpen ? 'open' : ''} justify-content-end`} style={{gap:"4px"}}>
+                        <div className={`magicdropdown-content ${isOpen ? 'open' : ''} justify-content-end`} style={{gap:"4px"}}>
                             <Link style={{marginTop:"-10px",textDecoration:"none",color:"#4B5768"}}  onClick={handleLanguageChange}>English link<span>
                                 <img src={dgenerate} alt='logout icon' className='small-icon' style={{position:"absolute",right:"12px"}}/>
                             </span></Link>

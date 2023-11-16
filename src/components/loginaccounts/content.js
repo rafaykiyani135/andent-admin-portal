@@ -74,7 +74,7 @@ function LoginContent(){
         <div  className='d-flex justify-content-center cl-table-pos' style={{width:"100vw"}}>
         <div className='accounts-content'>
             <div className='row justify-content-start align-items-center'>
-            <div className='col-lg-5 col-md-12 col-12'>
+            <div className='col-lg-5 col-md-12 col-12 d-flex justify-content-center justify-content-md-start'>
                 <button className='andent-button-long' onClick={()=>{setNewUser(true)}}>
                     <h2 className='large-button-txt'>
                          Add New User
@@ -84,7 +84,7 @@ function LoginContent(){
                     </span>
                 </button>
             </div>
-            <div className='col-lg-5 col-md-6 col-12 d-flex align-items-center largetext-pos'>
+            <div className='col-lg-5 col-md-6 col-12 d-flex align-items-center largetext-pos justify-content-center justify-content-md-start'>
                 <h2 className='accounts-top-text'>
                     User Accounts
                 </h2>

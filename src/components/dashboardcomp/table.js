@@ -15,9 +15,19 @@ function Table(){
         id:"",source:"",clientName:"",email:"",number:"",invoice:"",status:""
     }]);
     const [isMac,setIsMac] = useState(false)
+    const [isMobile,setIsMobile] = useState(false)
 
     const menuRef=useRef();
     const menuRef2=useRef();
+
+    useEffect(()=>{
+        if (window.innerWidth<760){
+            setIsMobile(true);
+        }
+        else{
+            setIsMobile(false);
+        }
+    },[])
 
     useEffect(()=>{
         if (window.innerWidth>1000 && window.innerWidth<1500){
@@ -112,29 +122,42 @@ function Table(){
             <table className='andent-table'>
             <thead>
                 <tr>
-                <th scope="col" className="box-size" style={{borderRadius:"4px 0px 0px 0px"}}>Sr. No</th>
-                <th scope="col" className="box-size">Source</th>
-                <th scope="col" className="box-size">Client Name</th>
-                <th scope="col" className="box-size">Email</th>
-                <th scope="col" className="box-size">Number</th>
-                <th scope="col" className="box-size">Send Invoice</th>
-                <th scope="col" className="box-size" style={{borderRadius:"0px 4px 0px 0px"}}>Client Status</th>
+                <th scope="col" className="box-size" style={{borderRadius:"4px 0px 0px 0px"}}><h2 className='table-text-td'>
+                    Sr. No</h2></th>
+                <th scope="col" className="box-size">
+                    <h2 className='table-text-td'>Source</h2></th>
+                <th scope="col" className="box-size">
+                    <h2 className='table-text-td'>Client Name</h2></th>
+                <th scope="col" className={`box-size ${isMobile? `d-flex justify-content-center` : ``}`}>
+                    <h2 className='table-text-td'>Email</h2></th>
+                <th scope="col" className="box-size">
+                    <h2 className='table-text-td'>Number</h2></th>
+                <th scope="col" className="box-size">
+                    <h2 className='table-text-td'>Send Invoice</h2></th>
+                <th scope="col" className="box-size" style={{borderRadius:"0px 4px 0px 0px"}}>
+                    <h2 className='table-text-td'>Client Status</h2></th>
                 </tr>
             </thead>
             <tbody>
                 {tableData.map((row, index) => (
                 <tr key={row.id}>
-                    <td className="box-size">{index + 1}</td>
-                    <td className="box-size">{row.source}</td>
-                    <td className="box-size" onClick={()=>{clickHandler(row)}}>{row.clientName}</td>
-                    <td className="box-size">{row.email}</td>
-                    <td className="box-size">{row.number}</td>
+                    <td className="box-size"><h2 className='table-text'>
+                        {index + 1}</h2></td>
+                    <td className="box-size">
+                        <h2 className='table-text'>{row.source}</h2></td>
+                    <td className="box-size" onClick={()=>{clickHandler(row)}}>
+                        <h2 className='table-text'>{row.clientName}</h2></td>
+                    <td className="box-size">
+                        <h2 className='table-text' style={{width:"auto",height:"auto"}}>{row.email}</h2></td>
+                    <td className="box-size">
+                        <h2 className='table-text'>{row.number}</h2></td>
                     <td className="box-size">
                         <Link onClick={() => handleInvoiceMaker(row.email)}>
                         <img src={invoice} alt="invoice-icon" className='small-icon'/>
                         </Link>
                     </td>
                     <td onClick={() => toggleDropdown(index)} className='text-start' style={{listStyleType:"none",width: isMac? "300px" : ""}}>
+                        <div>
                         <Link style={{textDecoration:"none",color:"#4B5768"}}>
                         <li className='text-center'>
                             {selectedStatus[index] || ('Update Status')} <img src={arrow} alt='arrow-icon' className='small-icon'/>
@@ -150,6 +173,7 @@ function Table(){
                         <div className={`${dropdownStates[index]? 'dropdown-overlay' : ''}`}>
                         {//Dropdown opacity logic
                         }
+                       </div>
                        </div>
                     </td>
                 </tr>

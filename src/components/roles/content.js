@@ -24,10 +24,10 @@ function RolesContent(){
     },[])
 
     return(
-        <div className='d-flex justify-content-center cl-table-pos' style={{width:"100vw"}}>
+        <div className='d-flex justify-content-center cl-table-pos'>
         <div className="roles-content">
             <div className='row justify-content-start align-items-center'>
-            <div className='col-lg-5 col-md-12 col-12'>
+            <div className='col-lg-5 col-md-12 col-12 d-flex justify-content-center justify-content-md-start'>
                 <button className='andent-button-long' onClick={()=>{setAddRole(true)}}>
                     <h2 className='large-button-txt'>
                         Add New Role
@@ -37,7 +37,7 @@ function RolesContent(){
                     </span>
                 </button>
             </div>
-            <div className='col-lg-5 col-md-12 col-12 d-flex align-items-center justifty-content-start text-start largetext-pos'>
+            <div className='col-lg-5 col-md-12 col-12 d-flex align-items-center justify-content-center justify-content-md-start largetext-pos'>
                 <h2 className='accounts-top-text'>
                     Roles
                 </h2>

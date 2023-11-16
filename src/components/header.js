@@ -88,8 +88,8 @@ function Header(){
     }, []);
   
     return(
-        <div>
-            <div className="row login-top justify-content-start header-size">
+        <>
+            <div className="login-top justify-content-start header-size">
             <div className='col-5 d-block d-md-none'>
                 <div className='burger-icon' onClick={toggleDropdown}>
                     <img src={dd} alt='dropdown-icon' className='dropdown-icon' />
@@ -217,7 +217,7 @@ function Header(){
                        </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

@@ -1,5 +1,5 @@
 import logo from "../assets/data/logo.png";
-import logout from "../assets/data/logout.png";
+import logoutIcon from "../assets/data/logout.png";
 import save from "../assets/data/save.png";
 import { useState, useEffect, useContext } from "react";
 import arrow from "../assets/data/arrow.png";
@@ -17,7 +17,7 @@ import icon3active from "../assets/data/rolesactive.png";
 import { useLocation } from "react-router-dom";
 import user from "../assets/data/user2.svg";
 import { AuthContext } from "../context/AuthProvider";
-
+import useLogout from "../hooks/useLogout";
 function Header() {
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -28,14 +28,14 @@ function Header() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const location = useLocation();
   const [path, setPath] = useState(location.pathname);
-  const { user, setUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const logout = useLogout();
   useEffect(() => {
     setPath(location.pathname);
   }, [setPath, location]);
 
   function handleLogout() {
-    localStorage.removeItem("andent_portal_user");
-    setUser(null);
+    logout();
   }
 
   const toggleDropdown = () => {
@@ -176,7 +176,7 @@ function Header() {
             >
               <li className="text-center">
                 {!isMobile ? (
-                  "Gestri Hali (Admin)"
+                  `${user?.name} (${user?.role?.name?.toLowerCase()})`
                 ) : (
                   <img
                     src={user}
@@ -212,7 +212,7 @@ function Header() {
                   Logout
                   <span>
                     <img
-                      src={logout}
+                      src={logoutIcon}
                       alt="logout icon"
                       className="small-icon"
                       style={{ position: "absolute", right: "12px" }}

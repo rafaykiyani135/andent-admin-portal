@@ -6,6 +6,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import login from "../services/api/auth";
 import { AuthContext } from "../context/AuthProvider";
+import { getUser } from "../services/api/users";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -55,14 +56,28 @@ function Login() {
       setLogingIn(true);
       login({ email: username, password })
         .then((res) => {
-          const userInfo = { email: username, apiKey: res.data.data };
-          setUser(userInfo);
-          localStorage.setItem("andent_portal_user", JSON.stringify(userInfo));
+          const apiKey = res.data.data;
+          const userId = "b18e1c77-fa13-11ed-ac69-0a002700000c";
+          getUser(userId, apiKey)
+            .then((userRes) => {
+              const userInfo = { ...userRes.data?.data, apiKey };
+              localStorage.setItem(
+                "andent_portal_user",
+                JSON.stringify(userInfo)
+              );
+              setUser(userInfo);
+            })
+            .catch((err) => {
+              toast.error("Invalid Credentials");
+            })
+            .finally(() => {
+              setLogingIn(false);
+            });
         })
         .catch((err) => {
           toast.error("Invalid Credentials");
-        })
-        .finally(() => setLogingIn(false));
+          setLogingIn(false);
+        });
     }
   };
 

@@ -1,107 +1,210 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import arrow from '../../assets/data/arrow.png'
-import del from '../../assets/data/delete.png'
+import arrow from "../../assets/data/arrow.png";
+import del from "../../assets/data/delete.png";
 import { useEffect } from "react";
+import { deleteUser, getUsers, updateUserRole } from "../../services/api/users";
+import { getRoles } from "../../services/api/roles";
+import { ToastContainer, toast } from "react-toastify";
+import useLogout from "../../hooks/useLogout";
+import TableLoader from "../loaders/TableLoader";
+function UserAccounts(props) {
+  const [roles, setRoles] = useState([]);
+  const [tableData, setTableData] = useState([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [updatingRole, setUpdatingRole] = useState(false);
+  const logout = useLogout();
 
-function UserAccounts(){
-
-    let tableData = [
-        { id: 1, userName: 'john12', userEmail: 'JohnDoe@yahoo.com', userRole: 'Partner', delUser: 'Delete'},
-        { id: 2, userName: 'babar12', userEmail: 'babarkohli@gmail.com', userRole: 'Admin', delUser: 'Delete'},
-    ];
-
-    const [dropdownStates, setDropdownStates] = useState(Array(tableData.length).fill(false));
-    const [selectedRole, setSelectedRole] = useState(Array(tableData.length).fill()); // Initialize with empty string
-    const [isMobile,setIsMobile] = useState(false);
-
-    useEffect(()=>{
-        if (window.innerWidth<760){
-            setIsMobile(true);
+  function fetchAllUsers() {
+    getUsers()
+      .then((res) => {
+        setTableData(res.data?.data);
+        setLoadingUsers(false);
+      })
+      .catch((err) => {
+        if (err?.response?.status === 401) {
+          logout();
         }
-        else{
-            setIsMobile(false);
+        toast.error(err?.response?.data?.message ?? "Failed to load Users");
+        setLoadingUsers(false);
+      });
+  }
+
+  useEffect(() => {
+    setLoadingUsers(true);
+    getRoles()
+      .then((res) => {
+        setRoles(res.data?.data);
+      })
+      .catch((err) => {
+        if (err?.response?.status === 401) {
+          logout();
         }
-    },[])
+        toast.error(err?.response?.data?.message ?? "Failed to load roles");
+      });
+    fetchAllUsers();
+  }, [props.newUserAdded]);
 
-    const toggleDropdown = (index) => {
-        setDropdownStates((prevStates) => {
-          const newStates = [...prevStates];
-          newStates[index] = !newStates[index];
-          return newStates;
-        });
-    };
+  const [dropdownStates, setDropdownStates] = useState(
+    Array(tableData.length).fill(false)
+  );
 
-    const handleStatusSelection = (index, selectedValue) => {
-        // Update the selected status in the state
-        setSelectedRole((prevSelectedRole) => {
-          const newSelectedRole = [...prevSelectedRole];
-          newSelectedRole[index] = selectedValue;
-          return newSelectedRole;
-        });
-    
-        // Update the tableData based on the selected status
-        const updatedTableData = tableData.map((rowData, i) => {
-          if (i === index) {
-            return { ...rowData, userRole: selectedValue };
-          }
-          return rowData;
-        });
-    
-        // Set the updated tableData
-        tableData = updatedTableData;
-    };
+  const [isMobile, setIsMobile] = useState(false);
 
-    const handleDelete = (data) =>{
-        console.log("row to be deleted ",data);
+  useEffect(() => {
+    if (window.innerWidth < 760) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
     }
+  }, []);
 
-    return(
-        <div className="table-container" style={{marginLeft:"-4px"}} >
-            <table className='andent-table'>
-            <thead>
-                <tr>
-                <th scope="col" className=" box-size-2" style={{borderRadius:"4px 0px 0px 0px"}}>Sr. No</th>
-                <th scope="col" className=" box-size-3">User Name</th>
-                <th scope="col" className=" box-size-3">User Email</th>
-                <th scope="col" className=" box-size-3">User role</th>
-                <th scope="col" className=" box-size-3" style={{borderRadius:"0px 4px 0px 0px"}}>Delete User</th>
-                </tr>
-            </thead>
-            <tbody>
-                {tableData.map((row, index) => (
-                <tr key={row.id}>
-                    <td className="box-size-2">{index + 1}</td>
-                    <td className="box-size-3">{row.userName}</td>
-                    <td className="box-size-3">{row.userEmail}</td>
-                    <td  onClick={() => toggleDropdown(index)} className='text-start' style={{listStyleType:"none"}}>
-                            <Link style={{textDecoration:"none",color:"#4B5768"}}>
-                            <li className='text-center update-status' >
-                                {selectedRole[index] || row.userRole} <img src={arrow} alt='arrow-icon' className='small-icon'/>
-                            </li>
-                            </Link>
-                            <Link style={{textDecoration:"none",color:"#4B5768"}}>
-                            <div className={`dropdown-content-accounts ${dropdownStates[index] ? 'open' : ''} justify-content-end`} >
-                                <li onClick={() => handleStatusSelection(index, 'Admin')}>Admin</li>
-                                <li onClick={() => handleStatusSelection(index, 'Partner')}>Partner</li>
-                            </div>
-                            </Link>
-                            <div className={`${dropdownStates[index] && !isMobile? 'dropdown-overlay' : ''}`}>
-                            {//Dropdown opacity logic
-                            }
-                        </div>
-                    </td>
-                    <td className="box-size-3">
-                        <Link style={{textDecoration:"none"}} onClick={()=>{handleDelete(row)}}>
-                        <img src={del} alt="delete-icon" className="small-icon" />
-                        </Link>
-                    </td>
-                </tr>
-                ))}
-            </tbody>
-            </table>
-        </div>
-    )
+  const toggleDropdown = (index) => {
+    setDropdownStates((prevStates) => {
+      const newStates = [...prevStates];
+      newStates[index] = !newStates[index];
+      return newStates;
+    });
+  };
+
+  const handleStatusSelection = (userInfo) => {
+    console.log(userInfo);
+    setUpdatingRole(true);
+    updateUserRole(userInfo)
+      .then((res) => {
+        fetchAllUsers();
+        setUpdatingRole(false);
+      })
+      .catch((err) => {
+        if (err?.response?.status === 401) {
+          logout();
+        }
+        toast.error(
+          err?.response?.data?.message ?? "Failed to update User role"
+        );
+        setUpdatingRole(false);
+      });
+  };
+
+  const handleDelete = (userId) => {
+    setUpdatingRole(true);
+    deleteUser(userId)
+      .then((res) => {
+        toast.success("User Deleted Successfully");
+        fetchAllUsers();
+        setUpdatingRole(false);
+      })
+      .catch((err) => {
+        if (err?.response?.status === 401) {
+          logout();
+        }
+        toast.error(err?.response?.data?.message ?? "Failed to delete User");
+        setUpdatingRole(false);
+      });
+  };
+
+  return (
+    <div className="table-container" style={{ marginLeft: "-4px" }}>
+      <ToastContainer
+        hideProgressBar={true}
+        position="top-right"
+        autoClose={3000}
+      />
+      <table className="andent-table">
+        <thead>
+          <tr>
+            <th
+              scope="col"
+              className=" box-size-2"
+              style={{ borderRadius: "4px 0px 0px 0px" }}
+            >
+              Sr. No
+            </th>
+            <th scope="col" className=" box-size-3">
+              User Name
+            </th>
+            <th scope="col" className=" box-size-3">
+              User Email
+            </th>
+            <th scope="col" className=" box-size-3">
+              User role
+            </th>
+            <th
+              scope="col"
+              className=" box-size-3"
+              style={{ borderRadius: "0px 4px 0px 0px" }}
+            >
+              Delete User
+            </th>
+          </tr>
+        </thead>
+
+        <tbody className="position-relative">
+          {(loadingUsers || updatingRole) && <TableLoader />}
+          {tableData?.map((row, index) => (
+            <tr key={row?.id}>
+              <td className="box-size-2">{index + 1}</td>
+              <td className="box-size-3">{row?.name}</td>
+              <td className="box-size-3">{row?.email}</td>
+              <td
+                onClick={() => toggleDropdown(index)}
+                className="text-start"
+                style={{ listStyleType: "none" }}
+              >
+                <Link style={{ textDecoration: "none", color: "#4B5768" }}>
+                  <li className="text-center update-status">
+                    {row?.role?.name}{" "}
+                    <img src={arrow} alt="arrow-icon" className="small-icon" />
+                  </li>
+                </Link>
+                <Link style={{ textDecoration: "none", color: "#4B5768" }}>
+                  <div
+                    className={`dropdown-content-accounts ${
+                      dropdownStates[index] ? "open" : ""
+                    } justify-content-end`}
+                  >
+                    {roles?.map((role) => {
+                      return (
+                        <li
+                          key={role?.id}
+                          onClick={() => {
+                            handleStatusSelection({
+                              roleId: role?.id,
+                              userId: row?.id,
+                              name: row?.name,
+                              email: row?.email,
+                              password: row?.password,
+                            });
+                          }}
+                        >
+                          {role?.name}
+                        </li>
+                      );
+                    })}
+                  </div>
+                </Link>
+                <div
+                  className={`${
+                    dropdownStates[index] && !isMobile ? "dropdown-overlay" : ""
+                  }`}
+                ></div>
+              </td>
+              <td className="box-size-3">
+                <span
+                  style={{ textDecoration: "none", cursor: "pointer" }}
+                  onClick={() => {
+                    handleDelete(row.id);
+                  }}
+                >
+                  <img src={del} alt="delete-icon" className="small-icon" />
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default UserAccounts;

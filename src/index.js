@@ -7,13 +7,15 @@ import "bootstrap/dist/css/bootstrap.css";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./context/AuthProvider";
-
+import DataProvider from "./context/DataProvider";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <DataProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </DataProvider>
   </BrowserRouter>
 );
 

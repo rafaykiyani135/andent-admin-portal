@@ -15,20 +15,30 @@ import icon1active from "../assets/data/loginaccsactive.png";
 import icon2active from "../assets/data/allclientsactive.png";
 import icon3active from "../assets/data/rolesactive.png";
 import { useLocation } from "react-router-dom";
-import user from "../assets/data/user2.svg";
+import userIcon from "../assets/data/user2.svg";
 import { AuthContext } from "../context/AuthProvider";
 import useLogout from "../hooks/useLogout";
+import { toast } from "react-toastify";
+import { getUsers, updateUserPassword } from "../services/api/users";
+import useData from "../hooks/useData";
 function Header() {
+  const { setUsers } = useData();
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isSettingOpen, setIsSettingOpen] = useState(false);
   // const [path,setPath] = useState("")
   const menuRef = useRef();
   const menuRef2 = useRef();
+  const nameRef = useRef();
+  const oldPwdRef = useRef();
+  const pwdRef = useRef();
+  const confirmPwdRef = useRef();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [updatingPassword, setUpdatingPassword] = useState(false);
   const location = useLocation();
   const [path, setPath] = useState(location.pathname);
   const { user } = useContext(AuthContext);
+
   const logout = useLogout();
   useEffect(() => {
     setPath(location.pathname);
@@ -36,6 +46,44 @@ function Header() {
 
   function handleLogout() {
     logout();
+  }
+
+  function handlePasswordChange() {
+    const email = nameRef.current.value;
+    const oldPassword = oldPwdRef.current.value;
+    const newPassword = pwdRef.current.value;
+    const confirmPassword = confirmPwdRef.current.value;
+    if (!email || !oldPassword || !newPassword) {
+      toast.error("Fill all the fields");
+    } else if (newPassword.length < 8) {
+      toast.error("Password should have atleast 8 characters");
+    } else if (newPassword !== confirmPassword) {
+      toast.error("Password and confirm password are not same");
+    } else {
+      const payLoad = { email, oldPassword, newPassword, confirmPassword };
+      setUpdatingPassword(true);
+      updateUserPassword(payLoad)
+        .then((res) => {
+          getUsers()
+            .then((res) => {
+              setUsers(res.data?.data);
+            })
+            .catch((err) => {
+              if (err?.response?.status === 401) {
+                logout();
+              }
+              toast.error(
+                err?.response?.data?.message ?? "Failed to load Users"
+              );
+            });
+          toast.success("Password updated successfully");
+          setUpdatingPassword(false);
+        })
+        .catch((err) => {
+          toast.error("Failed to update password");
+          setUpdatingPassword(false);
+        });
+    }
   }
 
   const toggleDropdown = () => {
@@ -179,7 +227,7 @@ function Header() {
                   `${user?.name} (${user?.role?.name?.toLowerCase()})`
                 ) : (
                   <img
-                    src={user}
+                    src={userIcon}
                     alt="user icon"
                     style={{ width: "35px", height: "35px" }}
                   />
@@ -244,7 +292,12 @@ function Header() {
                 <h2 className="popup-heading-2 text-start">Username</h2>
               </div>
               <div className="col-lg-12 col-12 text-start">
-                <input className="popup-inputs" placeholder="Enter username" />
+                <input
+                  value={user?.email}
+                  className="popup-inputs"
+                  placeholder="Enter username"
+                  ref={nameRef}
+                />
               </div>
             </div>
             <div
@@ -259,6 +312,7 @@ function Header() {
                   <input
                     className="popup-inputs"
                     placeholder="Enter Password"
+                    ref={oldPwdRef}
                   />
                   <img
                     src={passicon}
@@ -281,6 +335,7 @@ function Header() {
                   <input
                     className="popup-inputs"
                     placeholder="Enter Password"
+                    ref={pwdRef}
                   />
                   <img
                     src={passicon}
@@ -303,6 +358,7 @@ function Header() {
                   <input
                     className="popup-inputs"
                     placeholder="Re-Enter Password"
+                    ref={confirmPwdRef}
                   />
                   <img
                     src={passicon}
@@ -319,12 +375,13 @@ function Header() {
             >
               <div className="col-12 col-lg-12 text-start d-flex justify-content-center align-items-center">
                 <button
+                  disabled={updatingPassword}
                   className="andent-button"
-                  onClick={() => {
-                    setIsSettingOpen(false);
-                  }}
+                  onClick={handlePasswordChange}
                 >
-                  <h2 className="button-text">Save Changes</h2>
+                  <h2 className="button-text">
+                    {updatingPassword ? "Saving ..." : "Save Changes"}
+                  </h2>
                   <span className="d-flex align-items-center">
                     <img src={save} alt="genlink icon" className="small-icon" />
                   </span>

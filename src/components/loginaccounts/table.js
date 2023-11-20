@@ -7,10 +7,11 @@ import { deleteUser, getUsers, updateUserRole } from "../../services/api/users";
 import { getRoles } from "../../services/api/roles";
 import { ToastContainer, toast } from "react-toastify";
 import useLogout from "../../hooks/useLogout";
+import useData from "../../hooks/useData";
 import TableLoader from "../loaders/TableLoader";
-function UserAccounts(props) {
-  const [roles, setRoles] = useState([]);
-  const [tableData, setTableData] = useState([]);
+function UserAccounts() {
+  const { roles, setRoles, users, setUsers } = useData();
+
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [updatingRole, setUpdatingRole] = useState(false);
   const logout = useLogout();
@@ -18,7 +19,7 @@ function UserAccounts(props) {
   function fetchAllUsers() {
     getUsers()
       .then((res) => {
-        setTableData(res.data?.data);
+        setUsers(res.data?.data);
         setLoadingUsers(false);
       })
       .catch((err) => {
@@ -43,10 +44,10 @@ function UserAccounts(props) {
         toast.error(err?.response?.data?.message ?? "Failed to load roles");
       });
     fetchAllUsers();
-  }, [props.newUserAdded]);
+  }, []);
 
   const [dropdownStates, setDropdownStates] = useState(
-    Array(tableData.length).fill(false)
+    Array(users.length).fill(false)
   );
 
   const [isMobile, setIsMobile] = useState(false);
@@ -68,7 +69,6 @@ function UserAccounts(props) {
   };
 
   const handleStatusSelection = (userInfo) => {
-    console.log(userInfo);
     setUpdatingRole(true);
     updateUserRole(userInfo)
       .then((res) => {
@@ -141,7 +141,7 @@ function UserAccounts(props) {
 
         <tbody className="position-relative">
           {(loadingUsers || updatingRole) && <TableLoader />}
-          {tableData?.map((row, index) => (
+          {users?.map((row, index) => (
             <tr key={row?.id}>
               <td className="box-size-2">{index + 1}</td>
               <td className="box-size-3">{row?.name}</td>

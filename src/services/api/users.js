@@ -28,7 +28,16 @@ export async function createUser(payLoad) {
 
 export async function updateUserRole(payLoad) {
   const apiKey = getApiKeyFromStorage();
-  return await Axios.put("/users/role", payLoad, {
+  return await Axios.put("users/role", payLoad, {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+}
+
+export async function updateUserPassword(payLoad) {
+  const apiKey = getApiKeyFromStorage();
+  return await Axios.put("users/settings", payLoad, {
     headers: {
       Authorization: `Bearer ${apiKey}`,
     },

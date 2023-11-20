@@ -5,12 +5,12 @@ import UserAccounts from "./table";
 import { useState, useRef, useEffect } from "react";
 import arrow from "../../assets/data/arrow.png";
 import mail from "../../assets/data/mailicon.png";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { getRoles } from "../../services/api/roles";
 import useLogout from "../../hooks/useLogout";
-import { createUser } from "../../services/api/users";
+import { getUsers, createUser } from "../../services/api/users";
+import useData from "../../hooks/useData";
 function LoginContent() {
-  const [roles, setRoles] = useState([]);
   const [newUser, setNewUser] = useState(false);
   const [partnerDrop, setPartnerDrop] = useState(false);
   const [roleDrop, setRoleDrop] = useState(false);
@@ -18,7 +18,7 @@ function LoginContent() {
   const [role, setRole] = useState(null);
   const [selectedRoleId, setSelectedRoleId] = useState("");
   const [addingUser, setAddingUser] = useState(false);
-  const [newUserAdded, setNewUserAdded] = useState(false);
+  const { roles, setUsers } = useData();
   const nameRef = useRef();
   const emailRef = useRef();
   const menuRef = useRef();
@@ -27,18 +27,6 @@ function LoginContent() {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
   const logout = useLogout();
-  useEffect(() => {
-    getRoles()
-      .then((res) => {
-        setRoles(res.data?.data);
-      })
-      .catch((err) => {
-        if (err?.response?.status === 401) {
-          logout();
-        }
-        toast.error(err?.response?.data?.message ?? "Failed to load roles");
-      });
-  }, []);
 
   function handleUserCreate() {
     const name = nameRef.current.value;
@@ -56,9 +44,20 @@ function LoginContent() {
       setAddingUser(true);
       createUser(payLoad)
         .then((res) => {
+          getUsers()
+            .then((res) => {
+              setUsers(res.data?.data);
+            })
+            .catch((err) => {
+              if (err?.response?.status === 401) {
+                logout();
+              }
+              toast.error(
+                err?.response?.data?.message ?? "Failed to load Users"
+              );
+            });
           toast.success("User Created Successfully");
           setAddingUser(false);
-          setNewUserAdded((prevState) => !prevState);
           setNewUser(false);
         })
         .catch((err) => {
@@ -323,7 +322,7 @@ function LoginContent() {
           </div>
         </div>
         <div className="useraccounts-table row">
-          <UserAccounts newUserAdded={newUserAdded} />
+          <UserAccounts />
         </div>
       </div>
     </div>

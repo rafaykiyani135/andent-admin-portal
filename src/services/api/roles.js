@@ -8,3 +8,11 @@ export async function getRoles() {
     },
   });
 }
+export async function deleteRole(roleId) {
+  const apiKey = getApiKeyFromStorage();
+  return await Axios.delete(`roles/${roleId}`, {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+}

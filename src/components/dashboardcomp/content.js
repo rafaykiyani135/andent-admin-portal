@@ -7,7 +7,11 @@ import MagicLink from "./magiclink";
 import GLink from "./linkgenerated";
 import NewClient from "./newclient";
 import useData from "../../hooks/useData";
+import { createClient, getClients } from "../../services/api/clients";
+import { toast } from "react-toastify";
+import useLogout from "../../hooks/useLogout";
 function Content() {
+  const logout = useLogout();
   const [magicOpen, setMagicOpen] = useState(false);
   const [dataFromChild, setDataFromChild] = useState("");
   const [link, setLink] = useState(false);
@@ -15,9 +19,9 @@ function Content() {
   const menuRef2 = useRef();
   const menuRef3 = useRef();
   const [newcl, setNewcl] = useState(false);
+  const [newClientId, setNewClientId] = useState("");
 
-  const { clients, setFilteredClients } = useData();
-
+  const { clients, setClients, setFilteredClients } = useData();
   function handleClientSearch(e) {
     if (!e.target.value) {
       setFilteredClients(clients);
@@ -29,6 +33,35 @@ function Content() {
       setFilteredClients(filtered);
     }
   }
+
+  function handleAddClient() {
+    setNewcl(true);
+    createClient()
+      .then((res) => {
+        setNewClientId(res?.data?.data?.id);
+        // console.log(res?.data?.data?.id);
+      })
+      .catch((err) => {
+        setNewcl(false);
+      });
+  }
+
+  // when new client pop is closed fetch all clients
+  useEffect(() => {
+    if (!newcl) {
+      getClients()
+        .then((res) => {
+          setClients(res.data?.data);
+          setFilteredClients(res.data?.data);
+        })
+        .catch((err) => {
+          if (err?.response?.status === 401) {
+            logout();
+          }
+          toast.error(err?.response?.data?.message ?? "Failed to load clients");
+        });
+    }
+  }, [newcl]);
 
   useEffect(() => {
     let handler = (e) => {
@@ -121,12 +154,7 @@ function Content() {
                 <h2 className="button-text">Magic Link</h2>
               </span>
             </button>
-            <button
-              className="andent-button"
-              onClick={() => {
-                setNewcl(true);
-              }}
-            >
+            <button className="andent-button" onClick={handleAddClient}>
               <img src={addclient} alt="genlink icon" className="small-icon" />
               <span>
                 <h2 className="button-text">New Client</h2>
@@ -148,7 +176,11 @@ function Content() {
           <GLink language={dataFromChild} />
         </div>
         <div className={`${newcl ? `new-client` : `d-none`}`} ref={menuRef2}>
-          <NewClient />
+          <NewClient
+            newClientId={newClientId}
+            popUpIsOpen={newcl}
+            setPopUpIsOpen={setNewcl}
+          />
         </div>
       </div>
     </div>

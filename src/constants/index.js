@@ -10,6 +10,7 @@ export const countries = [
   "Germany",
 ];
 export const statuses = [
+  "Choose Status",
   "Contacted",
   "Invoice Sent",
   "Booked",

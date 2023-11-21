@@ -60,7 +60,14 @@ function Header() {
     } else if (newPassword !== confirmPassword) {
       toast.error("Password and confirm password are not same");
     } else {
-      const payLoad = { email, oldPassword, newPassword, confirmPassword };
+      const payLoad = {
+        email,
+        oldPassword,
+        newPassword,
+        confirmPassword,
+        userId: user.id,
+        name: email,
+      };
       setUpdatingPassword(true);
       updateUserPassword(payLoad)
         .then((res) => {
@@ -92,7 +99,7 @@ function Header() {
 
   useEffect(() => {
     let handler = (e) => {
-      if (!menuRef2.current.contains(e.target)) {
+      if (!menuRef2?.current?.contains(e.target)) {
         setIsSettingOpen(false);
       }
     };
@@ -110,7 +117,7 @@ function Header() {
 
   useEffect(() => {
     let handler = (e) => {
-      if (!menuRef.current.contains(e.target)) {
+      if (!menuRef?.current?.contains(e.target)) {
         setIsOpen(false);
       }
     };
@@ -208,188 +215,196 @@ function Header() {
         >
           <h1 className="login-top-text">Andent Portal</h1>
         </div>
-        <div className="col-6 col-lg-3 d-flex justify-content-end justify-content-md-end align-items-center header-user">
-          {
-            //logged in user/employee should be shown here
-            //implement logic when api is integrated
-          }
-          <Link style={{ position: "absolute", marginTop: "12px" }}>
-            <ul
-              onClick={() => {
-                setIsOpen(!isOpen);
-              }}
-              className="header-user-textbox"
-              ref={menuRef}
-              style={{ listStyleType: "none" }}
-            >
-              <li className="text-center">
-                {!isMobile ? (
-                  `${user?.name} (${user?.role?.name?.toLowerCase()})`
-                ) : (
-                  <img
-                    src={userIcon}
-                    alt="user icon"
-                    style={{ width: "35px", height: "35px" }}
-                  />
-                )}
-                <span style={{ marginLeft: "5px" }}>
-                  <img src={arrow} className="small-icon" alt="arrow icon" />
-                </span>
-              </li>
-              <div
-                className={`dropdown-content ${
-                  isOpen ? "open" : ""
-                } justify-content-end`}
-              >
-                <p
-                  onClick={() => {
-                    setIsSettingOpen(true);
-                  }}
-                >
-                  Settings
-                </p>
-                <span
-                  onClick={handleLogout}
-                  to="/"
-                  style={{
-                    marginTop: "-10px",
-                    textDecoration: "none",
-                    color: "#4B5768",
-                  }}
-                >
-                  Logout
-                  <span>
-                    <img
-                      src={logoutIcon}
-                      alt="logout icon"
-                      className="small-icon"
-                      style={{ position: "absolute", right: "12px" }}
-                    />
-                  </span>
-                </span>
-              </div>
-            </ul>
-          </Link>
-          <div className={`${isOpen ? "dropdown-overlay" : ""}`}>
+        {user && (
+          <div className="col-6 col-lg-3 d-flex justify-content-end justify-content-md-end align-items-center header-user">
             {
-              //Dropdown opacity logic
+              //logged in user/employee should be shown here
+              //implement logic when api is integrated
             }
-          </div>
-          <div
-            className={`${isSettingOpen ? "setting-popup" : "d-none"}`}
-            ref={menuRef2}
-          >
-            <div className="row justify-content-center text-center">
-              <div className="col-lg-12 col-12">
-                <h2 className="popup-heading">User</h2>
-              </div>
-            </div>
-            <div
-              className="row justify-content-start"
-              style={{ width: "100%" }}
-            >
-              <div className="col-12 col-lg-12 text-start">
-                <h2 className="popup-heading-2 text-start">Username</h2>
-              </div>
-              <div className="col-lg-12 col-12 text-start">
-                <input
-                  value={user?.email}
-                  className="popup-inputs"
-                  placeholder="Enter username"
-                  ref={nameRef}
-                />
-              </div>
-            </div>
-            <div
-              className="row justify-content-start"
-              style={{ width: "100%" }}
-            >
-              <div className="col-12 col-lg-12 text-start">
-                <h2 className="popup-heading-2 text-start">Old Password</h2>
-              </div>
-              <div className="col-lg-12 col-12 text-start">
-                <div className="d-flex align-items-center">
-                  <input
-                    className="popup-inputs"
-                    placeholder="Enter Password"
-                    ref={oldPwdRef}
-                  />
-                  <img
-                    src={passicon}
-                    alt="password-icon"
-                    className="small-icon"
-                    style={{ position: "absolute", right: "40px" }}
-                  />
-                </div>
-              </div>
-            </div>
-            <div
-              className="row justify-content-start"
-              style={{ width: "100%" }}
-            >
-              <div className="col-12 col-lg-12 text-start">
-                <h2 className="popup-heading-2 text-start">New Password</h2>
-              </div>
-              <div className="col-lg-12 col-12 text-start">
-                <div className="d-flex align-items-center">
-                  <input
-                    className="popup-inputs"
-                    placeholder="Enter Password"
-                    ref={pwdRef}
-                  />
-                  <img
-                    src={passicon}
-                    alt="password-icon"
-                    className="small-icon"
-                    style={{ position: "absolute", right: "40px" }}
-                  />
-                </div>
-              </div>
-            </div>
-            <div
-              className="row justify-content-start"
-              style={{ width: "100%" }}
-            >
-              <div className="col-12 col-lg-12 text-start">
-                <h2 className="popup-heading-2 text-start">Confirm Password</h2>
-              </div>
-              <div className="col-lg-12 col-12 text-start">
-                <div className="d-flex align-items-center">
-                  <input
-                    className="popup-inputs"
-                    placeholder="Re-Enter Password"
-                    ref={confirmPwdRef}
-                  />
-                  <img
-                    src={passicon}
-                    alt="password-icon"
-                    className="small-icon"
-                    style={{ position: "absolute", right: "40px" }}
-                  />
-                </div>
-              </div>
-            </div>
-            <div
-              className="row justify-content-center"
-              style={{ width: "100%" }}
-            >
-              <div className="col-12 col-lg-12 text-start d-flex justify-content-center align-items-center">
-                <button
-                  disabled={updatingPassword}
-                  className="andent-button"
-                  onClick={handlePasswordChange}
-                >
-                  <h2 className="button-text">
-                    {updatingPassword ? "Saving ..." : "Save Changes"}
-                  </h2>
-                  <span className="d-flex align-items-center">
-                    <img src={save} alt="genlink icon" className="small-icon" />
+            <Link style={{ position: "absolute", marginTop: "12px" }}>
+              <ul
+                onClick={() => {
+                  setIsOpen(!isOpen);
+                }}
+                className="header-user-textbox"
+                ref={menuRef}
+                style={{ listStyleType: "none" }}
+              >
+                <li className="text-center">
+                  {!isMobile && user ? (
+                    `${user?.name} (${user?.role?.name?.toLowerCase()})`
+                  ) : (
+                    <img
+                      src={userIcon}
+                      alt="user icon"
+                      style={{ width: "35px", height: "35px" }}
+                    />
+                  )}
+                  <span style={{ marginLeft: "5px" }}>
+                    <img src={arrow} className="small-icon" alt="arrow icon" />
                   </span>
-                </button>
+                </li>
+                <div
+                  className={`dropdown-content ${
+                    isOpen ? "open" : ""
+                  } justify-content-end`}
+                >
+                  <p
+                    onClick={() => {
+                      setIsSettingOpen(true);
+                    }}
+                  >
+                    Settings
+                  </p>
+                  <span
+                    onClick={handleLogout}
+                    to="/"
+                    style={{
+                      marginTop: "-10px",
+                      textDecoration: "none",
+                      color: "#4B5768",
+                    }}
+                  >
+                    Logout
+                    <span>
+                      <img
+                        src={logoutIcon}
+                        alt="logout icon"
+                        className="small-icon"
+                        style={{ position: "absolute", right: "12px" }}
+                      />
+                    </span>
+                  </span>
+                </div>
+              </ul>
+            </Link>
+            <div className={`${isOpen ? "dropdown-overlay" : ""}`}>
+              {
+                //Dropdown opacity logic
+              }
+            </div>
+            <div
+              className={`${isSettingOpen ? "setting-popup" : "d-none"}`}
+              ref={menuRef2}
+            >
+              <div className="row justify-content-center text-center">
+                <div className="col-lg-12 col-12">
+                  <h2 className="popup-heading">User</h2>
+                </div>
+              </div>
+              <div
+                className="row justify-content-start"
+                style={{ width: "100%" }}
+              >
+                <div className="col-12 col-lg-12 text-start">
+                  <h2 className="popup-heading-2 text-start">Username</h2>
+                </div>
+                <div className="col-lg-12 col-12 text-start">
+                  <input
+                    value={user?.email}
+                    className="popup-inputs"
+                    placeholder="Enter username"
+                    ref={nameRef}
+                  />
+                </div>
+              </div>
+              <div
+                className="row justify-content-start"
+                style={{ width: "100%" }}
+              >
+                <div className="col-12 col-lg-12 text-start">
+                  <h2 className="popup-heading-2 text-start">Old Password</h2>
+                </div>
+                <div className="col-lg-12 col-12 text-start">
+                  <div className="d-flex align-items-center">
+                    <input
+                      className="popup-inputs"
+                      placeholder="Enter Password"
+                      ref={oldPwdRef}
+                    />
+                    <img
+                      src={passicon}
+                      alt="password-icon"
+                      className="small-icon"
+                      style={{ position: "absolute", right: "40px" }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="row justify-content-start"
+                style={{ width: "100%" }}
+              >
+                <div className="col-12 col-lg-12 text-start">
+                  <h2 className="popup-heading-2 text-start">New Password</h2>
+                </div>
+                <div className="col-lg-12 col-12 text-start">
+                  <div className="d-flex align-items-center">
+                    <input
+                      className="popup-inputs"
+                      placeholder="Enter Password"
+                      ref={pwdRef}
+                    />
+                    <img
+                      src={passicon}
+                      alt="password-icon"
+                      className="small-icon"
+                      style={{ position: "absolute", right: "40px" }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="row justify-content-start"
+                style={{ width: "100%" }}
+              >
+                <div className="col-12 col-lg-12 text-start">
+                  <h2 className="popup-heading-2 text-start">
+                    Confirm Password
+                  </h2>
+                </div>
+                <div className="col-lg-12 col-12 text-start">
+                  <div className="d-flex align-items-center">
+                    <input
+                      className="popup-inputs"
+                      placeholder="Re-Enter Password"
+                      ref={confirmPwdRef}
+                    />
+                    <img
+                      src={passicon}
+                      alt="password-icon"
+                      className="small-icon"
+                      style={{ position: "absolute", right: "40px" }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="row justify-content-center"
+                style={{ width: "100%" }}
+              >
+                <div className="col-12 col-lg-12 text-start d-flex justify-content-center align-items-center">
+                  <button
+                    disabled={updatingPassword}
+                    className="andent-button"
+                    onClick={handlePasswordChange}
+                  >
+                    <h2 className="button-text">
+                      {updatingPassword ? "Saving ..." : "Save Changes"}
+                    </h2>
+                    <span className="d-flex align-items-center">
+                      <img
+                        src={save}
+                        alt="genlink icon"
+                        className="small-icon"
+                      />
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

@@ -9,6 +9,14 @@ export async function getUsers() {
   });
 }
 
+export async function getLoggedInUser(key) {
+  return await Axios.get(`users/self/user`, {
+    headers: {
+      Authorization: `Bearer ${key}`,
+    },
+  });
+}
+
 export async function getUser(userId, key) {
   return await Axios.get(`users/${userId}`, {
     headers: {
@@ -37,7 +45,7 @@ export async function updateUserRole(payLoad) {
 
 export async function updateUserPassword(payLoad) {
   const apiKey = getApiKeyFromStorage();
-  return await Axios.put("users/settings", payLoad, {
+  return await Axios.put("users/setting", payLoad, {
     headers: {
       Authorization: `Bearer ${apiKey}`,
     },

@@ -1,16 +1,5 @@
 import { Axios } from ".";
 import { getApiKeyFromStorage } from "../localStorage";
-const createClientPayLoad = {
-  firstName: "John",
-  lastName: "Doe",
-  source: "Manual",
-  status: "Contacted",
-  country: "United Kingdom",
-  clientNotes: "Fix My Teeth",
-  email: "john@gmail.com",
-  number: "0513338383",
-  userId: "b18e1c77-fa13-11ed-ac69-0a002700000c",
-};
 
 export async function getClients() {
   const apiKey = getApiKeyFromStorage();
@@ -21,6 +10,17 @@ export async function getClients() {
   });
 }
 export async function createClient() {
+  const createClientPayLoad = {
+    firstName: "John",
+    lastName: "Doe",
+    source: "Manual Entry",
+    status: "Contacted",
+    country: "United Kingdom",
+    clientNotes: "Fix My Teeth",
+    email: `${Date.now()}@gmail.com`,
+    number: "0513338383",
+    userId: "b18e1c77-fa13-11ed-ac69-0a002700000c",
+  };
   const apiKey = getApiKeyFromStorage();
   return await Axios.post("clients", createClientPayLoad, {
     headers: {
@@ -50,6 +50,16 @@ export async function updateClientStatus(payLoad) {
   return await Axios.put("clients/status", payLoad, {
     headers: {
       Authorization: `Bearer ${apiKey}`,
+    },
+  });
+}
+
+export async function uploadClientFile(payLoad) {
+  const apiKey = getApiKeyFromStorage();
+  return await Axios.post("clients/upload", payLoad, {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "multipart/form-data",
     },
   });
 }

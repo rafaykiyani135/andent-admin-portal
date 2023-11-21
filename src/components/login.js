@@ -6,7 +6,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import login from "../services/api/auth";
 import { AuthContext } from "../context/AuthProvider";
-import { getUser } from "../services/api/users";
+import { getLoggedInUser } from "../services/api/users";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -57,8 +57,8 @@ function Login() {
       login({ email: username, password })
         .then((res) => {
           const apiKey = res.data.data;
-          const userId = "b18e1c77-fa13-11ed-ac69-0a002700000c";
-          getUser(userId, apiKey)
+
+          getLoggedInUser(apiKey)
             .then((userRes) => {
               const userInfo = { ...userRes.data?.data, apiKey };
               localStorage.setItem(

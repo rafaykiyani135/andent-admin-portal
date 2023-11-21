@@ -1,6 +1,7 @@
 import { useState } from "react";
 import invoice from "../../assets/data/invoice.png";
 import del from "../../assets/data/delete.png";
+import editIcon from "../../assets/data/editperm.png";
 import { Link } from "react-router-dom";
 import arrow from "../../assets/data/arrow.png";
 import Invoice from "./invoice";
@@ -16,6 +17,7 @@ import useLogout from "../../hooks/useLogout";
 import TableLoader from "../loaders/TableLoader";
 import { ToastContainer, toast } from "react-toastify";
 import { statuses } from "../../constants";
+import EditClient from "./editClient";
 function Table() {
   const { clients, setClients, filteredClients, setFilteredClients } =
     useData();
@@ -36,6 +38,8 @@ function Table() {
       status: "",
     },
   ]);
+
+  const [clientData, setClientData] = useState({});
   const [isMac, setIsMac] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -75,6 +79,11 @@ function Table() {
         setLoadingClients(false);
       });
   };
+
+  function handleEdit(client) {
+    setNewcl2(true);
+    setClientData(client);
+  }
 
   useEffect(() => {
     fetchAllClients();
@@ -211,7 +220,7 @@ function Table() {
               className=" box-size"
               style={{ borderRadius: "0px 4px 0px 0px" }}
             >
-              Delete
+              Actions
             </th>
           </tr>
         </thead>
@@ -329,6 +338,15 @@ function Table() {
                 >
                   <img src={del} alt="delete-icon" className="small-icon" />
                 </span>
+                <span
+                  className="ms-4"
+                  style={{ textDecoration: "none", cursor: "pointer" }}
+                  onClick={() => {
+                    handleEdit({ ...client });
+                  }}
+                >
+                  <img src={editIcon} alt="edit-icon" className="small-icon" />
+                </span>
               </td>
             </tr>
           ))}
@@ -338,8 +356,15 @@ function Table() {
         <Invoice mail={clientMail} />
       </div>
       <div className={`${newcl2 ? `new-client-2` : `d-none`}`} ref={menuRef2}>
-        <ModifyClient data={modify} />
+        <EditClient
+          editClientId={clientData.id}
+          clientData={clientData}
+          setPopUpIsOpen={setNewcl2}
+        />
       </div>
+      {/* <div className={`${newcl2 ? `new-client-2` : `d-none`}`} ref={menuRef2}>
+        <ModifyClient data={modify} />
+      </div> */}
     </div>
   );
 }

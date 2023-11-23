@@ -152,7 +152,10 @@ function UserAccounts() {
               <td className="box-size-3">{row?.name}</td>
               <td className="box-size-3">{row?.email}</td>
               <td
-                onClick={() => toggleDropdown(index)}
+                onClick={() =>
+                  doesUserHasPermission(permissions, "USER", "UPDATE") &&
+                  toggleDropdown(index)
+                }
                 className="text-start"
                 style={{ listStyleType: "none" }}
               >
@@ -162,32 +165,35 @@ function UserAccounts() {
                     <img src={arrow} alt="arrow-icon" className="small-icon" />
                   </li>
                 </Link>
-                <Link style={{ textDecoration: "none", color: "#4B5768" }}>
-                  <div
-                    className={`dropdown-content-accounts ${
-                      dropdownStates[index] ? "open" : ""
-                    } justify-content-end`}
-                  >
-                    {roles?.map((role) => {
-                      return (
-                        <li
-                          key={role?.id}
-                          onClick={() => {
-                            handleStatusSelection({
-                              roleId: role?.id,
-                              userId: row?.id,
-                              name: row?.name,
-                              email: row?.email,
-                              password: row?.password,
-                            });
-                          }}
-                        >
-                          {role?.name}
-                        </li>
-                      );
-                    })}
-                  </div>
-                </Link>
+                {doesUserHasPermission(permissions, "USER", "UPDATE") && (
+                  <Link style={{ textDecoration: "none", color: "#4B5768" }}>
+                    <div
+                      className={`dropdown-content-accounts ${
+                        dropdownStates[index] ? "open" : ""
+                      } justify-content-end`}
+                    >
+                      {roles?.map((role) => {
+                        return (
+                          <li
+                            key={role?.id}
+                            onClick={() => {
+                              handleStatusSelection({
+                                roleId: role?.id,
+                                userId: row?.id,
+                                name: row?.name,
+                                email: row?.email,
+                                password: row?.password,
+                              });
+                            }}
+                          >
+                            {role?.name}
+                          </li>
+                        );
+                      })}
+                    </div>
+                  </Link>
+                )}
+
                 <div
                   className={`${
                     dropdownStates[index] && !isMobile ? "dropdown-overlay" : ""

@@ -24,9 +24,24 @@ function EditRole(props) {
       return permission.name === "ROLE";
     });
     setAllCategories([
-      { label: "Roles", permissions: rolePermissions },
-      { label: "User", permissions: userPermissions },
-      { label: "Client", permissions: clientPermissions },
+      {
+        label: "Roles",
+        permissions: rolePermissions?.sort((a, b) =>
+          a.type.localeCompare(b.type)
+        ),
+      },
+      {
+        label: "User",
+        permissions: userPermissions?.sort((a, b) =>
+          a.type.localeCompare(b.type)
+        ),
+      },
+      {
+        label: "Client",
+        permissions: clientPermissions?.sort((a, b) =>
+          a.type.localeCompare(b.type)
+        ),
+      },
     ]);
   }, []);
 

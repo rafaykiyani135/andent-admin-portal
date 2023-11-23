@@ -70,7 +70,7 @@ function RolesContent() {
 
         {addRole && (
           <div className={`${addRole ? `addrole` : `d-none`}`} ref={menuRef}>
-            <AddRole permissions={permissions} />
+            <AddRole setAddRole={setAddRole} permissions={permissions} />
           </div>
         )}
       </div>

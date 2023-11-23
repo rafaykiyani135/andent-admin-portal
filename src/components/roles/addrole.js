@@ -5,6 +5,7 @@ import { addRole } from "../../services/api/roles";
 
 function AddRole(props) {
   const allPermissions = props.permissions;
+  const { setAddRole } = props;
   const allCategories = [];
   var selectedPermissions = [];
   const nameRef = useRef();
@@ -18,18 +19,35 @@ function AddRole(props) {
     return permission.name === "ROLE";
   });
 
+  console.log(rolePermissions);
+
   allPermissions.forEach((permission) => {
     if (permission.name === "USER") {
       if (!containsProperty(allCategories, "User")) {
-        allCategories.push({ label: "User", permissions: userPermissions });
+        allCategories.push({
+          label: "User",
+          permissions: userPermissions?.sort((a, b) =>
+            a.type.localeCompare(b.type)
+          ),
+        });
       }
     } else if (permission.name === "CLIENT") {
       if (!containsProperty(allCategories, "Client")) {
-        allCategories.push({ label: "Client", permissions: clientPermissions });
+        allCategories.push({
+          label: "Client",
+          permissions: clientPermissions?.sort((a, b) =>
+            a.type.localeCompare(b.type)
+          ),
+        });
       }
     } else if (permission.name === "ROLE") {
       if (!containsProperty(allCategories, "Roles")) {
-        allCategories.push({ label: "Roles", permissions: rolePermissions });
+        allCategories.push({
+          label: "Roles",
+          permissions: rolePermissions?.sort((a, b) =>
+            a.type.localeCompare(b.type)
+          ),
+        });
       }
     }
   });
@@ -71,10 +89,11 @@ function AddRole(props) {
     };
     addRole(payLoad)
       .then((res) => {
-        toast.success("New role added");
+        toast.success("New Role Added");
+        setAddRole(false);
       })
       .catch((err) => {
-        toast.err("Failed ot add new role");
+        toast.err(err?.response?.data?.message || "Failed to add new role");
       });
   }
 

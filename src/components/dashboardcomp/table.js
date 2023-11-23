@@ -275,7 +275,11 @@ function Table() {
                 </h2>
               </td>
               <td className="box-size">
-                <Link onClick={() => handleInvoiceMaker(client)}>
+                <Link
+                  onClick={() => () =>
+                    doesUserHasPermission(permissions, "CLIENT", "UPDATE") &&
+                    handleInvoiceMaker(client)}
+                >
                   <img
                     src={invoice}
                     alt="invoice-icon"
@@ -284,7 +288,10 @@ function Table() {
                 </Link>
               </td>
               <td
-                onClick={() => toggleDropdown(index)}
+                onClick={() =>
+                  doesUserHasPermission(permissions, "CLIENT", "UPDATE") &&
+                  toggleDropdown(index)
+                }
                 className="text-start"
                 style={{ listStyleType: "none", width: isMac ? "300px" : "" }}
               >
@@ -338,34 +345,37 @@ function Table() {
                   </div>
                 </div>
               </td>
-              <td className="box-size-3">
-                {doesUserHasPermission(permissions, "CLIENT", "DELETE") && (
-                  <span
-                    style={{ textDecoration: "none", cursor: "pointer" }}
-                    onClick={() => {
-                      handleDelete(client.id);
-                    }}
-                  >
-                    <img src={del} alt="delete-icon" className="small-icon" />
-                  </span>
-                )}
+              {(doesUserHasPermission(permissions, "CLIENT", "UPDATE") ||
+                doesUserHasPermission(permissions, "CLIENT", "DELETE")) && (
+                <td className="box-size-3">
+                  {doesUserHasPermission(permissions, "CLIENT", "DELETE") && (
+                    <span
+                      style={{ textDecoration: "none", cursor: "pointer" }}
+                      onClick={() => {
+                        handleDelete(client.id);
+                      }}
+                    >
+                      <img src={del} alt="delete-icon" className="small-icon" />
+                    </span>
+                  )}
 
-                {doesUserHasPermission(permissions, "CLIENT", "UPDATE") && (
-                  <span
-                    className="ms-4"
-                    style={{ textDecoration: "none", cursor: "pointer" }}
-                    onClick={() => {
-                      handleEdit({ ...client });
-                    }}
-                  >
-                    <img
-                      src={editIcon}
-                      alt="edit-icon"
-                      className="small-icon"
-                    />
-                  </span>
-                )}
-              </td>
+                  {doesUserHasPermission(permissions, "CLIENT", "UPDATE") && (
+                    <span
+                      className="ms-4"
+                      style={{ textDecoration: "none", cursor: "pointer" }}
+                      onClick={() => {
+                        handleEdit({ ...client });
+                      }}
+                    >
+                      <img
+                        src={editIcon}
+                        alt="edit-icon"
+                        className="small-icon"
+                      />
+                    </span>
+                  )}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

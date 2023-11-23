@@ -65,7 +65,7 @@ function LoginContent() {
           setNewUser(false);
         })
         .catch((err) => {
-          toast.error("Failed to Create user");
+          toast.error(err?.response?.data?.message ?? "Failed to Create user");
           setAddingUser(false);
         });
     }

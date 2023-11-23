@@ -52,7 +52,47 @@ function EditClient(props) {
     setClientNotes(clientData?.clientNotes);
     setSelectedCountry(clientData?.country);
     setclStatus(clientData?.status);
-    setPana([]);
+
+    const uploadedInvoice = clientData?.clientFiles?.find(
+      (fileObj) => fileObj.type === "INVOICE"
+    );
+
+    uploadedInvoice && setUploadedInvoiceId(uploadedInvoice?.id);
+    uploadedInvoice && setInvoice(uploadedInvoice?.url);
+    uploadedInvoice && setInvoiceName(uploadedInvoice?.name);
+
+    const uploadedReceipt = clientData?.clientFiles?.find(
+      (fileObj) => fileObj.type === "RECEIPT"
+    );
+
+    uploadedReceipt && setUploadedReceiptId(uploadedReceipt?.id);
+    uploadedReceipt && setReceipt(uploadedReceipt?.url);
+    uploadedReceipt && setReceiptName(uploadedReceipt?.name);
+
+    const uploadedConsent = clientData?.clientFiles?.find(
+      (fileObj) => fileObj.type === "CONSENT_FORM"
+    );
+    uploadedConsent &&
+      setConsentForm({
+        url: uploadedConsent?.url,
+        name: uploadedConsent?.name,
+        fileId: uploadedConsent?.id,
+      });
+    const uploadedCBCT = clientData?.clientFiles?.find(
+      (fileObj) => fileObj.type === "CBCT"
+    );
+    uploadedCBCT &&
+      setCbct({
+        url: uploadedCBCT?.url,
+        name: uploadedCBCT?.name,
+        fileId: uploadedCBCT?.id,
+      });
+
+    const uploadedPanoramex = clientData?.clientFiles?.filter(
+      (fileObj) => fileObj.type === "PANORAMEX"
+    );
+
+    uploadedPanoramex && setPana(uploadedPanoramex);
   }, [clientData]);
 
   const handlePanoramexUpload = (e) => {
@@ -94,7 +134,9 @@ function EditClient(props) {
       .catch((err) => {
         // Handle any error that occurred during the parallel uploads
         setUploadingPana(false);
-        toast.error("Failed to upload one or more files");
+        toast.error(
+          err?.response?.data?.message ?? "Failed to upload one or more files"
+        );
       });
   };
 
@@ -126,14 +168,14 @@ function EditClient(props) {
     uploadClientFile(payLoad)
       .then((res) => {
         setUploadingInvoice(false);
-        setInvoice(invoiceFile);
-        setInvoiceName(invoiceFile?.name);
+        setInvoice(res?.data?.data?.url);
+        setInvoiceName(res?.data?.data?.name);
         setUploadedInvoiceId(res?.data?.data?.id);
         toast.success("Invoice Uploaded");
       })
       .catch((err) => {
         setUploadingInvoice(false);
-        toast.error("Failed to upload invoice");
+        toast.error(err?.response?.data?.message ?? "Failed to upload invoice");
       });
   };
 
@@ -149,14 +191,14 @@ function EditClient(props) {
     uploadClientFile(payLoad)
       .then((res) => {
         setUploadingReceipt(false);
-        setReceipt(receiptFile);
-        setReceiptName(receiptFile?.name);
+        setReceipt(res?.data?.data?.url);
+        setReceiptName(res?.data?.data?.name);
         setUploadedReceiptId(res?.data?.data?.id);
         toast.success("Receipt Uploaded");
       })
       .catch((err) => {
         setUploadingReceipt(false);
-        toast.error("Failed to upload receipt");
+        toast.error(err?.response?.data?.message ?? "Failed to upload receipt");
       });
   };
 
@@ -182,7 +224,7 @@ function EditClient(props) {
       .catch((err) => {
         setUploadingConcentForm(false);
         toast.error(
-          err?.response?.data?.message?.[0] || "Failed to upload Consent Form"
+          err?.response?.data?.message ?? "Failed to upload Consent Form"
         );
       });
   };
@@ -207,9 +249,7 @@ function EditClient(props) {
       })
       .catch((err) => {
         setUploadingCbct(false);
-        toast.error(
-          err?.response?.data?.message?.[0] || "Failed to upload CBCT"
-        );
+        toast.error(err?.response?.data?.message ?? "Failed to upload CBCT");
       });
   };
 
@@ -245,7 +285,7 @@ function EditClient(props) {
         })
         .catch((err) => {
           toast.error(
-            err?.response?.data?.message || "Failed to update client"
+            err?.response?.data?.message ?? "Failed to update client"
           );
           setUpdatingClient(false);
         });
@@ -262,7 +302,9 @@ function EditClient(props) {
           setUploadedInvoiceId("");
         })
         .catch((err) => {
-          toast.error("Failed to delete invoice");
+          toast.error(
+            err?.response?.data?.message ?? "Failed to delete invoice"
+          );
         });
     }
   };
@@ -277,7 +319,9 @@ function EditClient(props) {
           setUploadedReceiptId("");
         })
         .catch((err) => {
-          toast.error("Failed to delte receipt");
+          toast.error(
+            err?.response?.data?.message ?? "Failed to delte receipt"
+          );
         });
     }
   };
@@ -290,7 +334,9 @@ function EditClient(props) {
           setConsentForm(null);
         })
         .catch((err) => {
-          toast.error("Failed to delete consent form");
+          toast.error(
+            err?.response?.data?.message ?? "Failed to delete consent form"
+          );
         });
     }
   };
@@ -302,13 +348,13 @@ function EditClient(props) {
           setCbct(null);
         })
         .catch((err) => {
-          toast.error("Failed to delete CBCT");
+          toast.error(err?.response?.data?.message ?? "Failed to delete CBCT");
         });
     }
   };
 
   const delPana = (index, fileId) => {
-    if (pana.length === 2) {
+    if (pana?.length === 2) {
       setViewMore(false);
     }
     deleteClientFile(fileId)
@@ -321,7 +367,9 @@ function EditClient(props) {
         });
       })
       .catch((err) => {
-        toast.error("Failed to delete Panoramex");
+        toast.error(
+          err?.response?.data?.message ?? "Failed to delete Panoramex"
+        );
       });
   };
 
@@ -473,7 +521,7 @@ function EditClient(props) {
                 {invoiceName}
                 <a
                   href={invoice}
-                  download={invoiceName}
+                  download={invoice}
                   style={{ marginLeft: "10px" }}
                 >
                   <img
@@ -496,7 +544,7 @@ function EditClient(props) {
                 {receiptName}
                 <a
                   href={receipt}
-                  download={receiptName}
+                  download={receipt}
                   style={{ marginLeft: "10px" }}
                 >
                   <img
@@ -731,7 +779,7 @@ function EditClient(props) {
         </div>
       </div>
       <div className="row justify-content-start" style={{ width: "100%" }}>
-        {pana.length > 0 && !viewMore ? (
+        {pana?.length > 0 && !viewMore ? (
           <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-start">
             {pana[0].name}
             <a
@@ -748,7 +796,7 @@ function EditClient(props) {
               <img src={del} alt="delete-icon" className="small-icon" />
             </span>
           </h2>
-        ) : pana.length > 1 && viewMore ? (
+        ) : pana?.length > 1 && viewMore ? (
           pana.map((file, index) => (
             <h2
               key={index}
@@ -801,7 +849,7 @@ function EditClient(props) {
             ></button>
           </label>
         </div>
-        {pana.length > 1 ? (
+        {pana?.length > 1 ? (
           <div className="col-6 col-lg-6 text-start d-flex justify-content-end align-items-center">
             <u
               onClick={() => {

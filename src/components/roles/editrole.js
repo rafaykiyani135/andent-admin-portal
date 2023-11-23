@@ -88,11 +88,11 @@ function EditRole(props) {
             setRoles(res?.data?.data);
           })
           .catch((err) => {
-            toast.error(err?.response?.data?.message);
+            toast.error(err?.response?.data?.message ?? "Failed to get roles");
           });
       })
       .catch((err) => {
-        toast.err("Failed to update role");
+        toast.err(err?.response?.data?.message ?? "Failed to update role");
         setUpdatingRole(false);
       });
   }

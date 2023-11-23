@@ -66,14 +66,16 @@ function Login() {
               setUser(userInfo);
             })
             .catch((err) => {
-              toast.error("Invalid Credentials");
+              toast.error(
+                err?.response?.data?.message ?? "Invalid Credentials"
+              );
             })
             .finally(() => {
               setLogingIn(false);
             });
         })
         .catch((err) => {
-          toast.error("Invalid Credentials");
+          toast.error(err?.response?.data?.message ?? "Invalid Credentials");
           setLogingIn(false);
         });
     }

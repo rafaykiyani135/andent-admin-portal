@@ -164,7 +164,9 @@ function Table() {
         setLoadingClients(false);
       })
       .catch((err) => {
-        toast.error("Failed to update user status");
+        toast.error(
+          err?.response?.data?.message ?? "Failed to update user status"
+        );
         setLoadingClients(false);
         if (err?.response?.status === 401) {
           logout();
@@ -304,12 +306,17 @@ function Table() {
                       style={{ whiteSpace: "nowrap" }}
                     >
                       {client?.status || "Select Status"}
-
-                      <img
-                        src={arrow}
-                        alt="arrow-icon"
-                        className="small-icon"
-                      />
+                      {doesUserHasPermission(
+                        permissions,
+                        "CLIENT",
+                        "UPDATE"
+                      ) && (
+                        <img
+                          src={arrow}
+                          alt="arrow-icon"
+                          className="small-icon"
+                        />
+                      )}
                     </li>
                   </Link>
                   <div

@@ -87,7 +87,12 @@ function Header() {
           setUpdatingPassword(false);
         })
         .catch((err) => {
-          toast.error("Failed to update password");
+          if (err?.response?.status === 401) {
+            logout();
+          }
+          toast.error(
+            err?.response?.data?.message ?? "Failed to update password"
+          );
           setUpdatingPassword(false);
         });
     }

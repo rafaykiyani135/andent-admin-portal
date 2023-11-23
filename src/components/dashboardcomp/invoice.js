@@ -44,7 +44,7 @@ function Invoice(props) {
       })
       .catch((err) => {
         setUploadingInvoice(false);
-        toast.error("Failed to upload invoice");
+        toast.error(err?.response?.data?.message ?? "Failed to upload invoice");
       });
   };
   const delInvoice = () => {
@@ -57,7 +57,9 @@ function Invoice(props) {
           setUploadedInvoiceId("");
         })
         .catch((err) => {
-          toast.error("Failed to delete invoice");
+          toast.error(
+            err?.response?.data?.message ?? "Failed to delete invoice"
+          );
         });
     }
   };
@@ -90,7 +92,9 @@ function Invoice(props) {
         setInvoiceOpen(false);
       })
       .catch((err) => {
-        toast.error("Failed to send the invoice");
+        toast.error(
+          err?.response?.data?.message ?? "Failed to send the invoice"
+        );
       });
   }
 

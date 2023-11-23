@@ -161,8 +161,14 @@ function UserAccounts() {
               >
                 <Link style={{ textDecoration: "none", color: "#4B5768" }}>
                   <li className="text-center update-status">
-                    {row?.role?.name}{" "}
-                    <img src={arrow} alt="arrow-icon" className="small-icon" />
+                    {row?.role?.name}
+                    {doesUserHasPermission(permissions, "USER", "UPDATE") && (
+                      <img
+                        src={arrow}
+                        alt="arrow-icon"
+                        className="small-icon"
+                      />
+                    )}
                   </li>
                 </Link>
                 {doesUserHasPermission(permissions, "USER", "UPDATE") && (

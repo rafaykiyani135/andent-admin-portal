@@ -89,7 +89,7 @@ function RolesTable(props) {
           });
       })
       .catch((err) => {
-        toast.error(err?.response?.data?.message || "Failed to delete Role");
+        toast.error(err?.response?.data?.message ?? "Failed to delete Role");
       });
   }
 

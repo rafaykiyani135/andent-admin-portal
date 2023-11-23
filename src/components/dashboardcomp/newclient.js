@@ -77,7 +77,9 @@ function NewClient(props) {
       .catch((err) => {
         // Handle any error that occurred during the parallel uploads
         setUploadingPana(false);
-        toast.error("Failed to upload one or more files");
+        toast.error(
+          err?.response?.data?.message ?? "Failed to upload one or more files"
+        );
       });
   };
 
@@ -133,7 +135,7 @@ function NewClient(props) {
       })
       .catch((err) => {
         setUploadingInvoice(false);
-        toast.error("Failed to upload invoice");
+        toast.error(err?.response?.data?.message ?? "Failed to upload invoice");
       });
   };
 
@@ -156,7 +158,7 @@ function NewClient(props) {
       })
       .catch((err) => {
         setUploadingReceipt(false);
-        toast.error("Failed to upload receipt");
+        toast.error(err?.response?.data?.message ?? "Failed to upload receipt");
       });
   };
 
@@ -182,7 +184,7 @@ function NewClient(props) {
       .catch((err) => {
         setUploadingConcentForm(false);
         toast.error(
-          err?.response?.data?.message?.[0] || "Failed to upload Consent Form"
+          err?.response?.data?.message ?? "Failed to upload Consent Form"
         );
       });
   };
@@ -207,9 +209,7 @@ function NewClient(props) {
       })
       .catch((err) => {
         setUploadingCbct(false);
-        toast.error(
-          err?.response?.data?.message?.[0] || "Failed to upload CBCT"
-        );
+        toast.error(err?.response?.data?.message ?? "Failed to upload CBCT");
       });
   };
 
@@ -260,7 +260,9 @@ function NewClient(props) {
           setUploadedInvoiceId("");
         })
         .catch((err) => {
-          toast.error("Failed to delete invoice");
+          toast.error(
+            err?.response?.data?.message ?? "Failed to delete invoice"
+          );
         });
     }
   };
@@ -275,7 +277,9 @@ function NewClient(props) {
           setUploadedReceiptId("");
         })
         .catch((err) => {
-          toast.error("Failed to delete receipt");
+          toast.error(
+            err?.response?.data?.message ?? "Failed to delete receipt"
+          );
         });
     }
   };
@@ -287,7 +291,9 @@ function NewClient(props) {
           setConsentForm(null);
         })
         .catch((err) => {
-          toast.error("Failed to delete consent form");
+          toast.error(
+            err?.response?.data?.message ?? "Failed to delete consent form"
+          );
         });
     }
   };
@@ -299,7 +305,7 @@ function NewClient(props) {
           setCbct(null);
         })
         .catch((err) => {
-          toast.error("Failed to delete CBCT");
+          toast.error(err?.response?.data?.message ?? "Failed to delete CBCT");
         });
     }
   };
@@ -318,7 +324,9 @@ function NewClient(props) {
         });
       })
       .catch((err) => {
-        toast.error("Failed to delete Panoramex");
+        toast.error(
+          err?.response?.data?.message ?? "Failed to delete Panoramex"
+        );
       });
   };
 

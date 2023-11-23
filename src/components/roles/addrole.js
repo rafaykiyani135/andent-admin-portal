@@ -93,7 +93,7 @@ function AddRole(props) {
         setAddRole(false);
       })
       .catch((err) => {
-        toast.err(err?.response?.data?.message || "Failed to add new role");
+        toast.err(err?.response?.data?.message ?? "Failed to add new role");
       });
   }
 

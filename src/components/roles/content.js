@@ -7,6 +7,7 @@ import { getPermissions } from "../../services/api/roles";
 import useLogout from "../../hooks/useLogout";
 import { doesUserHasPermission } from "../../services/helperFunctions";
 import { AuthContext } from "../../context/AuthProvider";
+import { toast } from "react-toastify";
 function RolesContent() {
   const [permissions, setPermissions] = useState([]);
   const [addRole, setAddRole] = useState(false);
@@ -22,6 +23,9 @@ function RolesContent() {
         if (err?.response?.status === 401) {
           logout();
         }
+        toast.error(
+          err?.response?.data?.message ?? "Failed to load permissions"
+        );
       });
   }, []);
 

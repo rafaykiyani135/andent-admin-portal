@@ -30,7 +30,9 @@ function MagicLink({ sendDataToParent }) {
         sendDataToParent(linkToWrite);
       })
       .catch((err) => {
-        toast.error("Failed to generate magic link");
+        toast.error(
+          err?.response?.data?.message ?? "Failed to generate magic link"
+        );
       });
   };
 

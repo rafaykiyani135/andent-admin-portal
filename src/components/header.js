@@ -149,59 +149,62 @@ function Header() {
   return (
     <>
       <div className="login-top justify-content-start header-size">
-        <div className="col-5 d-block d-md-none">
-          <div className="burger-icon" onClick={toggleDropdown}>
-            <img src={dd} alt="dropdown-icon" className="dropdown-icon" />
-          </div>
-          {isDropdownVisible && (
-            <div className="dropdown-content-navbar open">
-              <NavLink
-                to="/accounts"
-                style={{ textDecoration: "none", color: "#4B5768" }}
-                className="d-flex justify-content-start align-items-center"
-              >
-                <img
-                  src={path === "/accounts" ? icon1active : icon1}
-                  alt="logged in accounts"
-                  className="small-icon"
-                />
-                <span>
-                  <h2 className="sidebar-text">Login Accounts</h2>
-                </span>
-              </NavLink>
-              <NavLink
-                to="/clients"
-                style={{ textDecoration: "none" }}
-                className="d-flex justify-content-start align-items-center text-start"
-              >
-                <img
-                  src={path === "/clients" ? icon2active : icon2}
-                  alt="all clients"
-                  className="small-icon"
-                />
-                <span>
-                  <h2 className="sidebar-text" style={{ marginTop: "6px" }}>
-                    All Client
-                  </h2>
-                </span>
-              </NavLink>
-              <NavLink
-                to="/roles"
-                style={{ textDecoration: "none" }}
-                className="d-flex justify-content-start align-items-center"
-              >
-                <img
-                  src={path === "/roles" ? icon3active : icon3}
-                  alt="roles"
-                  className="small-icon"
-                />
-                <span>
-                  <h2 className="sidebar-text">Roles</h2>
-                </span>
-              </NavLink>
+        {user && (
+          <div className="col-5 d-block d-md-none">
+            <div className="burger-icon" onClick={toggleDropdown}>
+              <img src={dd} alt="dropdown-icon" className="dropdown-icon" />
             </div>
-          )}
-        </div>
+            {isDropdownVisible && (
+              <div className="dropdown-content-navbar open">
+                <NavLink
+                  to="/accounts"
+                  style={{ textDecoration: "none", color: "#4B5768" }}
+                  className="d-flex justify-content-start align-items-center"
+                >
+                  <img
+                    src={path === "/accounts" ? icon1active : icon1}
+                    alt="logged in accounts"
+                    className="small-icon"
+                  />
+                  <span>
+                    <h2 className="sidebar-text">Login Accounts</h2>
+                  </span>
+                </NavLink>
+                <NavLink
+                  to="/clients"
+                  style={{ textDecoration: "none" }}
+                  className="d-flex justify-content-start align-items-center text-start"
+                >
+                  <img
+                    src={path === "/clients" ? icon2active : icon2}
+                    alt="all clients"
+                    className="small-icon"
+                  />
+                  <span>
+                    <h2 className="sidebar-text" style={{ marginTop: "6px" }}>
+                      All Client
+                    </h2>
+                  </span>
+                </NavLink>
+                <NavLink
+                  to="/roles"
+                  style={{ textDecoration: "none" }}
+                  className="d-flex justify-content-start align-items-center"
+                >
+                  <img
+                    src={path === "/roles" ? icon3active : icon3}
+                    alt="roles"
+                    className="small-icon"
+                  />
+                  <span>
+                    <h2 className="sidebar-text">Roles</h2>
+                  </span>
+                </NavLink>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="col-1 col-lg-5">
           <img
             src={window.innerWidth < 700 ? logosmall : logo}

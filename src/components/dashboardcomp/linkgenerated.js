@@ -9,7 +9,6 @@ function GLink(props) {
   useEffect(() => {
     navigator.clipboard.writeText(generatedLink);
     setLink(generatedLink);
-    console.log(generatedLink);
   }, [generatedLink]);
 
   return (

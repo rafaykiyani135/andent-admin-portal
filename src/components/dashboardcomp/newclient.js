@@ -20,6 +20,8 @@ function NewClient(props) {
   const [uploadedInvoiceId, setUploadedInvoiceId] = useState("");
   const [uploadedReceiptId, setUploadedReceiptId] = useState("");
   const [receipt, setReceipt] = useState(null);
+  const [consentForm, setConsentForm] = useState(null);
+  const [cbct, setCbct] = useState(null);
   const [receiptName, setReceiptName] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("Country");
   const [clStatus, setclStatus] = useState("Choose Status");
@@ -27,6 +29,8 @@ function NewClient(props) {
   const { user } = useContext(AuthContext);
   const [uploadingInvoice, setUploadingInvoice] = useState(false);
   const [uploadingReceipt, setUploadingReceipt] = useState(false);
+  const [uploadingConcentForm, setUploadingConcentForm] = useState(false);
+  const [uploadingCbct, setUploadingCbct] = useState(false);
   const [uploadingPana, setUploadingPana] = useState(false);
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -91,6 +95,8 @@ function NewClient(props) {
     setReceipt(null);
     setReceiptName("");
     setPana([]);
+    setConsentForm(null);
+    setCbct(null);
     setSelectedCountry("Country");
     setclStatus("Choose Status");
     firstNameRef.current.value = "";
@@ -151,6 +157,59 @@ function NewClient(props) {
       .catch((err) => {
         setUploadingReceipt(false);
         toast.error("Failed to upload receipt");
+      });
+  };
+
+  const handleConcentFormUpload = (e) => {
+    const formFile = e.target.files[0];
+    setUploadingConcentForm(true);
+    const payLoad = {
+      clientId: newClientId,
+      file: formFile,
+      type: "CONSENT_FORM",
+      userId: user.id,
+    };
+    uploadClientFile(payLoad)
+      .then((res) => {
+        setUploadingConcentForm(false);
+        setConsentForm({
+          url: res?.data?.data?.url,
+          name: res?.data?.data?.name,
+          fileId: res?.data?.data?.id,
+        });
+        toast.success("Consent Form Uploaded");
+      })
+      .catch((err) => {
+        setUploadingConcentForm(false);
+        toast.error(
+          err?.response?.data?.message?.[0] || "Failed to upload Consent Form"
+        );
+      });
+  };
+  const handleCbctUpload = (e) => {
+    const file = e.target.files[0];
+    setUploadingCbct(true);
+    const payLoad = {
+      clientId: newClientId,
+      file: file,
+      type: "CBCT",
+      userId: user.id,
+    };
+    uploadClientFile(payLoad)
+      .then((res) => {
+        setUploadingCbct(false);
+        setCbct({
+          url: res?.data?.data?.url,
+          name: res?.data?.data?.name,
+          fileId: res?.data?.data?.id,
+        });
+        toast.success("CBCT Uploaded");
+      })
+      .catch((err) => {
+        setUploadingCbct(false);
+        toast.error(
+          err?.response?.data?.message?.[0] || "Failed to upload CBCT"
+        );
       });
   };
 
@@ -216,7 +275,31 @@ function NewClient(props) {
           setUploadedReceiptId("");
         })
         .catch((err) => {
-          toast.error("Failed to delte receipt");
+          toast.error("Failed to delete receipt");
+        });
+    }
+  };
+  const delConsentForm = () => {
+    if (consentForm) {
+      deleteClientFile(consentForm.fileId)
+        .then((res) => {
+          toast.success("Consent form deleted successfully");
+          setConsentForm(null);
+        })
+        .catch((err) => {
+          toast.error("Failed to delete consent form");
+        });
+    }
+  };
+  const delCbct = () => {
+    if (cbct) {
+      deleteClientFile(cbct.fileId)
+        .then((res) => {
+          toast.success("CBCT deleted successfully");
+          setCbct(null);
+        })
+        .catch((err) => {
+          toast.error("Failed to delete CBCT");
         });
     }
   };
@@ -478,6 +561,115 @@ function NewClient(props) {
               {/* Button triggers file input click */}
               <button
                 disabled={uploadingReceipt}
+                type="button"
+                style={{ display: "none" }}
+              ></button>
+            </label>
+          </div>
+        </div>
+        <div
+          className="row justify-content-center text-center"
+          style={{ marginTop: "12px" }}
+        >
+          <div className="col-lg-6 col-12 d-flex justify-content-start">
+            {consentForm ? (
+              <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-center">
+                {consentForm?.name}
+                <a
+                  href={consentForm?.url}
+                  download={consentForm?.url}
+                  style={{ marginLeft: "10px" }}
+                >
+                  <img
+                    src={download}
+                    alt="download-icon"
+                    className="small-icon"
+                  />
+                </a>
+                <span style={{ marginLeft: "10px" }} onClick={delConsentForm}>
+                  <img src={del} alt="delete-icon" className="small-icon" />
+                </span>
+              </h2>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="col-lg-6 col-12 d-flex justify-content-start justify-content-md-center">
+            {cbct ? (
+              <h2 className="popup-heading-3 text-start d-flex align-items-center">
+                {cbct?.name}
+                <a
+                  href={cbct?.url}
+                  download={cbct?.url}
+                  style={{ marginLeft: "10px" }}
+                >
+                  <img
+                    src={download}
+                    alt="download-icon"
+                    className="small-icon"
+                  />
+                </a>
+                <span
+                  style={{ marginLeft: "10px", cursor: "pointer" }}
+                  onClick={delCbct}
+                >
+                  <img src={del} alt="delete-icon" className="small-icon" />
+                </span>
+              </h2>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+        <div className="row justify-content-center text-center mt-4">
+          <div className="col-lg-6 col-6 d-flex justify-content-center">
+            <label
+              className={`andent-button ${
+                consentForm ? `button-disabled` : ``
+              }`}
+            >
+              <h2 className="button-text">
+                {uploadingConcentForm ? "Uploading ..." : "Consent Form"}
+              </h2>
+              <span className="d-flex align-items-center">
+                <img src={upload} alt="upload-icon" className="small-icon" />
+              </span>
+              <input
+                onChange={handleConcentFormUpload}
+                type="file"
+                style={{ display: "none" }}
+              />
+              {/* Button triggers file input click */}
+              <button
+                disabled={uploadingConcentForm}
+                type="button"
+                style={{ display: "none" }}
+              ></button>
+            </label>
+          </div>
+
+          <div className="col-lg-6 col-6 d-flex justify-content-center">
+            <label className={`andent-button ${cbct ? `button-disabled` : ``}`}>
+              <h2 className="button-text">
+                {isMobile
+                  ? uploadingCbct
+                    ? "Uploading"
+                    : "CBCT"
+                  : uploadingCbct
+                  ? "Uploading ..."
+                  : "Upload CBCT"}
+              </h2>
+              <span className="d-flex align-items-center">
+                <img src={upload} alt="upload-icon" className="small-icon" />
+              </span>
+              <input
+                onChange={handleCbctUpload}
+                type="file"
+                style={{ display: "none" }}
+              />
+              {/* Button triggers file input click */}
+              <button
+                disabled={uploadingCbct}
                 type="button"
                 style={{ display: "none" }}
               ></button>

@@ -1,11 +1,12 @@
 import edit from "../../assets/data/editperm.png";
+import deleteIcon from "../../assets/data/delete.png";
 import EditRole from "./editrole";
 import { useState } from "react";
 import { useEffect, useRef, useContext } from "react";
 import useData from "../../hooks/useData";
 import { ToastContainer, toast } from "react-toastify";
 import TableLoader from "../loaders/TableLoader";
-import { getRoles } from "../../services/api/roles";
+import { deleteRole, getPermissions, getRoles } from "../../services/api/roles";
 import useLogout from "../../hooks/useLogout";
 import { AuthContext } from "../../context/AuthProvider";
 import { doesUserHasPermission } from "../../services/helperFunctions";
@@ -17,9 +18,23 @@ function RolesTable(props) {
   const { roles, setRoles } = useData();
   const [loadingRoles, setLoadingRoles] = useState(false);
   const [editRole, setEditRole] = useState(false);
-  const [chRole, setChRole] = useState("");
+  const [roleData, setRoleData] = useState(null);
   const menuRef = useRef();
   const logout = useLogout();
+  const [allPermissions, setAllPermissions] = useState([]);
+
+  useEffect(() => {
+    getPermissions()
+      .then((res) => {
+        setAllPermissions(res?.data?.data);
+      })
+      .catch((err) => {
+        if (err?.response?.status === 401) {
+          logout();
+        }
+      });
+  }, []);
+
   useEffect(() => {
     setLoadingRoles(true);
     getRoles()
@@ -52,8 +67,31 @@ function RolesTable(props) {
 
   const handleClick = (data) => {
     setEditRole(true);
-    setChRole(data);
+    setRoleData(data);
   };
+
+  function handleDelete(roleId) {
+    deleteRole(roleId)
+      .then((res) => {
+        toast.success("Role deleted Successfully");
+        setLoadingRoles(true);
+        getRoles()
+          .then((res) => {
+            setRoles(res.data?.data);
+            setLoadingRoles(false);
+          })
+          .catch((err) => {
+            if (err?.response?.status === 401) {
+              logout();
+            }
+            setLoadingRoles(false);
+            toast.error(err?.response?.data?.message ?? "Failed to load roles");
+          });
+      })
+      .catch((err) => {
+        toast.error(err?.response?.data?.message || "Failed to delete Role");
+      });
+  }
 
   return (
     <div
@@ -87,6 +125,15 @@ function RolesTable(props) {
                 Edit Permission
               </th>
             )}
+            {doesUserHasPermission(permissions, "ROLE", "DELETE") && (
+              <th
+                scope="col"
+                className=" box-size-4"
+                style={{ borderRadius: "0px 4px 0px 0px" }}
+              >
+                Delete Role
+              </th>
+            )}
           </tr>
         </thead>
         <tbody className="position-relative">
@@ -100,10 +147,31 @@ function RolesTable(props) {
                   className="box-size-4"
                   onClick={() => {
                     // send whole role data (needed for edit)
-                    handleClick(role.name);
+                    handleClick(role);
                   }}
                 >
-                  <img src={edit} alt="edit-icon" className="small-icon" />
+                  <img
+                    style={{ cursor: "pointer" }}
+                    src={edit}
+                    alt="edit-icon"
+                    className="small-icon"
+                  />
+                </td>
+              )}
+              {doesUserHasPermission(permissions, "ROLE", "DELETE") && (
+                <td
+                  className="box-size-4"
+                  onClick={() => {
+                    // send whole role data (needed for edit)
+                    handleDelete(role?.id);
+                  }}
+                >
+                  <img
+                    style={{ cursor: "pointer" }}
+                    src={deleteIcon}
+                    alt="delete-icon"
+                    className="small-icon"
+                  />
                 </td>
               )}
             </tr>
@@ -112,7 +180,11 @@ function RolesTable(props) {
       </table>
       {editRole && (
         <div className={`${editRole ? `addrole` : `d-none`}`} ref={menuRef}>
-          <EditRole roleData={chRole} />
+          <EditRole
+            setIsEditOpen={setEditRole}
+            roleData={roleData}
+            allPermissions={allPermissions}
+          />
         </div>
       )}
     </div>

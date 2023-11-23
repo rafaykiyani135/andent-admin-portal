@@ -12,7 +12,7 @@ import { doesUserHasPermission } from "../../services/helperFunctions";
 function Sidebar() {
   const { user } = useContext(AuthContext);
   const { permissions } = user.role;
-  console.log(permissions);
+
   const location = useLocation();
   const [path, setPath] = useState(location.pathname);
 

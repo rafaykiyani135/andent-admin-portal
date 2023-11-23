@@ -16,6 +16,14 @@ export async function addRole(payLoad) {
     },
   });
 }
+export async function updateRole(payLoad) {
+  const apiKey = getApiKeyFromStorage();
+  return await Axios.put(`roles`, payLoad, {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+}
 export async function deleteRole(roleId) {
   const apiKey = getApiKeyFromStorage();
   return await Axios.delete(`roles/${roleId}`, {

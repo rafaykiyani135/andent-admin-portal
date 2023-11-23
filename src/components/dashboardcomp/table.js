@@ -276,9 +276,10 @@ function Table() {
               </td>
               <td className="box-size">
                 <Link
-                  onClick={() => () =>
+                  onClick={() =>
                     doesUserHasPermission(permissions, "CLIENT", "UPDATE") &&
-                    handleInvoiceMaker(client)}
+                    handleInvoiceMaker(client)
+                  }
                 >
                   <img
                     src={invoice}

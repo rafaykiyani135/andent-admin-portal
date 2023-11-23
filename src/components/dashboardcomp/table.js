@@ -288,6 +288,7 @@ function Table() {
                 </Link>
               </td>
               <td
+                // handle
                 onClick={() =>
                   doesUserHasPermission(permissions, "CLIENT", "UPDATE") &&
                   toggleDropdown(index)

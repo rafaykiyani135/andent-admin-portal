@@ -11,3 +11,26 @@ export const doesUserHasPermission = (
     return permission.name === category && permission.type === permissionType;
   });
 };
+
+export const groupPermissionsByName = (permissions) => {
+  const groupedPermissions = {};
+
+  permissions.forEach((permission) => {
+    const { name, ...rest } = permission;
+
+    if (!groupedPermissions[name]) {
+      groupedPermissions[name] = [];
+    }
+
+    groupedPermissions[name].push(rest);
+  });
+
+  Object.keys(groupedPermissions).forEach((label) => {
+    groupedPermissions[label].sort((a, b) => a.type.localeCompare(b.type));
+  });
+
+  return Object.keys(groupedPermissions).map((label) => ({
+    label,
+    permissions: groupedPermissions[label],
+  }));
+};

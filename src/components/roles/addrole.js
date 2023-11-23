@@ -1,61 +1,13 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import plus from "../../assets/data/add.png";
 import { toast } from "react-toastify";
 import { addRole } from "../../services/api/roles";
-
+import { groupPermissionsByName } from "../../services/helperFunctions";
 function AddRole(props) {
-  const allPermissions = props.permissions;
+  const groupedPermissions = groupPermissionsByName(props.permissions);
   const { setAddRole } = props;
-  const allCategories = [];
   var selectedPermissions = [];
   const nameRef = useRef();
-  const userPermissions = allPermissions.filter((permission) => {
-    return permission.name === "USER";
-  });
-  const clientPermissions = allPermissions.filter((permission) => {
-    return permission.name === "CLIENT";
-  });
-  const rolePermissions = allPermissions.filter((permission) => {
-    return permission.name === "ROLE";
-  });
-
-  console.log(rolePermissions);
-
-  allPermissions.forEach((permission) => {
-    if (permission.name === "USER") {
-      if (!containsProperty(allCategories, "User")) {
-        allCategories.push({
-          label: "User",
-          permissions: userPermissions?.sort((a, b) =>
-            a.type.localeCompare(b.type)
-          ),
-        });
-      }
-    } else if (permission.name === "CLIENT") {
-      if (!containsProperty(allCategories, "Client")) {
-        allCategories.push({
-          label: "Client",
-          permissions: clientPermissions?.sort((a, b) =>
-            a.type.localeCompare(b.type)
-          ),
-        });
-      }
-    } else if (permission.name === "ROLE") {
-      if (!containsProperty(allCategories, "Roles")) {
-        allCategories.push({
-          label: "Roles",
-          permissions: rolePermissions?.sort((a, b) =>
-            a.type.localeCompare(b.type)
-          ),
-        });
-      }
-    }
-  });
-
-  // Function to check if an object with the specified property already exists in the array
-  function containsProperty(array, propertyName) {
-    return array.some((obj) => obj?.label === propertyName);
-  }
 
   function handlePermissionChange(e, permissionId) {
     if (e.target.checked && !selectedPermissions.includes()) {
@@ -148,7 +100,7 @@ function AddRole(props) {
               </tr>
             </thead>
             <tbody>
-              {allCategories.map((category) => (
+              {groupedPermissions.map((category) => (
                 <tr key={category?.label}>
                   <td className="categories-box permission-text-2">
                     {category?.label}

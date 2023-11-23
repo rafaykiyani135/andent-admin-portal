@@ -3,6 +3,7 @@ import save from "../../assets/data/save.png";
 import { toast } from "react-toastify";
 import { getRoles, updateRole } from "../../services/api/roles";
 import useData from "../../hooks/useData";
+import { groupPermissionsByName } from "../../services/helperFunctions";
 function EditRole(props) {
   const { allPermissions, roleData, setIsEditOpen } = props;
   const [updatingRole, setUpdatingRole] = useState(false);
@@ -14,35 +15,8 @@ function EditRole(props) {
   const nameRef = useRef();
 
   useEffect(() => {
-    const userPermissions = allPermissions.filter((permission) => {
-      return permission.name === "USER";
-    });
-    const clientPermissions = allPermissions.filter((permission) => {
-      return permission.name === "CLIENT";
-    });
-    const rolePermissions = allPermissions.filter((permission) => {
-      return permission.name === "ROLE";
-    });
-    setAllCategories([
-      {
-        label: "Roles",
-        permissions: rolePermissions?.sort((a, b) =>
-          a.type.localeCompare(b.type)
-        ),
-      },
-      {
-        label: "User",
-        permissions: userPermissions?.sort((a, b) =>
-          a.type.localeCompare(b.type)
-        ),
-      },
-      {
-        label: "Client",
-        permissions: clientPermissions?.sort((a, b) =>
-          a.type.localeCompare(b.type)
-        ),
-      },
-    ]);
+    const groupedPermissions = groupPermissionsByName(allPermissions);
+    setAllCategories(groupedPermissions);
   }, []);
 
   function handlePermissionChange(e, permissionId) {

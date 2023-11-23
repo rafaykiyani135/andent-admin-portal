@@ -143,34 +143,37 @@ function Content() {
           <div className="col-lg-2 col-md-6 col-4 d-flex align-items-center largetext-pos-2">
             <h2 className="client-top-text">All clients</h2>
           </div>
-          <div
-            className="col-lg-4 col-md-6 col-12 d-flex justify-content-center justify-content-md-end mob-top-pad"
-            style={{ gap: "12px" }}
-          >
-            <button
-              className="andent-button"
-              onClick={() => {
-                setMagicOpen(true);
-              }}
+          {doesUserHasPermission(permissions, "MAGIC", "CREATE") && (
+            <div
+              className="col-lg-4 col-md-6 col-12 d-flex justify-content-center justify-content-md-end mob-top-pad"
+              style={{ gap: "12px" }}
             >
-              <img src={genlink} alt="genlink icon" className="small-icon" />
-              <span>
-                <h2 className="button-text">Magic Link</h2>
-              </span>
-            </button>
-            {doesUserHasPermission(permissions, "CLIENT", "CREATE") && (
-              <button className="andent-button" onClick={handleAddClient}>
-                <img
-                  src={addclient}
-                  alt="genlink icon"
-                  className="small-icon"
-                />
+              <button
+                className="andent-button"
+                onClick={() => {
+                  setMagicOpen(true);
+                }}
+              >
+                <img src={genlink} alt="genlink icon" className="small-icon" />
                 <span>
-                  <h2 className="button-text">New Client</h2>
+                  <h2 className="button-text">Magic Link</h2>
                 </span>
               </button>
-            )}
-          </div>
+              {doesUserHasPermission(permissions, "CLIENT", "CREATE") && (
+                <button className="andent-button" onClick={handleAddClient}>
+                  <img
+                    src={addclient}
+                    alt="genlink icon"
+                    className="small-icon"
+                  />
+                  <span>
+                    <h2 className="button-text">New Client</h2>
+                  </span>
+                </button>
+              )}
+            </div>
+          )}
+
           <div
             className={`${magicOpen ? `magiclink` : `d-none`}`}
             style={{ zIndex: "1" }}

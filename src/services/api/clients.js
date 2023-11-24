@@ -1,9 +1,17 @@
 import { Axios } from ".";
 import { getApiKeyFromStorage } from "../localStorage";
 
-export async function getClients() {
+export async function getClients(
+  searchText = "",
+  pageNumber = 1,
+  pageSize = 10
+) {
+  let endPoint = `clients?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+  if (searchText) {
+    endPoint = `clients?search=${searchText}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+  }
   const apiKey = getApiKeyFromStorage();
-  return await Axios.get("clients", {
+  return await Axios.get(endPoint, {
     headers: {
       Authorization: `Bearer ${apiKey}`,
     },

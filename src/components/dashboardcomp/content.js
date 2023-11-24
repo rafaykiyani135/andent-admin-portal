@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useMemo, useEffect, useContext } from "react";
 import search from "../../assets/data/search.png";
 import genlink from "../../assets/data/generatelink.png";
 import addclient from "../../assets/data/addclient.png";
@@ -13,6 +13,7 @@ import useLogout from "../../hooks/useLogout";
 import { AuthContext } from "../../context/AuthProvider";
 import { doesUserHasPermission } from "../../services/helperFunctions";
 import { getAppSettings } from "../../services/api/appSettings";
+import { debounce } from "lodash";
 function Content() {
   const { user } = useContext(AuthContext);
   const { permissions } = user.role;
@@ -25,24 +26,21 @@ function Content() {
   const menuRef3 = useRef();
   const [newcl, setNewcl] = useState(false);
   const [newClientId, setNewClientId] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const { clients, setClients, clientStatuses, setClientStatuses } = useData();
 
-  const {
-    clients,
-    setClients,
-    setFilteredClients,
-    clientStatuses,
-    setClientStatuses,
-  } = useData();
+  const debouncedResults = useMemo(() => {
+    return debounce(handleClientSearch, 800);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      debouncedResults.cancel();
+    };
+  });
+
   function handleClientSearch(e) {
-    if (!e.target.value) {
-      setFilteredClients(clients);
-    } else {
-      const searchedVal = e.target.value?.trim()?.toLowerCase();
-      const filtered = clients?.filter((client) =>
-        client?.email?.toLowerCase()?.includes(searchedVal)
-      );
-      setFilteredClients(filtered);
-    }
+    setSearchText(e.target.value?.trim());
   }
 
   function handleAddClient() {
@@ -77,13 +75,25 @@ function Content() {
       });
   }, []);
 
+  useEffect(() => {
+    getClients(searchText)
+      .then((res) => {
+        setClients(res.data?.data);
+      })
+      .catch((err) => {
+        if (err?.response?.status === 401) {
+          logout();
+        }
+        toast.error(err?.response?.data?.message ?? "Failed to load clients");
+      });
+  }, [searchText]);
+
   // when new client pop is closed fetch all clients
   useEffect(() => {
     if (!newcl) {
       getClients()
         .then((res) => {
           setClients(res.data?.data);
-          setFilteredClients(res.data?.data);
         })
         .catch((err) => {
           if (err?.response?.status === 401) {
@@ -154,7 +164,7 @@ function Content() {
               <input
                 placeholder="Search client email"
                 className="searchbar searchbar-text"
-                onChange={handleClientSearch}
+                onChange={debouncedResults}
               />
               <div className="d-flex ">
                 <div className="searchbar-des d-md-block">

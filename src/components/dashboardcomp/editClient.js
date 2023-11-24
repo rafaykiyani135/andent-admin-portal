@@ -19,7 +19,7 @@ import { capitalizeFirstLetter } from "../../services/helperFunctions";
 import useData from "../../hooks/useData";
 function EditClient(props) {
   const { editClientId, setPopUpIsOpen, clientData } = props;
-  const { clientStatuses, setClients, setFilteredClients } = useData();
+  const { clientStatuses, setClients } = useData();
   const [viewMore, setViewMore] = useState(false);
   const [invoice, setInvoice] = useState(null);
   const [pana, setPana] = useState([]);
@@ -45,7 +45,7 @@ function EditClient(props) {
   const [number, setNumber] = useState(clientData?.number);
   const [notes, setNotes] = useState(clientData?.notes);
   const [updatingClient, setUpdatingClient] = useState(false);
-  console.log(clientData);
+
   useEffect(() => {
     setFirstName(clientData?.firstName);
     setLastName(clientData?.lastName);
@@ -286,7 +286,6 @@ function EditClient(props) {
           getClients()
             .then((res) => {
               setClients(res.data?.data);
-              setFilteredClients(res.data?.data);
             })
             .catch((err) => {
               toast.error(

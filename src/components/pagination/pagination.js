@@ -7,18 +7,12 @@ const Pagination = ({
   onPageChange,
   pageSizeOptions,
   onPageSizeChange,
+  pageSize,
 }) => {
-  const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
-
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       onPageChange(page);
     }
-  };
-
-  const handlePageSizeChange = (size) => {
-    setPageSize(size);
-    onPageSizeChange(size);
   };
 
   const renderPageItems = () => {
@@ -70,7 +64,7 @@ const Pagination = ({
         <span>Records per page:</span>
         <select
           value={pageSize}
-          onChange={(e) => handlePageSizeChange(e.target.value)}
+          onChange={(e) => onPageSizeChange(e.target.value)}
         >
           {pageSizeOptions.map((size) => (
             <option key={size} value={size}>

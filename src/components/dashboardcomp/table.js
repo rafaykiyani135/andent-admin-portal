@@ -26,9 +26,9 @@ function Table() {
   const {
     clients,
     setClients,
-    filteredClients,
-    setFilteredClients,
     clientStatuses,
+    setTotalClientPages,
+    totalClientPages,
   } = useData();
   const [loadingClients, setLoadingClients] = useState(false);
 
@@ -55,29 +55,27 @@ function Table() {
 
   const menuRef = useRef();
   const menuRef2 = useRef();
-  const [totalPages, setTotalPages] = useState(13);
+
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5); // Default page size
+  const [pageSize, setPageSize] = useState(10); // Default page size
   const [pageSizeOptions, setPageSizeOptions] = useState([10, 20, 50, 100]);
 
   const handlePageChange = (page) => {
     // Handle page change logic here
     setCurrentPage(page);
-    console.log("Page changed to:", page);
   };
 
   const handlePageSizeChange = (size) => {
     // Handle page size change logic here
     setPageSize(size);
-    console.log("Page size changed to:", size);
   };
 
   function fetchAllClients() {
     setLoadingClients(true);
-    getClients()
+    getClients("", currentPage, pageSize)
       .then((res) => {
+        setTotalClientPages(Math.ceil(res?.data?.total / pageSize));
         setClients(res.data?.data);
-        setFilteredClients(res.data?.data);
         setLoadingClients(false);
       })
       .catch((err) => {
@@ -113,7 +111,7 @@ function Table() {
 
   useEffect(() => {
     fetchAllClients();
-  }, []);
+  }, [currentPage, pageSize]);
 
   useEffect(() => {
     if (window.innerWidth < 760) {
@@ -259,7 +257,7 @@ function Table() {
 
         <tbody className="position-relative">
           {loadingClients && <TableLoader />}
-          {filteredClients?.map((client, index) => (
+          {clients?.map((client, index) => (
             <tr key={client?.id}>
               <td className="box-size">
                 <h2 className="table-text">{index + 1}</h2>
@@ -411,13 +409,17 @@ function Table() {
           ))}
         </tbody>
       </table>
-      {/* <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-        pageSizeOptions={pageSizeOptions}
-        onPageSizeChange={handlePageSizeChange}
-      /> */}
+      {!loadingClients && (
+        <Pagination
+          totalPages={totalClientPages}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          pageSize={pageSize}
+          pageSizeOptions={pageSizeOptions}
+          onPageSizeChange={handlePageSizeChange}
+        />
+      )}
+
       <div className={`${invoiceOpen ? `invoice` : `d-none`}`} ref={menuRef}>
         <Invoice
           setInvoiceOpen={setInvoiceOpen}

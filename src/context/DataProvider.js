@@ -4,7 +4,7 @@ function DataProvider(props) {
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
   const [clients, setClients] = useState([]);
-  const [filteredClients, setFilteredClients] = useState([]);
+  const [totalClientPages, setTotalClientPages] = useState(1);
   const [clientStatuses, setClientStatuses] = useState([]);
   return (
     <DataContext.Provider
@@ -15,8 +15,8 @@ function DataProvider(props) {
         setRoles,
         clients,
         setClients,
-        filteredClients,
-        setFilteredClients,
+        totalClientPages,
+        setTotalClientPages,
         clientStatuses,
         setClientStatuses,
       }}

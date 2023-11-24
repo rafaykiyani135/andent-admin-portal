@@ -8,12 +8,20 @@
   z-index: 0;
 }
 
+.paginationContainer > ul {
+  margin-bottom: 0;
+}
+
 .recordPerPage {
-  margin-bottom: 1rem;
   display: flex;
   gap: 1rem;
 }
 
 .recordPerPage select {
   width: 80px;
+  padding: 4px;
+  border-radius: 7px;
+}
+.recordPerPage span {
+  margin-top: 4px;
 }

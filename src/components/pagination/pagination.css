@@ -1,0 +1,19 @@
+.paginationContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2rem;
+  margin: 1rem 0;
+  position: relative;
+  z-index: 0;
+}
+
+.recordPerPage {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.recordPerPage select {
+  width: 80px;
+}

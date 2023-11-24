@@ -16,11 +16,10 @@ import {
 import useLogout from "../../hooks/useLogout";
 import TableLoader from "../loaders/TableLoader";
 import { ToastContainer, toast } from "react-toastify";
-import { statuses } from "../../constants";
 import EditClient from "./editClient";
 import { doesUserHasPermission } from "../../services/helperFunctions";
 import { AuthContext } from "../../context/AuthProvider";
-
+import Pagination from "../pagination/pagination";
 function Table() {
   const { user } = useContext(AuthContext);
   const { permissions } = user.role;
@@ -56,6 +55,22 @@ function Table() {
 
   const menuRef = useRef();
   const menuRef2 = useRef();
+  const [totalPages, setTotalPages] = useState(13);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5); // Default page size
+  const [pageSizeOptions, setPageSizeOptions] = useState([10, 20, 50, 100]);
+
+  const handlePageChange = (page) => {
+    // Handle page change logic here
+    setCurrentPage(page);
+    console.log("Page changed to:", page);
+  };
+
+  const handlePageSizeChange = (size) => {
+    // Handle page size change logic here
+    setPageSize(size);
+    console.log("Page size changed to:", size);
+  };
 
   function fetchAllClients() {
     setLoadingClients(true);
@@ -254,9 +269,10 @@ function Table() {
               </td>
               <td
                 className="box-size"
-                onClick={() => {
-                  clickHandler(client);
-                }}
+                onClick={() =>
+                  doesUserHasPermission(permissions, "CLIENT", "UPDATE") &&
+                  handleEdit(client)
+                }
               >
                 <h2 className="table-text">
                   {client?.firstName} {client?.lastName}
@@ -379,7 +395,7 @@ function Table() {
                       className="ms-4"
                       style={{ textDecoration: "none", cursor: "pointer" }}
                       onClick={() => {
-                        handleEdit({ ...client });
+                        handleEdit(client);
                       }}
                     >
                       <img
@@ -395,6 +411,13 @@ function Table() {
           ))}
         </tbody>
       </table>
+      {/* <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        pageSizeOptions={pageSizeOptions}
+        onPageSizeChange={handlePageSizeChange}
+      /> */}
       <div className={`${invoiceOpen ? `invoice` : `d-none`}`} ref={menuRef}>
         <Invoice
           setInvoiceOpen={setInvoiceOpen}

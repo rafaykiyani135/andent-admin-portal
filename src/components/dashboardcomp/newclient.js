@@ -221,13 +221,13 @@ function NewClient(props) {
     const lastName = lastNameRef.current.value;
     const email = emailRef.current.value;
     const number = numberRef.current.value;
-    const clientNotes = notesRef.current.value;
+    const notes = notesRef.current.value;
     if (
       !firstName ||
       !lastName ||
       !email ||
       !number ||
-      !clientNotes ||
+      !notes ||
       !selectedCountry ||
       !clStatus
     ) {
@@ -239,7 +239,7 @@ function NewClient(props) {
         lastName,
         email,
         number,
-        clientNotes,
+        notes,
         country: selectedCountry,
         status: clStatus,
         source: "Manual Entry",

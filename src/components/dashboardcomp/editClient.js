@@ -13,12 +13,13 @@ import {
   updateClient,
   uploadClientFile,
   deleteClientFile,
+  getClients,
 } from "../../services/api/clients";
 import { capitalizeFirstLetter } from "../../services/helperFunctions";
 import useData from "../../hooks/useData";
 function EditClient(props) {
   const { editClientId, setPopUpIsOpen, clientData } = props;
-  const { clientStatuses } = useData();
+  const { clientStatuses, setClients, setFilteredClients } = useData();
   const [viewMore, setViewMore] = useState(false);
   const [invoice, setInvoice] = useState(null);
   const [pana, setPana] = useState([]);
@@ -42,15 +43,15 @@ function EditClient(props) {
   const [lastName, setLastName] = useState(clientData?.lastName);
   const [email, setEmail] = useState(clientData?.email);
   const [number, setNumber] = useState(clientData?.number);
-  const [clientNotes, setClientNotes] = useState(clientData?.clientNotes);
+  const [notes, setNotes] = useState(clientData?.notes);
   const [updatingClient, setUpdatingClient] = useState(false);
-
+  console.log(clientData);
   useEffect(() => {
     setFirstName(clientData?.firstName);
     setLastName(clientData?.lastName);
     setEmail(clientData?.email);
     setNumber(clientData?.number);
-    setClientNotes(clientData?.clientNotes);
+    setNotes(clientData?.notes);
     setSelectedCountry(clientData?.country);
     setclStatus(clientData?.status);
 
@@ -254,13 +255,13 @@ function EditClient(props) {
       });
   };
 
-  function handleClientCreate() {
+  function handleClientUpdate() {
     if (
       !firstName ||
       !lastName ||
       !email ||
       !number ||
-      !clientNotes ||
+      !notes ||
       !selectedCountry ||
       !clStatus
     ) {
@@ -272,7 +273,7 @@ function EditClient(props) {
         lastName,
         email,
         number,
-        clientNotes,
+        notes,
         country: selectedCountry,
         status: clStatus,
         source: "Manual Entry",
@@ -282,6 +283,16 @@ function EditClient(props) {
         .then((res) => {
           setUpdatingClient(false);
           toast.success("Client updated Successfully");
+          getClients()
+            .then((res) => {
+              setClients(res.data?.data);
+              setFilteredClients(res.data?.data);
+            })
+            .catch((err) => {
+              toast.error(
+                err?.response?.data?.message ?? "Failed to load clients"
+              );
+            });
           setPopUpIsOpen(false);
         })
         .catch((err) => {
@@ -743,7 +754,6 @@ function EditClient(props) {
         <div className="col-12 col-lg-6">
           <select
             onChange={handleStatusChange}
-            value={clientData?.status}
             className="popup-inputs-small-dropdown"
           >
             {clientStatuses?.map((stat, index) => (
@@ -760,8 +770,8 @@ function EditClient(props) {
         </div>
         <div className="col-lg-12 col-12 text-start">
           <textarea
-            onChange={(e) => setClientNotes(e.target.value)}
-            value={clientNotes}
+            onChange={(e) => setNotes(e.target.value)}
+            value={notes}
             type=""
             className="popup-inputs-4"
             placeholder="Enter Text"
@@ -877,7 +887,7 @@ function EditClient(props) {
           <button
             disabled={updatingClient}
             className="andent-button"
-            onClick={handleClientCreate}
+            onClick={handleClientUpdate}
           >
             <h2 className="button-text">
               {updatingClient ? "Updating ..." : "Update Client"}

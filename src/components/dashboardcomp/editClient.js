@@ -450,7 +450,7 @@ function EditClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Country</h2>
               <select
-                value={clientData?.country}
+                value={selectedCountry}
                 onChange={handleCountryChange}
                 className="popup-inputs-small-dropdown"
               >
@@ -752,6 +752,7 @@ function EditClient(props) {
         </div>
         <div className="col-12 col-lg-6">
           <select
+            value={clStatus}
             onChange={handleStatusChange}
             className="popup-inputs-small-dropdown"
           >

@@ -249,7 +249,9 @@ function NewClient(props) {
           toast.success("Client Created Successfully");
           setPopUpIsOpen(false);
         })
-        .catch((err) => {});
+        .catch((err) => {
+          toast.err(err?.response?.data?.message);
+        });
     }
   }
 

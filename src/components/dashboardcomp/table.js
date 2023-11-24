@@ -20,11 +20,17 @@ import { statuses } from "../../constants";
 import EditClient from "./editClient";
 import { doesUserHasPermission } from "../../services/helperFunctions";
 import { AuthContext } from "../../context/AuthProvider";
+
 function Table() {
   const { user } = useContext(AuthContext);
   const { permissions } = user.role;
-  const { clients, setClients, filteredClients, setFilteredClients } =
-    useData();
+  const {
+    clients,
+    setClients,
+    filteredClients,
+    setFilteredClients,
+    clientStatuses,
+  } = useData();
   const [loadingClients, setLoadingClients] = useState(false);
 
   const logout = useLogout();
@@ -324,7 +330,7 @@ function Table() {
                       dropdownStates[index] ? "open" : ""
                     } justify-content-end`}
                   >
-                    {statuses.map((status) => {
+                    {clientStatuses?.map((status) => {
                       return (
                         <li
                           key={status}

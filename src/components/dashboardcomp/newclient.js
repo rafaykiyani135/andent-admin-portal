@@ -11,8 +11,11 @@ import { deleteClientFile, uploadClientFile } from "../../services/api/clients";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../context/AuthProvider";
 import { updateClient } from "../../services/api/clients";
+import useData from "../../hooks/useData";
 function NewClient(props) {
   const { newClientId, popUpIsOpen, setPopUpIsOpen } = props;
+  const { clientStatuses } = useData();
+
   const [viewMore, setViewMore] = useState(false);
   const [invoice, setInvoice] = useState(null);
   const [pana, setPana] = useState([]);
@@ -695,7 +698,7 @@ function NewClient(props) {
             value={clStatus}
             className="popup-inputs-small-dropdown"
           >
-            {statuses.map((stat, index) => (
+            {clientStatuses?.map((stat, index) => (
               <option key={index} value={stat} disabled={index === 0}>
                 {stat}
               </option>

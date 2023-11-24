@@ -15,9 +15,10 @@ import {
   deleteClientFile,
 } from "../../services/api/clients";
 import { capitalizeFirstLetter } from "../../services/helperFunctions";
+import useData from "../../hooks/useData";
 function EditClient(props) {
   const { editClientId, setPopUpIsOpen, clientData } = props;
-
+  const { clientStatuses } = useData();
   const [viewMore, setViewMore] = useState(false);
   const [invoice, setInvoice] = useState(null);
   const [pana, setPana] = useState([]);
@@ -745,7 +746,7 @@ function EditClient(props) {
             value={clientData?.status}
             className="popup-inputs-small-dropdown"
           >
-            {statuses.map((stat, index) => (
+            {clientStatuses?.map((stat, index) => (
               <option key={index} value={stat} disabled={index === 0}>
                 {stat}
               </option>

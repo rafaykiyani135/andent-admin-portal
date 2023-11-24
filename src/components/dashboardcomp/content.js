@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 import useLogout from "../../hooks/useLogout";
 import { AuthContext } from "../../context/AuthProvider";
 import { doesUserHasPermission } from "../../services/helperFunctions";
+import { getAppSettings } from "../../services/api/appSettings";
+
 function Content() {
   const { user } = useContext(AuthContext);
   const { permissions } = user.role;
@@ -25,7 +27,13 @@ function Content() {
   const [newcl, setNewcl] = useState(false);
   const [newClientId, setNewClientId] = useState("");
 
-  const { clients, setClients, setFilteredClients } = useData();
+  const {
+    clients,
+    setClients,
+    setFilteredClients,
+    clientStatuses,
+    setClientStatuses,
+  } = useData();
   function handleClientSearch(e) {
     if (!e.target.value) {
       setFilteredClients(clients);
@@ -49,6 +57,26 @@ function Content() {
         setNewcl(false);
       });
   }
+
+  useEffect(() => {
+    getAppSettings()
+      .then((res) => {
+        const statuses = res?.data?.data?.find(
+          (objs) => objs.key === "client-statuses"
+        );
+        if (statuses) {
+          setClientStatuses(statuses?.value?.split(","));
+        }
+      })
+      .catch((err) => {
+        if (err?.response?.status === 401) {
+          logout();
+        }
+        toast.error(
+          err?.response?.data?.message ?? "Failed to get App settings"
+        );
+      });
+  }, []);
 
   // when new client pop is closed fetch all clients
   useEffect(() => {

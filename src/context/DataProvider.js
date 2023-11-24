@@ -5,7 +5,7 @@ function DataProvider(props) {
   const [roles, setRoles] = useState([]);
   const [clients, setClients] = useState([]);
   const [filteredClients, setFilteredClients] = useState([]);
-
+  const [clientStatuses, setClientStatuses] = useState([]);
   return (
     <DataContext.Provider
       value={{
@@ -17,6 +17,8 @@ function DataProvider(props) {
         setClients,
         filteredClients,
         setFilteredClients,
+        clientStatuses,
+        setClientStatuses,
       }}
     >
       {props.children}

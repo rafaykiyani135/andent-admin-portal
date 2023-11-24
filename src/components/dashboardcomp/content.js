@@ -13,7 +13,6 @@ import useLogout from "../../hooks/useLogout";
 import { AuthContext } from "../../context/AuthProvider";
 import { doesUserHasPermission } from "../../services/helperFunctions";
 import { getAppSettings } from "../../services/api/appSettings";
-
 function Content() {
   const { user } = useContext(AuthContext);
   const { permissions } = user.role;

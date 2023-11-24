@@ -66,7 +66,7 @@ function EditRole(props) {
           });
       })
       .catch((err) => {
-        toast.err(err?.response?.data?.message ?? "Failed to update role");
+        toast.error(err?.response?.data?.message ?? "Failed to update role");
         setUpdatingRole(false);
       });
   }

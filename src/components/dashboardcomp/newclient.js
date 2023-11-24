@@ -250,7 +250,7 @@ function NewClient(props) {
           setPopUpIsOpen(false);
         })
         .catch((err) => {
-          toast.err(err?.response?.data?.message);
+          toast.error(err?.response?.data?.message);
         });
     }
   }

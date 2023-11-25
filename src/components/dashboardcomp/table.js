@@ -137,7 +137,7 @@ function Table() {
 
   useEffect(() => {
     let handler = (e) => {
-      if (!menuRef2.current.contains(e.target)) {
+      if (!menuRef2?.current?.contains(e.target)) {
         setNewcl2(false);
       }
     };
@@ -424,14 +424,17 @@ function Table() {
           clientInvoiceData={clientInvoiceData}
         />
       </div>
-      <div className={`${newcl2 ? `new-client-2` : `d-none`}`} ref={menuRef2}>
-        <EditClient
-          editClientId={clientData.id}
-          clientData={clientData}
-          setPopUpIsOpen={setNewcl2}
-          fetchAllClients={fetchAllClients}
-        />
-      </div>
+      {newcl2 && (
+        <div className={`${newcl2 ? `new-client-2` : `d-none`}`} ref={menuRef2}>
+          <EditClient
+            editClientId={clientData.id}
+            clientData={clientData}
+            setPopUpIsOpen={setNewcl2}
+            fetchAllClients={fetchAllClients}
+          />
+        </div>
+      )}
+
       {/* <div className={`${newcl2 ? `new-client-2` : `d-none`}`} ref={menuRef2}>
         <ModifyClient data={modify} />
       </div> */}

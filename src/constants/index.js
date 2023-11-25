@@ -1,5 +1,5 @@
 export const countries = [
-  "Country",
+  "Select Country",
   "Italy",
   "Albania",
   "United Kingdom",
@@ -10,7 +10,7 @@ export const countries = [
   "Germany",
 ];
 export const statuses = [
-  "Choose Status",
+  "Select Status",
   "Contacted",
   "Invoice Sent",
   "Booked",

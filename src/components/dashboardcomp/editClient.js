@@ -29,7 +29,7 @@ function EditClient(props) {
   const [uploadedInvoiceId, setUploadedInvoiceId] = useState("");
   const [uploadedReceiptId, setUploadedReceiptId] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(
-    clientData?.country ?? "Country"
+    clientData?.country ?? "Select Country"
   );
   const [clStatus, setclStatus] = useState(clientData?.status ?? "New");
   const [isMobile, setIsMobile] = useState(false);
@@ -49,13 +49,12 @@ function EditClient(props) {
   const [updatingClient, setUpdatingClient] = useState(false);
 
   useEffect(() => {
-    console.log(clientData);
     setFirstName(clientData?.firstName);
     setLastName(clientData?.lastName);
     setEmail(clientData?.email);
     setNumber(clientData?.number);
     setNotes(clientData?.notes);
-    setSelectedCountry(clientData?.country ?? "Country");
+    setSelectedCountry(clientData?.country ?? "Select Country");
     setclStatus(clientData?.status ?? "New");
 
     const uploadedInvoice = clientData?.clientFiles?.find(
@@ -286,7 +285,6 @@ function EditClient(props) {
         .then((res) => {
           setUpdatingClient(false);
           toast.success("Client updated Successfully");
-
           setPopUpIsOpen(false);
         })
         .catch((err) => {
@@ -450,9 +448,7 @@ function EditClient(props) {
                 className="popup-inputs-small-dropdown"
               >
                 {countries.map((country, index) => (
-                  <option key={index} value={country} disabled={index === 0}>
-                    {country}
-                  </option>
+                  <option key={index}>{country}</option>
                 ))}
               </select>
             </div>

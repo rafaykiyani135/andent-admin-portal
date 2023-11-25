@@ -114,6 +114,12 @@ function Table() {
   }, [currentPage, pageSize]);
 
   useEffect(() => {
+    if (!newcl2) {
+      fetchAllClients();
+    }
+  }, [newcl2]);
+
+  useEffect(() => {
     if (window.innerWidth < 760) {
       setIsMobile(true);
     } else {
@@ -191,14 +197,6 @@ function Table() {
           logout();
         }
       });
-  };
-
-  const clickHandler = (data) => {
-    setModify(data);
-    setTimeout(() => {
-      console.log("End of the 2-second timer");
-    }, 2000);
-    setNewcl2(true);
   };
 
   return (
@@ -431,6 +429,7 @@ function Table() {
           editClientId={clientData.id}
           clientData={clientData}
           setPopUpIsOpen={setNewcl2}
+          fetchAllClients={fetchAllClients}
         />
       </div>
       {/* <div className={`${newcl2 ? `new-client-2` : `d-none`}`} ref={menuRef2}>

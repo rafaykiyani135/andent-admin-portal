@@ -18,7 +18,7 @@ import {
 import { capitalizeFirstLetter } from "../../services/helperFunctions";
 import useData from "../../hooks/useData";
 function EditClient(props) {
-  const { editClientId, setPopUpIsOpen, clientData } = props;
+  const { editClientId, setPopUpIsOpen, clientData, fetchAllClients } = props;
   const { clientStatuses, setClients } = useData();
   const [viewMore, setViewMore] = useState(false);
   const [invoice, setInvoice] = useState(null);
@@ -28,8 +28,10 @@ function EditClient(props) {
   const [receiptName, setReceiptName] = useState("");
   const [uploadedInvoiceId, setUploadedInvoiceId] = useState("");
   const [uploadedReceiptId, setUploadedReceiptId] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState(clientData?.country);
-  const [clStatus, setclStatus] = useState(clientData?.status);
+  const [selectedCountry, setSelectedCountry] = useState(
+    clientData?.country ?? "Country"
+  );
+  const [clStatus, setclStatus] = useState(clientData?.status ?? "New");
   const [isMobile, setIsMobile] = useState(false);
   const { user } = useContext(AuthContext);
   const [uploadingInvoice, setUploadingInvoice] = useState(false);
@@ -47,13 +49,14 @@ function EditClient(props) {
   const [updatingClient, setUpdatingClient] = useState(false);
 
   useEffect(() => {
+    console.log(clientData);
     setFirstName(clientData?.firstName);
     setLastName(clientData?.lastName);
     setEmail(clientData?.email);
     setNumber(clientData?.number);
     setNotes(clientData?.notes);
-    setSelectedCountry(clientData?.country);
-    setclStatus(clientData?.status);
+    setSelectedCountry(clientData?.country ?? "Country");
+    setclStatus(clientData?.status ?? "New");
 
     const uploadedInvoice = clientData?.clientFiles?.find(
       (fileObj) => fileObj.type === "INVOICE"
@@ -283,15 +286,7 @@ function EditClient(props) {
         .then((res) => {
           setUpdatingClient(false);
           toast.success("Client updated Successfully");
-          getClients()
-            .then((res) => {
-              setClients(res.data?.data);
-            })
-            .catch((err) => {
-              toast.error(
-                err?.response?.data?.message ?? "Failed to load clients"
-              );
-            });
+
           setPopUpIsOpen(false);
         })
         .catch((err) => {

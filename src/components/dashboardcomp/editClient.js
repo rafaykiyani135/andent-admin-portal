@@ -17,6 +17,7 @@ import {
 } from "../../services/api/clients";
 import { capitalizeFirstLetter } from "../../services/helperFunctions";
 import useData from "../../hooks/useData";
+import { isValidNumber } from "../../services/helperFunctions";
 function EditClient(props) {
   const { editClientId, setPopUpIsOpen, clientData, fetchAllClients } = props;
   const { clientStatuses, setClients } = useData();
@@ -268,6 +269,14 @@ function EditClient(props) {
       !clStatus
     ) {
       toast.error("Fill all the fields");
+    } else if (!isValidNumber(number)) {
+      toast.error("Number is not valid");
+    } else if (number.length < 6) {
+      toast.error("Number can not have less than 6 characters");
+    } else if (selectedCountry === "Select Country") {
+      toast.error("Please select a country");
+    } else if (clStatus === "New") {
+      toast.error("Please select a valid status");
     } else {
       const payLoad = {
         id: editClientId,
@@ -278,7 +287,7 @@ function EditClient(props) {
         notes,
         country: selectedCountry,
         status: clStatus,
-        source: "Manual Entry",
+        source: clientData?.source ?? "Manual Entry",
       };
       setUpdatingClient(true);
       updateClient(payLoad)

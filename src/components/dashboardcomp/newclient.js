@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../context/AuthProvider";
 import { updateClient } from "../../services/api/clients";
 import useData from "../../hooks/useData";
+import { isValidNumber } from "../../services/helperFunctions";
 function NewClient(props) {
   const { newClientId, popUpIsOpen, setPopUpIsOpen } = props;
   const { clientStatuses } = useData();
@@ -26,8 +27,8 @@ function NewClient(props) {
   const [consentForm, setConsentForm] = useState(null);
   const [cbct, setCbct] = useState(null);
   const [receiptName, setReceiptName] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("Country");
-  const [clStatus, setclStatus] = useState("Choose Status");
+  const [selectedCountry, setSelectedCountry] = useState("Select Country");
+  const [clStatus, setclStatus] = useState("New");
   const [isMobile, setIsMobile] = useState(false);
   const { user } = useContext(AuthContext);
   const [uploadingInvoice, setUploadingInvoice] = useState(false);
@@ -102,8 +103,8 @@ function NewClient(props) {
     setPana([]);
     setConsentForm(null);
     setCbct(null);
-    setSelectedCountry("Country");
-    setclStatus("Choose Status");
+    setSelectedCountry("Select Country");
+    setclStatus("New");
     firstNameRef.current.value = "";
     lastNameRef.current.value = "";
     emailRef.current.value = "";
@@ -232,6 +233,14 @@ function NewClient(props) {
       !clStatus
     ) {
       toast.error("Fill all the fields");
+    } else if (!isValidNumber(number)) {
+      toast.error("Number is not valid");
+    } else if (number.length < 6) {
+      toast.error("Number can not have less than 6 characters");
+    } else if (selectedCountry === "Select Country") {
+      toast.error("Please select a country");
+    } else if (clStatus === "New") {
+      toast.error("Please select a valid status");
     } else {
       const payLoad = {
         id: newClientId,
@@ -399,9 +408,7 @@ function NewClient(props) {
                 className="popup-inputs-small-dropdown"
               >
                 {countries.map((country, index) => (
-                  <option key={index} value={country} disabled={index === 0}>
-                    {country}
-                  </option>
+                  <option key={index}>{country}</option>
                 ))}
               </select>
             </div>
@@ -701,9 +708,7 @@ function NewClient(props) {
             className="popup-inputs-small-dropdown"
           >
             {clientStatuses?.map((stat, index) => (
-              <option key={index} value={stat} disabled={index === 0}>
-                {stat}
-              </option>
+              <option key={index}>{stat}</option>
             ))}
           </select>
         </div>

@@ -239,8 +239,6 @@ function NewClient(props) {
       toast.error("Number can not have less than 6 characters");
     } else if (selectedCountry === "Select Country") {
       toast.error("Please select a country");
-    } else if (clStatus === "New") {
-      toast.error("Please select a valid status");
     } else {
       const payLoad = {
         id: newClientId,

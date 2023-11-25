@@ -36,16 +36,17 @@ function UserAccounts() {
 
   useEffect(() => {
     setLoadingUsers(true);
-    getRoles()
-      .then((res) => {
-        setRoles(res.data?.data);
-      })
-      .catch((err) => {
-        if (err?.response?.status === 401) {
-          logout();
-        }
-        toast.error(err?.response?.data?.message ?? "Failed to load roles");
-      });
+    doesUserHasPermission(permissions, "ROLE", "READ") &&
+      getRoles()
+        .then((res) => {
+          setRoles(res.data?.data);
+        })
+        .catch((err) => {
+          if (err?.response?.status === 401) {
+            logout();
+          }
+          toast.error(err?.response?.data?.message ?? "Failed to load roles");
+        });
     fetchAllUsers();
   }, []);
 
@@ -154,6 +155,7 @@ function UserAccounts() {
               <td
                 onClick={() =>
                   doesUserHasPermission(permissions, "USER", "UPDATE") &&
+                  doesUserHasPermission(permissions, "ROLE", "READ") &&
                   toggleDropdown(index)
                 }
                 className="text-start"
@@ -162,43 +164,45 @@ function UserAccounts() {
                 <Link style={{ textDecoration: "none", color: "#4B5768" }}>
                   <li className="text-center update-status">
                     {row?.role?.name}
-                    {doesUserHasPermission(permissions, "USER", "UPDATE") && (
-                      <img
-                        src={arrow}
-                        alt="arrow-icon"
-                        className="small-icon"
-                      />
-                    )}
+                    {doesUserHasPermission(permissions, "USER", "UPDATE") &&
+                      doesUserHasPermission(permissions, "ROLE", "READ") && (
+                        <img
+                          src={arrow}
+                          alt="arrow-icon"
+                          className="small-icon"
+                        />
+                      )}
                   </li>
                 </Link>
-                {doesUserHasPermission(permissions, "USER", "UPDATE") && (
-                  <Link style={{ textDecoration: "none", color: "#4B5768" }}>
-                    <div
-                      className={`dropdown-content-accounts ${
-                        dropdownStates[index] ? "open" : ""
-                      } justify-content-end`}
-                    >
-                      {roles?.map((role) => {
-                        return (
-                          <li
-                            key={role?.id}
-                            onClick={() => {
-                              handleStatusSelection({
-                                roleId: role?.id,
-                                userId: row?.id,
-                                name: row?.name,
-                                email: row?.email,
-                                password: row?.password,
-                              });
-                            }}
-                          >
-                            {role?.name}
-                          </li>
-                        );
-                      })}
-                    </div>
-                  </Link>
-                )}
+                {doesUserHasPermission(permissions, "USER", "UPDATE") &&
+                  doesUserHasPermission(permissions, "ROLE", "READ") && (
+                    <Link style={{ textDecoration: "none", color: "#4B5768" }}>
+                      <div
+                        className={`dropdown-content-accounts ${
+                          dropdownStates[index] ? "open" : ""
+                        } justify-content-end`}
+                      >
+                        {roles?.map((role) => {
+                          return (
+                            <li
+                              key={role?.id}
+                              onClick={() => {
+                                handleStatusSelection({
+                                  roleId: role?.id,
+                                  userId: row?.id,
+                                  name: row?.name,
+                                  email: row?.email,
+                                  password: row?.password,
+                                });
+                              }}
+                            >
+                              {role?.name}
+                            </li>
+                          );
+                        })}
+                      </div>
+                    </Link>
+                  )}
 
                 <div
                   className={`${

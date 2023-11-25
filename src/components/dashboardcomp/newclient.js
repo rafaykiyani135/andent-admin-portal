@@ -237,8 +237,6 @@ function NewClient(props) {
       toast.error("Number is not valid");
     } else if (number.length < 6) {
       toast.error("Number can not have less than 6 characters");
-    } else if (selectedCountry === "Select Country") {
-      toast.error("Please select a country");
     } else {
       const payLoad = {
         id: newClientId,

@@ -122,7 +122,7 @@ function UserAccounts() {
               className=" box-size-2"
               style={{ borderRadius: "4px 0px 0px 0px" }}
             >
-              Sr. No
+              Id
             </th>
             <th scope="col" className=" box-size-3">
               User Name
@@ -149,7 +149,7 @@ function UserAccounts() {
           {(loadingUsers || updatingRole) && <TableLoader />}
           {users?.map((row, index) => (
             <tr key={row?.id}>
-              <td className="box-size-2">{index + 1}</td>
+              <td className="box-size-2">{row?.id}</td>
               <td className="box-size-3">{row?.name}</td>
               <td className="box-size-3">{row?.email}</td>
               <td

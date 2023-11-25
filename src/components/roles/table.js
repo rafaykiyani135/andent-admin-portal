@@ -111,7 +111,7 @@ function RolesTable(props) {
               className=" box-size-4"
               style={{ borderRadius: "4px 0px 0px 0px" }}
             >
-              Sr. No
+              Id
             </th>
             <th scope="col" className=" box-size-4">
               Roles
@@ -139,9 +139,9 @@ function RolesTable(props) {
         <tbody className="position-relative">
           {loadingRoles && <TableLoader />}
           {roles?.map((role, index) => (
-            <tr key={role.id}>
-              <td className="box-size-4">{index + 1}</td>
-              <td className="box-size-4">{role.name}</td>
+            <tr key={role?.id}>
+              <td className="box-size-4">{role?.id}</td>
+              <td className="box-size-4">{role?.name}</td>
               {doesUserHasPermission(permissions, "ROLE", "UPDATE") && (
                 <td
                   className="box-size-4"

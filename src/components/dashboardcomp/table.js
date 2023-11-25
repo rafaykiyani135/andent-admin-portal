@@ -214,7 +214,7 @@ function Table() {
               className="box-size"
               style={{ borderRadius: "4px 0px 0px 0px" }}
             >
-              <h2 className="table-text-td">Sr. No</h2>
+              <h2 className="table-text-td">Id</h2>
             </th>
             <th scope="col" className="box-size">
               <h2 className="table-text-td">Source</h2>
@@ -258,7 +258,7 @@ function Table() {
           {clients?.map((client, index) => (
             <tr key={client?.id}>
               <td className="box-size">
-                <h2 className="table-text">{index + 1}</h2>
+                <h2 className="table-text">{client?.id}</h2>
               </td>
               <td className="box-size">
                 <h2 className="table-text">{client?.source}</h2>

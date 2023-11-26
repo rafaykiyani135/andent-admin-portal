@@ -1,82 +1,161 @@
-import { useState } from "react";
-import save from '../../assets/data/save.png'
+import { useState, useRef, useEffect } from "react";
+import save from "../../assets/data/save.png";
+import { toast } from "react-toastify";
+import { getRoles, updateRole } from "../../services/api/roles";
+import useData from "../../hooks/useData";
+import { groupPermissionsByName } from "../../services/helperFunctions";
+function EditRole(props) {
+  const { allPermissions, roleData, setIsEditOpen } = props;
+  const [updatingRole, setUpdatingRole] = useState(false);
+  const [allCategories, setAllCategories] = useState([]);
+  const { roles, setRoles } = useData();
+  const [selectedPermissions, setSelectedPermissions] = useState(
+    roleData?.permissions?.map((permission) => permission.id)
+  );
+  const nameRef = useRef();
 
-function EditRole(props){
+  useEffect(() => {
+    const groupedPermissions = groupPermissionsByName(allPermissions);
+    setAllCategories(groupedPermissions);
+  }, []);
 
-    const [permissions, setPermissions] = useState({
-        User: { Create: false, Read: false, Update: false, Delete: false },
-        Roles: { Create: false, Read: false, Update: false, Delete: false },
-        Client: { Create: false, Read: false, Update: false, Delete: false },
-        Invoice: { Create: false, Read: false, Update: false, Download: false },
-        MagicLink: { Create: false, eng: false, al: false, it: false },
-      });
-    
-      const handlePermissionChange = (category, action) => {
-        setPermissions((prevPermissions) => ({
-          ...prevPermissions,
-          [category]: {
-            ...prevPermissions[category],
-            [action]: !prevPermissions[category][action],
-          },
-        }));
+  function handlePermissionChange(e, permissionId) {
+    if (e.target.checked && !selectedPermissions.includes()) {
+      setSelectedPermissions((prevPermissions) => [
+        ...prevPermissions,
+        permissionId,
+      ]);
+    } else if (
+      !e.target.checked &&
+      selectedPermissions.includes(permissionId)
+    ) {
+      setSelectedPermissions((prevPermissions) =>
+        prevPermissions.filter((permission) => permission !== permissionId)
+      );
+    }
+  }
+
+  function handleUpdateRole() {
+    if (selectedPermissions.length === 0) {
+      toast.error("Select atleast one permission");
+      return;
+    }
+
+    const payLoad = {
+      id: roleData.id,
+      name: roleData.name,
+      permissions: selectedPermissions.map((permission) => {
+        return {
+          id: permission,
+        };
+      }),
     };
 
-    return(
-        <>
-        
-            <div className="row justify-content-center text-center" style={{width:"100%"}}>
-                <div className="col-lg-12 col-12 text-center">
-                    <h2 className='popup-heading-4'>
-                        Permisions / {props.role}
-                    </h2>
-                </div>
-            </div>
-            <div className="perm-table-mob" style={{width:"100%"}}>
-            <div className="perm-table">
-            <table>
+    setUpdatingRole(true);
+    updateRole(payLoad)
+      .then((res) => {
+        toast.success("Role updated successfully");
+        setUpdatingRole(false);
+        setIsEditOpen(false);
+        getRoles()
+          .then((res) => {
+            setRoles(res?.data?.data);
+          })
+          .catch((err) => {
+            toast.error(err?.response?.data?.message ?? "Failed to get roles");
+          });
+      })
+      .catch((err) => {
+        toast.error(err?.response?.data?.message ?? "Failed to update role");
+        setUpdatingRole(false);
+      });
+  }
+
+  return (
+    <>
+      <div
+        className="row justify-content-center text-center"
+        style={{ width: "100%" }}
+      >
+        <div className="col-lg-12 col-12 text-center">
+          <h2 className="popup-heading-4">Permisions / {roleData.name}</h2>
+        </div>
+      </div>
+      <div className="perm-table-mob" style={{ width: "100%" }}>
+        <div className="perm-table">
+          <table>
             <thead>
-                <tr>
+              <tr>
                 <th className="namefield">Name Fields</th>
-                <th colSpan={4} style={{textAlign:"center"}} className="selectperm">Select Permissions</th>
-                </tr>
+                <th
+                  colSpan={4}
+                  style={{ textAlign: "center" }}
+                  className="selectperm"
+                >
+                  Select Permissions
+                </th>
+              </tr>
             </thead>
-            <tbody >
-                {Object.keys(permissions).map((category) => (
-                <tr key={category}>
-                    <td className="categories-box permission-text-2">{category === "MagicLink" ? "Magic Link" : category}</td>
-                    {Object.keys(permissions[category]).map((action) => (
-                    <td key={action} className="perm-box">
-                        <div className="d-flex align-items-center justify-content-around text-start" >
-                        <p className="permission-text">{action==="eng"? "ENG link" : action==="it"? "IT link" : action==="al"? "AL link" : action}</p>
+            <tbody>
+              {allCategories.map((category) => (
+                <tr key={category?.label}>
+                  <td className="categories-box permission-text-2">
+                    {category?.label}
+                  </td>
+                  {category?.permissions?.map((permission) => (
+                    <td key={permission?.id} className="perm-box">
+                      <div className="d-flex align-items-center justify-content-around text-start">
+                        <p className="permission-text">{permission?.type}</p>
                         <span>
-                            <input
+                          <input
+                            checked={selectedPermissions.includes(
+                              permission?.id
+                            )}
                             type="checkbox"
-                            checked={permissions[category][action]}
-                            onChange={() => handlePermissionChange(category, action)}
-                            />
+                            onChange={(e) =>
+                              handlePermissionChange(e, permission?.id)
+                            }
+                          />
                         </span>
-                        </div>
+                      </div>
                     </td>
-                    ))}
+                  ))}
                 </tr>
-                ))}
+              ))}
             </tbody>
-            </table>
-            </div>
-            </div>
-            <div className='row justify-content-start d-flex' style={{width:'100%',marginTop:"12px"}}>
-                <div className='col-12 col-lg-12 text-start d-flex justify-content-center' style={{gap:"24px"}}>
-                <button className='andent-button-perm'>
-                    <h2 className='button-text'>
-                            Save Changes<span style={{marginLeft:"8px",bottom:"2px",position:"relative"}}>
-                    <img src={save} alt='genlink icon' className='small-icon'/>
-                    </span>
-                    </h2>
-                </button>
-                </div>
-            </div>
-        </> 
-    )
+          </table>
+        </div>
+      </div>
+      <div
+        className="row justify-content-start d-flex"
+        style={{ width: "100%", marginTop: "12px" }}
+      >
+        <div
+          className="col-12 col-lg-12 text-start d-flex justify-content-center"
+          style={{ gap: "24px" }}
+        >
+          <button
+            onClick={handleUpdateRole}
+            disabled={updatingRole}
+            className="andent-button-perm"
+          >
+            <h2 className="button-text">
+              {updatingRole ? "Saving ..." : "Save Changes"}
+              <span
+                style={{
+                  marginLeft: "8px",
+                  bottom: "2px",
+                  position: "relative",
+                }}
+              >
+                <img src={save} alt="genlink icon" className="small-icon" />
+              </span>
+            </h2>
+          </button>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default EditRole;

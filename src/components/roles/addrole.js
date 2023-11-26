@@ -1,97 +1,158 @@
-import { useState } from "react";
-import plus from '../../assets/data/add.png'
+import { useRef } from "react";
+import plus from "../../assets/data/add.png";
+import { toast } from "react-toastify";
+import { addRole } from "../../services/api/roles";
+import { groupPermissionsByName } from "../../services/helperFunctions";
+function AddRole(props) {
+  const groupedPermissions = groupPermissionsByName(props.permissions);
+  const { setAddRole } = props;
+  var selectedPermissions = [];
+  const nameRef = useRef();
 
-function AddRole(){
+  function handlePermissionChange(e, permissionId) {
+    if (e.target.checked && !selectedPermissions.includes()) {
+      selectedPermissions.push(permissionId);
+    } else if (
+      !e.target.checked &&
+      selectedPermissions.includes(permissionId)
+    ) {
+      selectedPermissions = selectedPermissions.filter(
+        (permission) => permission !== permissionId
+      );
+    }
+  }
 
-    const [permissions, setPermissions] = useState({
-        User: { Create: false, Read: false, Update: false, Delete: false },
-        Roles: { Create: false, Read: false, Update: false, Delete: false },
-        Client: { Create: false, Read: false, Update: false, Delete: false },
-        Invoice: { Create: false, Read: false, Update: false, Download: false },
-        MagicLink: { Create: false, eng: false, al: false, it: false },
-      });
-    
-      const handlePermissionChange = (category, action) => {
-        setPermissions((prevPermissions) => ({
-          ...prevPermissions,
-          [category]: {
-            ...prevPermissions[category],
-            [action]: !prevPermissions[category][action],
-          },
-        }));
+  function handleAddRole() {
+    if (!nameRef.current?.value) {
+      toast.error("Enter role name");
+      return;
+    }
+    if (selectedPermissions.length === 0) {
+      toast.error("Select atleast one permission");
+      return;
+    }
+    const payLoad = {
+      name: nameRef.current?.value?.trim(),
+      permissions: selectedPermissions.map((permission) => {
+        return {
+          id: permission,
+        };
+      }),
     };
+    addRole(payLoad)
+      .then((res) => {
+        toast.success("New Role Added");
+        setAddRole(false);
+      })
+      .catch((err) => {
+        toast.error(err?.response?.data?.message ?? "Failed to add new role");
+      });
+  }
 
-    return(
-        <>
-            <div className="row justify-content-center text-start" style={{width:"100%"}}>
-                <div className="col-lg-6 col-12 text-start">
-                    <h2 className='popup-heading-2 text-center text-md-start'>
-                        Role Name
-                    </h2>
-                </div>
-            </div>
-            <div className="row justify-content-center text-start" style={{width:"100%"}}>
-                <div className="col-lg-6 col-12 text-start">
-                    <div>
-                    <input className='popup-inputs-small' placeholder='Enter Role Name'/>
-                    </div>
-                </div>
-            </div>
+  return (
+    <>
+      <div
+        className="row justify-content-center text-start"
+        style={{ width: "100%" }}
+      >
+        <div className="col-lg-6 col-12 text-start">
+          <h2 className="popup-heading-2 text-center text-md-start">
+            Role Name
+          </h2>
+        </div>
+      </div>
+      <div
+        className="row justify-content-center text-start"
+        style={{ width: "100%" }}
+      >
+        <div className="col-lg-6 col-12 text-start">
+          <div>
+            <input
+              className="popup-inputs-small"
+              placeholder="Enter Role Name"
+              ref={nameRef}
+            />
+          </div>
+        </div>
+      </div>
 
-            <div className="row justify-content-center text-center" style={{width:"100%",marginTop:"10px"}}>
-                <div className="col-lg-12 col-12 text-center">
-                    <h2 className='popup-heading-4'>
-                        Permisions / Admin
-                    </h2>
-                </div>
-            </div>
-            <div className="perm-table-mob" style={{width:"100%"}}>
-            <div className="perm-table">
-            <table>
+      <div
+        className="row justify-content-center text-center"
+        style={{ width: "100%", marginTop: "10px" }}
+      >
+        <div className="col-lg-12 col-12 text-center">
+          <h2 className="popup-heading-4">Permisions / Admin</h2>
+        </div>
+      </div>
+      <div className="perm-table-mob" style={{ width: "100%" }}>
+        <div className="perm-table">
+          <table>
             <thead>
-                <tr>
+              <tr>
                 <th className="namefield">Name Fields</th>
-                <th colSpan={4} style={{textAlign:"center"}} className="selectperm">Select Permissions</th>
-                </tr>
+                <th
+                  colSpan={4}
+                  style={{ textAlign: "center" }}
+                  className="selectperm"
+                >
+                  Select Permissions
+                </th>
+              </tr>
             </thead>
-            <tbody >
-                {Object.keys(permissions).map((category) => (
-                <tr key={category}>
-                    <td className="categories-box permission-text-2">{category === "MagicLink" ? "Magic Link" : category}</td>
-                    {Object.keys(permissions[category]).map((action) => (
-                    <td key={action} className="perm-box">
-                        <div className="d-flex align-items-center justify-content-around text-start" >
-                        <p className="permission-text">{action==="eng"? "ENG link" : action==="it"? "IT link" : action==="al"? "AL link" : action}</p>
+            <tbody>
+              {groupedPermissions.map((category) => (
+                <tr key={category?.label}>
+                  <td className="categories-box permission-text-2">
+                    {category?.label}
+                  </td>
+                  {category?.permissions?.map((permission) => (
+                    <td key={permission?.id} className="perm-box">
+                      <div className="d-flex align-items-center justify-content-around text-start">
+                        <p className="permission-text">{permission?.type}</p>
                         <span>
-                            <input
+                          <input
                             type="checkbox"
-                            checked={permissions[category][action]}
-                            onChange={() => handlePermissionChange(category, action)}
-                            />
+                            onChange={(e) =>
+                              handlePermissionChange(e, permission?.id)
+                            }
+                          />
                         </span>
-                        </div>
+                      </div>
                     </td>
-                    ))}
+                  ))}
                 </tr>
-                ))}
+              ))}
             </tbody>
-            </table>
-            </div>
-            </div>
+          </table>
+        </div>
+      </div>
 
-            <div className='row justify-content-start d-flex' style={{width:'100%',marginTop:"12px"}}>
-                <div className='col-12 col-lg-12 text-start d-flex justify-content-center' style={{gap:"24px"}}>
-                <button className='andent-button-perm'>
-                    <h2 className='button-text'>
-                            Create Role<span style={{marginLeft:"8px",bottom:"2px",position:"relative"}}>
-                    <img src={plus} alt='genlink icon' className='small-icon'/>
-                    </span>
-                    </h2>
-                </button>
-                </div>
-            </div>
-        </> 
-    )
+      <div
+        className="row justify-content-start d-flex"
+        style={{ width: "100%", marginTop: "12px" }}
+      >
+        <div
+          className="col-12 col-lg-12 text-start d-flex justify-content-center"
+          style={{ gap: "24px" }}
+        >
+          <button onClick={handleAddRole} className="andent-button-perm">
+            <h2 className="button-text">
+              Create Role
+              <span
+                style={{
+                  marginLeft: "8px",
+                  bottom: "2px",
+                  position: "relative",
+                }}
+              >
+                <img src={plus} alt="genlink icon" className="small-icon" />
+              </span>
+            </h2>
+          </button>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default AddRole;

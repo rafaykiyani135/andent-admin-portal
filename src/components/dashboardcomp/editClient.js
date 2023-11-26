@@ -7,40 +7,98 @@ import mail from "../../assets/data/mailicon.png";
 import phone from "../../assets/data/phone.png";
 import { useEffect, useContext } from "react";
 import { countries, statuses } from "../../constants";
-import { deleteClientFile, uploadClientFile } from "../../services/api/clients";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../context/AuthProvider";
-import { updateClient } from "../../services/api/clients";
+import {
+  updateClient,
+  uploadClientFile,
+  deleteClientFile,
+  getClients,
+} from "../../services/api/clients";
+import { capitalizeFirstLetter } from "../../services/helperFunctions";
 import useData from "../../hooks/useData";
 import { isValidNumber } from "../../services/helperFunctions";
-function NewClient(props) {
-  const { newClientId, popUpIsOpen, setPopUpIsOpen } = props;
-  const { clientStatuses } = useData();
-
+function EditClient(props) {
+  const { editClientId, setPopUpIsOpen, clientData, fetchAllClients } = props;
+  const { clientStatuses, setClients } = useData();
   const [viewMore, setViewMore] = useState(false);
   const [invoice, setInvoice] = useState(null);
   const [pana, setPana] = useState([]);
   const [invoiceName, setInvoiceName] = useState("");
+  const [receipt, setReceipt] = useState(null);
+  const [receiptName, setReceiptName] = useState("");
   const [uploadedInvoiceId, setUploadedInvoiceId] = useState("");
   const [uploadedReceiptId, setUploadedReceiptId] = useState("");
-  const [receipt, setReceipt] = useState(null);
-  const [consentForm, setConsentForm] = useState(null);
-  const [cbct, setCbct] = useState(null);
-  const [receiptName, setReceiptName] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("Select Country");
-  const [clStatus, setclStatus] = useState("New");
+  const [selectedCountry, setSelectedCountry] = useState(
+    clientData?.country ?? "Select Country"
+  );
+  const [clStatus, setclStatus] = useState(clientData?.status ?? "New");
   const [isMobile, setIsMobile] = useState(false);
   const { user } = useContext(AuthContext);
   const [uploadingInvoice, setUploadingInvoice] = useState(false);
   const [uploadingReceipt, setUploadingReceipt] = useState(false);
+  const [uploadingPana, setUploadingPana] = useState(false);
+  const [consentForm, setConsentForm] = useState(null);
+  const [cbct, setCbct] = useState(null);
   const [uploadingConcentForm, setUploadingConcentForm] = useState(false);
   const [uploadingCbct, setUploadingCbct] = useState(false);
-  const [uploadingPana, setUploadingPana] = useState(false);
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
-  const emailRef = useRef();
-  const numberRef = useRef();
-  const notesRef = useRef();
+  const [firstName, setFirstName] = useState(clientData?.firstName);
+  const [lastName, setLastName] = useState(clientData?.lastName);
+  const [email, setEmail] = useState(clientData?.email);
+  const [number, setNumber] = useState(clientData?.number);
+  const [notes, setNotes] = useState(clientData?.notes);
+  const [updatingClient, setUpdatingClient] = useState(false);
+
+  useEffect(() => {
+    setFirstName(clientData?.firstName);
+    setLastName(clientData?.lastName);
+    setEmail(clientData?.email);
+    setNumber(clientData?.number);
+    setNotes(clientData?.notes);
+    setSelectedCountry(clientData?.country ?? "Select Country");
+    setclStatus(clientData?.status ?? "New");
+
+    const uploadedInvoice = clientData?.clientFiles?.find(
+      (fileObj) => fileObj.type === "INVOICE"
+    );
+
+    uploadedInvoice && setUploadedInvoiceId(uploadedInvoice?.id);
+    uploadedInvoice && setInvoice(uploadedInvoice?.url);
+    uploadedInvoice && setInvoiceName(uploadedInvoice?.name);
+
+    const uploadedReceipt = clientData?.clientFiles?.find(
+      (fileObj) => fileObj.type === "RECEIPT"
+    );
+
+    uploadedReceipt && setUploadedReceiptId(uploadedReceipt?.id);
+    uploadedReceipt && setReceipt(uploadedReceipt?.url);
+    uploadedReceipt && setReceiptName(uploadedReceipt?.name);
+
+    const uploadedConsent = clientData?.clientFiles?.find(
+      (fileObj) => fileObj.type === "CONSENT_FORM"
+    );
+    uploadedConsent &&
+      setConsentForm({
+        url: uploadedConsent?.url,
+        name: uploadedConsent?.name,
+        fileId: uploadedConsent?.id,
+      });
+    const uploadedCBCT = clientData?.clientFiles?.find(
+      (fileObj) => fileObj.type === "CBCT"
+    );
+    uploadedCBCT &&
+      setCbct({
+        url: uploadedCBCT?.url,
+        name: uploadedCBCT?.name,
+        fileId: uploadedCBCT?.id,
+      });
+
+    const uploadedPanoramex = clientData?.clientFiles?.filter(
+      (fileObj) => fileObj.type === "PANORAMEX"
+    );
+
+    uploadedPanoramex && setPana(uploadedPanoramex);
+  }, [clientData]);
 
   const handlePanoramexUpload = (e) => {
     const panoramexFiles = e.target.files;
@@ -52,7 +110,7 @@ function NewClient(props) {
     // Iterate over each file and create a payload for each
     for (const file of panoramexFiles) {
       const payLoad = {
-        clientId: newClientId,
+        clientId: editClientId,
         file,
         type: "PANORAMEX",
         userId: user.id,
@@ -95,23 +153,6 @@ function NewClient(props) {
     }
   }, []);
 
-  useEffect(() => {
-    setInvoice(null);
-    setInvoiceName("");
-    setReceipt(null);
-    setReceiptName("");
-    setPana([]);
-    setConsentForm(null);
-    setCbct(null);
-    setSelectedCountry("Select Country");
-    setclStatus("New");
-    firstNameRef.current.value = "";
-    lastNameRef.current.value = "";
-    emailRef.current.value = "";
-    numberRef.current.value = "";
-    notesRef.current.value = "";
-  }, [popUpIsOpen]);
-
   const handleCountryChange = (event) => {
     setSelectedCountry(event.target.value);
   };
@@ -124,7 +165,7 @@ function NewClient(props) {
     const invoiceFile = e.target.files[0];
     setUploadingInvoice(true);
     const payLoad = {
-      clientId: newClientId,
+      clientId: editClientId,
       file: invoiceFile,
       type: "INVOICE",
       userId: user.id,
@@ -143,11 +184,11 @@ function NewClient(props) {
       });
   };
 
-  const handleReceiptUpload = (e) => {
+  const handleReceiptChange = (e) => {
     const receiptFile = e.target.files[0];
     setUploadingReceipt(true);
     const payLoad = {
-      clientId: newClientId,
+      clientId: editClientId,
       file: receiptFile,
       type: "RECEIPT",
       userId: user.id,
@@ -157,8 +198,8 @@ function NewClient(props) {
         setUploadingReceipt(false);
         setReceipt(res?.data?.data?.url);
         setReceiptName(res?.data?.data?.name);
-        toast.success("Receipt Uploaded");
         setUploadedReceiptId(res?.data?.data?.id);
+        toast.success("Receipt Uploaded");
       })
       .catch((err) => {
         setUploadingReceipt(false);
@@ -170,7 +211,7 @@ function NewClient(props) {
     const formFile = e.target.files[0];
     setUploadingConcentForm(true);
     const payLoad = {
-      clientId: newClientId,
+      clientId: editClientId,
       file: formFile,
       type: "CONSENT_FORM",
       userId: user.id,
@@ -196,7 +237,7 @@ function NewClient(props) {
     const file = e.target.files[0];
     setUploadingCbct(true);
     const payLoad = {
-      clientId: newClientId,
+      clientId: editClientId,
       file: file,
       type: "CBCT",
       userId: user.id,
@@ -217,12 +258,7 @@ function NewClient(props) {
       });
   };
 
-  function handleClientCreate() {
-    const firstName = firstNameRef.current.value;
-    const lastName = lastNameRef.current.value;
-    const email = emailRef.current.value;
-    const number = numberRef.current.value;
-    const notes = notesRef.current.value;
+  function handleClientUpdate() {
     if (
       !firstName ||
       !lastName ||
@@ -239,7 +275,7 @@ function NewClient(props) {
       toast.error("Number can not have less than 6 characters");
     } else {
       const payLoad = {
-        id: newClientId,
+        id: editClientId,
         firstName,
         lastName,
         email,
@@ -247,15 +283,20 @@ function NewClient(props) {
         notes,
         country: selectedCountry,
         status: clStatus,
-        source: "Manual Entry",
+        source: clientData?.source ?? "Manual Entry",
       };
+      setUpdatingClient(true);
       updateClient(payLoad)
         .then((res) => {
-          toast.success("Client Created Successfully");
+          setUpdatingClient(false);
+          toast.success("Client updated Successfully");
           setPopUpIsOpen(false);
         })
         .catch((err) => {
-          toast.error(err?.response?.data?.message);
+          toast.error(
+            err?.response?.data?.message ?? "Failed to update client"
+          );
+          setUpdatingClient(false);
         });
     }
   }
@@ -288,11 +329,12 @@ function NewClient(props) {
         })
         .catch((err) => {
           toast.error(
-            err?.response?.data?.message ?? "Failed to delete receipt"
+            err?.response?.data?.message ?? "Failed to delte receipt"
           );
         });
     }
   };
+
   const delConsentForm = () => {
     if (consentForm) {
       deleteClientFile(consentForm.fileId)
@@ -321,7 +363,7 @@ function NewClient(props) {
   };
 
   const delPana = (index, fileId) => {
-    if (pana.length === 2) {
+    if (pana?.length === 2) {
       setViewMore(false);
     }
     deleteClientFile(fileId)
@@ -344,7 +386,10 @@ function NewClient(props) {
     <>
       <div className="row justify-content-center text-center">
         <div className="col-lg-12 col-12">
-          <h2 className="popup-heading">Client Name</h2>
+          <h2 className="popup-heading">
+            {capitalizeFirstLetter(clientData?.firstName)}{" "}
+            {capitalizeFirstLetter(clientData?.lastName)}
+          </h2>
         </div>
       </div>
       <div className="row justify-content-start" style={{ width: "100%" }}>
@@ -354,7 +399,8 @@ function NewClient(props) {
             <input
               className="popup-inputs-small"
               placeholder="Enter First Name"
-              ref={firstNameRef}
+              onChange={(e) => setFirstName(e.target.value)}
+              value={firstName}
             />
           </div>
           {isMobile ? (
@@ -363,7 +409,8 @@ function NewClient(props) {
               <input
                 className="popup-inputs-small"
                 placeholder="Enter Last Name"
-                ref={lastNameRef}
+                onChange={(e) => setLastName(e.target.value)}
+                value={lastName}
               />
             </div>
           ) : (
@@ -372,7 +419,8 @@ function NewClient(props) {
               <input
                 className="popup-inputs-small"
                 placeholder="Enter email"
-                ref={emailRef}
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
               />
               <img
                 src={mail}
@@ -387,7 +435,8 @@ function NewClient(props) {
               <input
                 className="popup-inputs-small"
                 placeholder="Enter number"
-                ref={numberRef}
+                onChange={(e) => setNumber(e.target.value)}
+                value={number}
               />
               <img
                 src={phone}
@@ -417,7 +466,8 @@ function NewClient(props) {
               <input
                 className="popup-inputs-small"
                 placeholder="Enter email"
-                ref={emailRef}
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
               />
               <img
                 src={mail}
@@ -431,7 +481,8 @@ function NewClient(props) {
               <input
                 className="popup-inputs-small"
                 placeholder="Enter Last Name"
-                ref={lastNameRef}
+                onChange={(e) => setLastName(e.target.value)}
+                value={lastName}
               />
             </div>
           )}
@@ -456,7 +507,8 @@ function NewClient(props) {
               <input
                 className="popup-inputs-small"
                 placeholder="Enter number"
-                ref={numberRef}
+                onChange={(e) => setNumber(e.target.value)}
+                value={number}
               />
               <img
                 src={phone}
@@ -485,10 +537,7 @@ function NewClient(props) {
                     className="small-icon"
                   />
                 </a>
-                <span
-                  style={{ marginLeft: "10px", cursor: "pointer" }}
-                  onClick={delInvoice}
-                >
+                <span style={{ marginLeft: "10px" }} onClick={delInvoice}>
                   <img src={del} alt="delete-icon" className="small-icon" />
                 </span>
               </h2>
@@ -570,7 +619,7 @@ function NewClient(props) {
                 <img src={upload} alt="upload-icon" className="small-icon" />
               </span>
               <input
-                onChange={handleReceiptUpload}
+                onChange={handleReceiptChange}
                 type="file"
                 style={{ display: "none" }}
               />
@@ -699,12 +748,14 @@ function NewClient(props) {
         </div>
         <div className="col-12 col-lg-6">
           <select
-            onChange={handleStatusChange}
             value={clStatus}
+            onChange={handleStatusChange}
             className="popup-inputs-small-dropdown"
           >
             {clientStatuses?.map((stat, index) => (
-              <option key={index}>{stat}</option>
+              <option key={index} value={stat} disabled={index === 0}>
+                {stat}
+              </option>
             ))}
           </select>
         </div>
@@ -715,7 +766,8 @@ function NewClient(props) {
         </div>
         <div className="col-lg-12 col-12 text-start">
           <textarea
-            ref={notesRef}
+            onChange={(e) => setNotes(e.target.value)}
+            value={notes}
             type=""
             className="popup-inputs-4"
             placeholder="Enter Text"
@@ -734,7 +786,7 @@ function NewClient(props) {
         </div>
       </div>
       <div className="row justify-content-start" style={{ width: "100%" }}>
-        {pana.length > 0 && !viewMore ? (
+        {pana?.length > 0 && !viewMore ? (
           <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-start">
             {pana[0].name}
             <a
@@ -751,7 +803,7 @@ function NewClient(props) {
               <img src={del} alt="delete-icon" className="small-icon" />
             </span>
           </h2>
-        ) : pana.length > 1 && viewMore ? (
+        ) : pana?.length > 1 && viewMore ? (
           pana.map((file, index) => (
             <h2
               key={index}
@@ -760,7 +812,7 @@ function NewClient(props) {
               {file?.name}
               <a
                 href={file?.url}
-                download={file.url}
+                download={file?.url}
                 style={{ marginLeft: "10px" }}
               >
                 <img
@@ -785,7 +837,7 @@ function NewClient(props) {
         <div className="col-12 col-lg-6 text-start d-flex justify-content-center justify-content-md-start">
           <label className={`andent-button-sm`}>
             <h2 className="button-text">
-              {uploadingPana ? "Uploading ..." : "Panoramex"}
+              {uploadingPana ? "Uploading" : "Panoramex"}
             </h2>
             <span className="d-flex align-items-center">
               <img src={upload} alt="upload-icon" className="small-icon" />
@@ -804,7 +856,7 @@ function NewClient(props) {
             ></button>
           </label>
         </div>
-        {pana.length > 1 ? (
+        {pana?.length > 1 ? (
           <div className="col-6 col-lg-6 text-start d-flex justify-content-end align-items-center">
             <u
               onClick={() => {
@@ -828,9 +880,13 @@ function NewClient(props) {
           className="col-12 col-lg-12 text-start d-flex justify-content-center"
           style={{ gap: "24px" }}
         >
-          <button className="andent-button" onClick={handleClientCreate}>
+          <button
+            disabled={updatingClient}
+            className="andent-button"
+            onClick={handleClientUpdate}
+          >
             <h2 className="button-text">
-              Add Client
+              {updatingClient ? "Updating ..." : "Update Client"}
               <span
                 style={{
                   marginLeft: "8px",
@@ -848,4 +904,4 @@ function NewClient(props) {
   );
 }
 
-export default NewClient;
+export default EditClient;

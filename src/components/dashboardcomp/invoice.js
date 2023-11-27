@@ -12,6 +12,7 @@ import {
   sendInvoiceToClient,
 } from "../../services/api/clients";
 import { toast } from "react-toastify";
+import DeleteModal from "../modals/DeleteModal";
 
 function Invoice(props) {
   const { email, id } = props.clientInvoiceData;
@@ -21,6 +22,7 @@ function Invoice(props) {
   const [fileName, setFileName] = useState("");
   const [uploadingInvoice, setUploadingInvoice] = useState(false);
   const [uploadedInvoiceId, setUploadedInvoiceId] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const [desc, setDesc] = useState(
     "Dear Sir/Ma'am,\n\nKindly review the attached invoice and let us know if you have any queries.\n\nBest Regards,\nAndent Clinic."
   );
@@ -48,6 +50,7 @@ function Invoice(props) {
       });
   };
   const delInvoice = () => {
+    setShowModal(false);
     if (uploadedInvoiceId) {
       deleteClientFile(uploadedInvoiceId)
         .then((res) => {
@@ -105,6 +108,9 @@ function Invoice(props) {
           <h2 className="popup-heading">Send Invoice</h2>
         </div>
       </div>
+      <h1 className="closeBtn" onClick={() => setInvoiceOpen(false)}>
+        &times;
+      </h1>
       <div className="row justify-content-start" style={{ width: "100%" }}>
         <div className="col-12 col-lg-12 text-start">
           <h2 className="popup-heading-2 text-start">Client Email</h2>
@@ -171,7 +177,7 @@ function Invoice(props) {
               </a>
               <span
                 style={{ marginLeft: "10px", cursor: "pointer" }}
-                onClick={delInvoice}
+                onClick={() => setShowModal(true)}
               >
                 <img src={del} alt="delete-icon" className="small-icon" />
               </span>
@@ -216,6 +222,13 @@ function Invoice(props) {
             </span>
           </button>
         </div>
+
+        <DeleteModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          modalDescription={"Are you sure you want to delete this file?"}
+          onConfirm={delInvoice}
+        />
       </div>
     </>
   );

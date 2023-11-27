@@ -132,19 +132,22 @@ function Content() {
     };
   }, []);
 
-  useEffect(() => {
-    let handler = (e) => {
-      if (!menuRef2.current.contains(e.target)) {
-        setNewcl(false);
-      }
-    };
+  // this way of hiding add client modal also hides it when we try to close
+  // delete file confirmation modal
 
-    document.addEventListener("mousedown", handler);
+  // useEffect(() => {
+  //   let handler = (e) => {
+  //     if (!menuRef2.current.contains(e.target)) {
+  //       setNewcl(false);
+  //     }
+  //   };
 
-    return () => {
-      document.removeEventListener("mousedown", handler);
-    };
-  }, []);
+  //   document.addEventListener("mousedown", handler);
+
+  //   return () => {
+  //     document.removeEventListener("mousedown", handler);
+  //   };
+  // }, []);
 
   const handleDataFromChild = (data) => {
     setDataFromChild(data);

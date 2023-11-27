@@ -13,6 +13,8 @@ import { AuthContext } from "../../context/AuthProvider";
 import { updateClient } from "../../services/api/clients";
 import useData from "../../hooks/useData";
 import { isValidNumber } from "../../services/helperFunctions";
+import DeleteModal from "../modals/DeleteModal";
+
 function NewClient(props) {
   const { newClientId, popUpIsOpen, setPopUpIsOpen } = props;
   const { clientStatuses } = useData();
@@ -36,6 +38,10 @@ function NewClient(props) {
   const [uploadingConcentForm, setUploadingConcentForm] = useState(false);
   const [uploadingCbct, setUploadingCbct] = useState(false);
   const [uploadingPana, setUploadingPana] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [fileTypeToBeDeleted, setFileTypeToBeDeleted] = useState("");
+  const [panaIndex, setPanaIndex] = useState(null);
+  const [panaId, setPanaId] = useState("");
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const emailRef = useRef();
@@ -340,11 +346,31 @@ function NewClient(props) {
       });
   };
 
+  const handleFileDelete = () => {
+    setShowModal(false);
+    if (fileTypeToBeDeleted === "INVOICE") {
+      delInvoice();
+    } else if (fileTypeToBeDeleted === "RECEIPT") {
+      delReceipt();
+    } else if (fileTypeToBeDeleted === "CONSENT_FORM") {
+      delConsentForm();
+    } else if (fileTypeToBeDeleted === "CBCT") {
+      delCbct();
+    } else if (fileTypeToBeDeleted === "PANORAMEX") {
+      delPana(panaIndex, panaId);
+    }
+  };
+
   return (
     <>
       <div className="row justify-content-center text-center">
         <div className="col-lg-12 col-12">
-          <h2 className="popup-heading">Client Name</h2>
+          <h2 style={{ marginBottom: 0 }} className="popup-heading">
+            Add Client
+          </h2>
+          <h1 className="closeBtn" onClick={() => setPopUpIsOpen(false)}>
+            &times;
+          </h1>
         </div>
       </div>
       <div className="row justify-content-start" style={{ width: "100%" }}>
@@ -487,7 +513,10 @@ function NewClient(props) {
                 </a>
                 <span
                   style={{ marginLeft: "10px", cursor: "pointer" }}
-                  onClick={delInvoice}
+                  onClick={() => {
+                    setFileTypeToBeDeleted("INVOICE");
+                    setShowModal(true);
+                  }}
                 >
                   <img src={del} alt="delete-icon" className="small-icon" />
                 </span>
@@ -511,7 +540,13 @@ function NewClient(props) {
                     className="small-icon"
                   />
                 </a>
-                <span style={{ marginLeft: "10px" }} onClick={delReceipt}>
+                <span
+                  style={{ marginLeft: "10px" }}
+                  onClick={() => {
+                    setFileTypeToBeDeleted("RECEIPT");
+                    setShowModal(true);
+                  }}
+                >
                   <img src={del} alt="delete-icon" className="small-icon" />
                 </span>
               </h2>
@@ -602,7 +637,13 @@ function NewClient(props) {
                     className="small-icon"
                   />
                 </a>
-                <span style={{ marginLeft: "10px" }} onClick={delConsentForm}>
+                <span
+                  style={{ marginLeft: "10px" }}
+                  onClick={() => {
+                    setFileTypeToBeDeleted("CONSENT_FORM");
+                    setShowModal(true);
+                  }}
+                >
                   <img src={del} alt="delete-icon" className="small-icon" />
                 </span>
               </h2>
@@ -627,7 +668,10 @@ function NewClient(props) {
                 </a>
                 <span
                   style={{ marginLeft: "10px", cursor: "pointer" }}
-                  onClick={delCbct}
+                  onClick={() => {
+                    setFileTypeToBeDeleted("CBCT");
+                    setShowModal(true);
+                  }}
                 >
                   <img src={del} alt="delete-icon" className="small-icon" />
                 </span>
@@ -746,7 +790,12 @@ function NewClient(props) {
             </a>
             <span
               style={{ marginLeft: "10px" }}
-              onClick={() => delPana(0, pana[0]?.id)}
+              onClick={() => {
+                setFileTypeToBeDeleted("PANORAMEX");
+                setPanaIndex(0);
+                setPanaId(pana[0].id);
+                setShowModal(true);
+              }}
             >
               <img src={del} alt="delete-icon" className="small-icon" />
             </span>
@@ -771,7 +820,12 @@ function NewClient(props) {
               </a>
               <span
                 style={{ marginLeft: "10px" }}
-                onClick={() => delPana(index, file?.id)}
+                onClick={() => {
+                  setFileTypeToBeDeleted("PANORAMEX");
+                  setPanaIndex(index);
+                  setPanaId(file?.id);
+                  setShowModal(true);
+                }}
               >
                 <img src={del} alt="delete-icon" className="small-icon" />
               </span>
@@ -844,6 +898,12 @@ function NewClient(props) {
           </button>
         </div>
       </div>
+      <DeleteModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        modalDescription={"Are you sure you want to delete this file?"}
+        onConfirm={handleFileDelete}
+      />
     </>
   );
 }

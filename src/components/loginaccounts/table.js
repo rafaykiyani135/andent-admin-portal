@@ -11,13 +11,15 @@ import useData from "../../hooks/useData";
 import TableLoader from "../loaders/TableLoader";
 import { AuthContext } from "../../context/AuthProvider";
 import { doesUserHasPermission } from "../../services/helperFunctions";
-
+import DeleteModal from "../modals/DeleteModal";
 function UserAccounts() {
   const { roles, setRoles, users, setUsers } = useData();
   const { user } = useContext(AuthContext);
   const { permissions } = user.role;
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [updatingRole, setUpdatingRole] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [userToBeDeleted, setUserToBeDeleted] = useState("");
   const logout = useLogout();
 
   function fetchAllUsers() {
@@ -91,9 +93,10 @@ function UserAccounts() {
       });
   };
 
-  const handleDelete = (userId) => {
+  const handleDelete = () => {
+    setShowModal(false);
     setUpdatingRole(true);
-    deleteUser(userId)
+    deleteUser(userToBeDeleted)
       .then((res) => {
         toast.success("User Deleted Successfully");
         fetchAllUsers();
@@ -214,9 +217,12 @@ function UserAccounts() {
               {doesUserHasPermission(permissions, "USER", "DELETE") && (
                 <td className="box-size-3">
                   <span
+                    data-toggle="modal"
+                    data-target="#deleteModal"
                     style={{ textDecoration: "none", cursor: "pointer" }}
                     onClick={() => {
-                      handleDelete(row.id);
+                      setUserToBeDeleted(row.id);
+                      setShowModal(true);
                     }}
                   >
                     <img src={del} alt="delete-icon" className="small-icon" />
@@ -227,6 +233,13 @@ function UserAccounts() {
           ))}
         </tbody>
       </table>
+
+      <DeleteModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        modalDescription={"Are you sure you want to delete this account?"}
+        onConfirm={handleDelete}
+      />
     </div>
   );
 }

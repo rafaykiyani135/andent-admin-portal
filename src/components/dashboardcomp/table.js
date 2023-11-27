@@ -20,6 +20,7 @@ import EditClient from "./editClient";
 import { doesUserHasPermission } from "../../services/helperFunctions";
 import { AuthContext } from "../../context/AuthProvider";
 import Pagination from "../pagination/pagination";
+import DeleteModal from "../modals/DeleteModal";
 function Table() {
   const { user } = useContext(AuthContext);
   const { permissions } = user.role;
@@ -31,7 +32,8 @@ function Table() {
     totalClientPages,
   } = useData();
   const [loadingClients, setLoadingClients] = useState(false);
-
+  const [showModal, setShowModal] = useState(false);
+  const [clientToBeDeleted, setClientToBeDeleted] = useState("");
   const logout = useLogout();
   const [invoiceOpen, setInvoiceOpen] = useState(false);
 
@@ -87,9 +89,10 @@ function Table() {
       });
   }
 
-  const handleDelete = (clientId) => {
+  const handleDelete = () => {
+    setShowModal(false);
     setLoadingClients(true);
-    deleteClient(clientId)
+    deleteClient(clientToBeDeleted)
       .then((res) => {
         toast.success("Client Deleted Successfully");
         fetchAllClients();
@@ -135,33 +138,33 @@ function Table() {
     }
   }, []);
 
-  useEffect(() => {
-    let handler = (e) => {
-      if (!menuRef2?.current?.contains(e.target)) {
-        setNewcl2(false);
-      }
-    };
+  // useEffect(() => {
+  //   let handler = (e) => {
+  //     if (!menuRef2?.current?.contains(e.target)) {
+  //       setNewcl2(false);
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handler);
+  //   document.addEventListener("mousedown", handler);
 
-    return () => {
-      document.removeEventListener("mousedown", handler);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handler);
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    let handler = (e) => {
-      if (!menuRef.current.contains(e.target)) {
-        setInvoiceOpen(false);
-      }
-    };
+  // useEffect(() => {
+  //   let handler = (e) => {
+  //     if (!menuRef.current.contains(e.target)) {
+  //       setInvoiceOpen(false);
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handler);
+  //   document.addEventListener("mousedown", handler);
 
-    return () => {
-      document.removeEventListener("mousedown", handler);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handler);
+  //   };
+  // }, []);
 
   const handleInvoiceMaker = (clientInvoiceData) => {
     setInvoiceOpen(true);
@@ -379,7 +382,8 @@ function Table() {
                     <span
                       style={{ textDecoration: "none", cursor: "pointer" }}
                       onClick={() => {
-                        handleDelete(client.id);
+                        setClientToBeDeleted(client.id);
+                        setShowModal(true);
                       }}
                     >
                       <img src={del} alt="delete-icon" className="small-icon" />
@@ -434,6 +438,12 @@ function Table() {
           />
         </div>
       )}
+      <DeleteModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        modalDescription={"Are you sure you want to delete this client?"}
+        onConfirm={handleDelete}
+      />
 
       {/* <div className={`${newcl2 ? `new-client-2` : `d-none`}`} ref={menuRef2}>
         <ModifyClient data={modify} />

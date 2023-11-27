@@ -10,6 +10,7 @@ import { deleteRole, getPermissions, getRoles } from "../../services/api/roles";
 import useLogout from "../../hooks/useLogout";
 import { AuthContext } from "../../context/AuthProvider";
 import { doesUserHasPermission } from "../../services/helperFunctions";
+import DeleteModal from "../modals/DeleteModal";
 
 function RolesTable(props) {
   const { isAddRoleOpen } = props;
@@ -22,7 +23,8 @@ function RolesTable(props) {
   const menuRef = useRef();
   const logout = useLogout();
   const [allPermissions, setAllPermissions] = useState([]);
-
+  const [showModal, setShowModal] = useState(false);
+  const [roleToBeDeleted, setRoleToBeDeleted] = useState("");
   useEffect(() => {
     getPermissions()
       .then((res) => {
@@ -70,8 +72,9 @@ function RolesTable(props) {
     setRoleData(data);
   };
 
-  function handleDelete(roleId) {
-    deleteRole(roleId)
+  function handleDelete() {
+    setShowModal(false);
+    deleteRole(roleToBeDeleted)
       .then((res) => {
         toast.success("Role deleted Successfully");
         setLoadingRoles(true);
@@ -162,8 +165,8 @@ function RolesTable(props) {
                 <td
                   className="box-size-4"
                   onClick={() => {
-                    // send whole role data (needed for edit)
-                    handleDelete(role?.id);
+                    setRoleToBeDeleted(role?.id);
+                    setShowModal(true);
                   }}
                 >
                   <img
@@ -186,7 +189,13 @@ function RolesTable(props) {
             allPermissions={allPermissions}
           />
         </div>
-      )}
+      )}{" "}
+      <DeleteModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        modalDescription={"Are you sure you want to delete this role?"}
+        onConfirm={handleDelete}
+      />
     </div>
   );
 }

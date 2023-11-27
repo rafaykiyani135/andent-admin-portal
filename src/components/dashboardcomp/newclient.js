@@ -232,16 +232,17 @@ function NewClient(props) {
     if (
       !firstName ||
       !lastName ||
-      !email ||
-      !number ||
-      !notes ||
-      !selectedCountry ||
-      !clStatus
+      !email 
+      //only firstname,email and lastname required for adding client. rest information the admin can modify later..
+      //!number ||
+      //!notes ||
+      //!selectedCountry ||
+      //!clStatus
     ) {
-      toast.error("Fill all the fields");
-    } else if (!isValidNumber(number)) {
+      toast.error("Fill First and Last Name");
+    } else if (number && !isValidNumber(number)) {
       toast.error("Number is not valid");
-    } else if (number.length < 6) {
+    } else if (number && number.length < 6) {
       toast.error("Number can not have less than 6 characters");
     } else {
       const payLoad = {
@@ -411,6 +412,7 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Number</h2>
               <input
+                type="number"
                 className="popup-inputs-small"
                 placeholder="Enter number"
                 ref={numberRef}
@@ -480,6 +482,7 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Number</h2>
               <input
+                type="number"
                 className="popup-inputs-small"
                 placeholder="Enter number"
                 ref={numberRef}
@@ -492,288 +495,13 @@ function NewClient(props) {
             </div>
           )}
         </div>
-        <div
-          className="row justify-content-center text-center"
-          style={{ marginTop: "12px" }}
-        >
-          <div className="col-lg-6 col-12 d-flex justify-content-start">
-            {invoice ? (
-              <h2 className="popup-heading-3 text-start d-flex align-items-center">
-                {invoiceName}
-                <a
-                  href={invoice}
-                  download={invoice}
-                  style={{ marginLeft: "10px" }}
-                >
-                  <img
-                    src={download}
-                    alt="download-icon"
-                    className="small-icon"
-                  />
-                </a>
-                <span
-                  style={{ marginLeft: "10px", cursor: "pointer" }}
-                  onClick={() => {
-                    setFileTypeToBeDeleted("INVOICE");
-                    setShowModal(true);
-                  }}
-                >
-                  <img src={del} alt="delete-icon" className="small-icon" />
-                </span>
-              </h2>
-            ) : (
-              ""
-            )}
-          </div>
-          <div className="col-lg-6 col-12 d-flex justify-content-start justify-content-md-center">
-            {receipt ? (
-              <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-center">
-                {receiptName}
-                <a
-                  href={receipt}
-                  download={receipt}
-                  style={{ marginLeft: "10px" }}
-                >
-                  <img
-                    src={download}
-                    alt="download-icon"
-                    className="small-icon"
-                  />
-                </a>
-                <span
-                  style={{ marginLeft: "10px" }}
-                  onClick={() => {
-                    setFileTypeToBeDeleted("RECEIPT");
-                    setShowModal(true);
-                  }}
-                >
-                  <img src={del} alt="delete-icon" className="small-icon" />
-                </span>
-              </h2>
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
-        <div
-          className="row justify-content-center text-center"
-          style={{ marginTop: "12px" }}
-        >
-          <div className="col-lg-6 col-6 d-flex justify-content-center">
-            <label
-              className={`andent-button ${invoice ? `button-disabled` : ``}`}
-            >
-              <h2 className="button-text">
-                {isMobile
-                  ? uploadingInvoice
-                    ? "Uploading ..."
-                    : "Invoice"
-                  : uploadingInvoice
-                  ? "Uploading ..."
-                  : "Upload Invoice"}
-              </h2>
-              <span className="d-flex align-items-center">
-                <img src={upload} alt="upload-icon" className="small-icon" />
-              </span>
-              <input
-                onChange={handleInvoiceUpload}
-                type="file"
-                style={{ display: "none" }}
-              />
-              {/* Button triggers file input click */}
-              <button
-                disabled={uploadingInvoice}
-                type="button"
-                style={{ display: "none" }}
-              ></button>
-            </label>
-          </div>
-          <div className="col-lg-6 col-6 d-flex justify-content-center">
-            <label
-              className={`andent-button ${receipt ? `button-disabled` : ``}`}
-            >
-              <h2 className="button-text">
-                {isMobile
-                  ? uploadingReceipt
-                    ? "Uploading"
-                    : "Receipt"
-                  : uploadingReceipt
-                  ? "Uploading ..."
-                  : "Upload Receipt"}
-              </h2>
-              <span className="d-flex align-items-center">
-                <img src={upload} alt="upload-icon" className="small-icon" />
-              </span>
-              <input
-                onChange={handleReceiptUpload}
-                type="file"
-                style={{ display: "none" }}
-              />
-              {/* Button triggers file input click */}
-              <button
-                disabled={uploadingReceipt}
-                type="button"
-                style={{ display: "none" }}
-              ></button>
-            </label>
-          </div>
-        </div>
-        <div
-          className="row justify-content-center text-center"
-          style={{ marginTop: "12px" }}
-        >
-          <div className="col-lg-6 col-12 d-flex justify-content-start">
-            {consentForm ? (
-              <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-center">
-                {consentForm?.name}
-                <a
-                  href={consentForm?.url}
-                  download={consentForm?.url}
-                  style={{ marginLeft: "10px" }}
-                >
-                  <img
-                    src={download}
-                    alt="download-icon"
-                    className="small-icon"
-                  />
-                </a>
-                <span
-                  style={{ marginLeft: "10px" }}
-                  onClick={() => {
-                    setFileTypeToBeDeleted("CONSENT_FORM");
-                    setShowModal(true);
-                  }}
-                >
-                  <img src={del} alt="delete-icon" className="small-icon" />
-                </span>
-              </h2>
-            ) : (
-              ""
-            )}
-          </div>
-          <div className="col-lg-6 col-12 d-flex justify-content-start justify-content-md-center">
-            {cbct ? (
-              <h2 className="popup-heading-3 text-start d-flex align-items-center">
-                {cbct?.name}
-                <a
-                  href={cbct?.url}
-                  download={cbct?.url}
-                  style={{ marginLeft: "10px" }}
-                >
-                  <img
-                    src={download}
-                    alt="download-icon"
-                    className="small-icon"
-                  />
-                </a>
-                <span
-                  style={{ marginLeft: "10px", cursor: "pointer" }}
-                  onClick={() => {
-                    setFileTypeToBeDeleted("CBCT");
-                    setShowModal(true);
-                  }}
-                >
-                  <img src={del} alt="delete-icon" className="small-icon" />
-                </span>
-              </h2>
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
-        <div className="row justify-content-center text-center mt-4">
-          <div className="col-lg-6 col-6 d-flex justify-content-center">
-            <label
-              className={`andent-button ${
-                consentForm ? `button-disabled` : ``
-              }`}
-            >
-              <h2 className="button-text">
-                {uploadingConcentForm ? "Uploading ..." : "Consent Form"}
-              </h2>
-              <span className="d-flex align-items-center">
-                <img src={upload} alt="upload-icon" className="small-icon" />
-              </span>
-              <input
-                onChange={handleConcentFormUpload}
-                type="file"
-                style={{ display: "none" }}
-              />
-              {/* Button triggers file input click */}
-              <button
-                disabled={uploadingConcentForm}
-                type="button"
-                style={{ display: "none" }}
-              ></button>
-            </label>
-          </div>
-
-          <div className="col-lg-6 col-6 d-flex justify-content-center">
-            <label className={`andent-button ${cbct ? `button-disabled` : ``}`}>
-              <h2 className="button-text">
-                {isMobile
-                  ? uploadingCbct
-                    ? "Uploading"
-                    : "CBCT"
-                  : uploadingCbct
-                  ? "Uploading ..."
-                  : "Upload CBCT"}
-              </h2>
-              <span className="d-flex align-items-center">
-                <img src={upload} alt="upload-icon" className="small-icon" />
-              </span>
-              <input
-                onChange={handleCbctUpload}
-                type="file"
-                style={{ display: "none" }}
-              />
-              {/* Button triggers file input click */}
-              <button
-                disabled={uploadingCbct}
-                type="button"
-                style={{ display: "none" }}
-              ></button>
-            </label>
-          </div>
-        </div>
-      </div>
-      <div className="row justify-content-start" style={{ width: "100%" }}>
-        <div className="col-12 col-lg-12">
-          <h2 className="popup-heading-2 text-start">Client Status</h2>
-        </div>
-        <div className="col-12 col-lg-6">
-          <select
-            onChange={handleStatusChange}
-            value={clStatus}
-            className="popup-inputs-small-dropdown"
-          >
-            {clientStatuses?.map((stat, index) => (
-              <option key={index}>{stat}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <div className="row justify-content-start" style={{ width: "100%" }}>
-        <div className="col-12 col-lg-12 text-start">
-          <h2 className="popup-heading-2 text-start">Client Notes</h2>
-        </div>
-        <div className="col-lg-12 col-12 text-start">
-          <textarea
-            ref={notesRef}
-            type=""
-            className="popup-inputs-4"
-            placeholder="Enter Text"
-            style={{ resize: "none" }}
-          ></textarea>
-        </div>
-      </div>
-      <div className="row justify-content-start" style={{ width: "100%" }}>
+        <div className="row justify-content-start new-client-updated-pad2" style={{ width: "100%" }}>
         <div className="col-12 col-lg-12 text-start">
           <h2
             className="popup-heading-2 text-start"
             style={{ fontSize: "14px" }}
           >
-            Upload Panoramex (Jpg, Png, Pdf)
+            Upload Format (Jpg, Png, Pdf)
           </h2>
         </div>
       </div>
@@ -835,9 +563,9 @@ function NewClient(props) {
           ""
         )}
       </div>
-      <div className="row justify-content-start" style={{ width: "100%" }}>
-        <div className="col-12 col-lg-6 text-start d-flex justify-content-center justify-content-md-start">
-          <label className={`andent-button-sm`}>
+      <div className="row justify-content-center new-client-updated-pad2" style={{ width: "100%" }}>
+        <div className="col-12 col-lg-10 text-start d-flex justify-content-center justify-content-md-start">
+          <label className={`andent-button`} style={{width: isMobile? "auto" : "150px"}}>
             <h2 className="button-text">
               {uploadingPana ? "Uploading ..." : "Panoramex"}
             </h2>
@@ -873,6 +601,265 @@ function NewClient(props) {
         ) : (
           ""
         )}
+      </div>
+        <div className="row justify-content-start text-center new-client-updated-pad" style={{width:isMobile? "100%" : "50%"}}>
+        <div className="col-lg-12 col-12 d-flex justify-content-center">
+            <label
+              className={`andent-button ${invoice ? `button-disabled` : ``}`}
+            >
+              <h2 className="button-text">
+                {isMobile
+                  ? uploadingInvoice
+                    ? "Uploading ..."
+                    : "Invoice"
+                  : uploadingInvoice
+                  ? "Uploading ..."
+                  : "Upload Invoice"}
+              </h2>
+              <span className="d-flex align-items-center">
+                <img src={upload} alt="upload-icon" className="small-icon" />
+              </span>
+              <input
+                onChange={handleInvoiceUpload}
+                type="file"
+                style={{ display: "none" }}
+              />
+              {/* Button triggers file input click */}
+              <button
+                disabled={uploadingInvoice}
+                type="button"
+                style={{ display: "none" }}
+              ></button>
+            </label>
+          </div>
+          <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad2">
+            {invoice ? (
+              <h2 className="popup-heading-3 text-start d-flex align-items-center">
+                {invoiceName}
+                <a
+                  href={invoice}
+                  download={invoice}
+                  style={{ marginLeft: "10px" }}
+                >
+                  <img
+                    src={download}
+                    alt="download-icon"
+                    className="small-icon"
+                  />
+                </a>
+                <span
+                  style={{ marginLeft: "10px", cursor: "pointer" }}
+                  onClick={() => {
+                    setFileTypeToBeDeleted("INVOICE");
+                    setShowModal(true);
+                  }}
+                >
+                  <img src={del} alt="delete-icon" className="small-icon" />
+                </span>
+              </h2>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="col-lg-12 col-12 d-flex justify-content-center new-client-updated-pad">
+            <label
+              className={`andent-button ${receipt ? `button-disabled` : ``}`}
+            >
+              <h2 className="button-text">
+                {isMobile
+                  ? uploadingReceipt
+                    ? "Uploading"
+                    : "Receipt"
+                  : uploadingReceipt
+                  ? "Uploading ..."
+                  : "Upload Receipt"}
+              </h2>
+              <span className="d-flex align-items-center">
+                <img src={upload} alt="upload-icon" className="small-icon" />
+              </span>
+              <input
+                onChange={handleReceiptUpload}
+                type="file"
+                style={{ display: "none" }}
+              />
+              {/* Button triggers file input click */}
+              <button
+                disabled={uploadingReceipt}
+                type="button"
+                style={{ display: "none" }}
+              ></button>
+            </label>
+          </div>
+          <div className="col-lg-12 col-12 d-flex justify-content-start justify-content-md-center new-client-updated-pad2">
+            {receipt ? (
+              <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-center">
+                {receiptName}
+                <a
+                  href={receipt}
+                  download={receipt}
+                  style={{ marginLeft: "10px" }}
+                >
+                  <img
+                    src={download}
+                    alt="download-icon"
+                    className="small-icon"
+                  />
+                </a>
+                <span
+                  style={{ marginLeft: "10px" }}
+                  onClick={() => {
+                    setFileTypeToBeDeleted("RECEIPT");
+                    setShowModal(true);
+                  }}
+                >
+                  <img src={del} alt="delete-icon" className="small-icon" />
+                </span>
+              </h2>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="col-lg-12 col-12 d-flex justify-content-center new-client-updated-pad">
+            <label
+              className={`andent-button ${
+                consentForm ? `button-disabled` : ``
+              }`}
+            >
+              <h2 className="button-text">
+                {uploadingConcentForm ? "Uploading ..." : "Consent Form"}
+              </h2>
+              <span className="d-flex align-items-center">
+                <img src={upload} alt="upload-icon" className="small-icon" />
+              </span>
+              <input
+                onChange={handleConcentFormUpload}
+                type="file"
+                style={{ display: "none" }}
+              />
+              {/* Button triggers file input click */}
+              <button
+                disabled={uploadingConcentForm}
+                type="button"
+                style={{ display: "none" }}
+              ></button>
+            </label>
+          </div>
+          <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad2 ">
+            {consentForm ? (
+              <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-center">
+                {consentForm?.name}
+                <a
+                  href={consentForm?.url}
+                  download={consentForm?.url}
+                  style={{ marginLeft: "10px" }}
+                >
+                  <img
+                    src={download}
+                    alt="download-icon"
+                    className="small-icon"
+                  />
+                </a>
+                <span
+                  style={{ marginLeft: "10px" }}
+                  onClick={() => {
+                    setFileTypeToBeDeleted("CONSENT_FORM");
+                    setShowModal(true);
+                  }}
+                >
+                  <img src={del} alt="delete-icon" className="small-icon" />
+                </span>
+              </h2>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="col-lg-12 col-12 d-flex justify-content-center new-client-updated-pad">
+            <label className={`andent-button ${cbct ? `button-disabled` : ``}`}>
+              <h2 className="button-text">
+                {isMobile
+                  ? uploadingCbct
+                    ? "Uploading"
+                    : "CBCT"
+                  : uploadingCbct
+                  ? "Uploading ..."
+                  : "Upload CBCT"}
+              </h2>
+              <span className="d-flex align-items-center">
+                <img src={upload} alt="upload-icon" className="small-icon" />
+              </span>
+              <input
+                onChange={handleCbctUpload}
+                type="file"
+                style={{ display: "none" }}
+              />
+              {/* Button triggers file input click */}
+              <button
+                disabled={uploadingCbct}
+                type="button"
+                style={{ display: "none" }}
+              ></button>
+            </label>
+          </div>
+          <div className="col-lg-12 col-12 d-flex justify-content-start justify-content-md-center new-client-updated-pad2">
+            {cbct ? (
+              <h2 className="popup-heading-3 text-start d-flex align-items-center">
+                {cbct?.name}
+                <a
+                  href={cbct?.url}
+                  download={cbct?.url}
+                  style={{ marginLeft: "10px" }}
+                >
+                  <img
+                    src={download}
+                    alt="download-icon"
+                    className="small-icon"
+                  />
+                </a>
+                <span
+                  style={{ marginLeft: "10px", cursor: "pointer" }}
+                  onClick={() => {
+                    setFileTypeToBeDeleted("CBCT");
+                    setShowModal(true);
+                  }}
+                >
+                  <img src={del} alt="delete-icon" className="small-icon" />
+                </span>
+              </h2>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="row justify-content-start" style={{ width: "100%" }}>
+        <div className="col-12 col-lg-12">
+          <h2 className="popup-heading-2 text-start">Client Status</h2>
+        </div>
+        <div className="col-12 col-lg-6">
+          <select
+            onChange={handleStatusChange}
+            value={clStatus}
+            className="popup-inputs-small-dropdown"
+          >
+            {clientStatuses?.map((stat, index) => (
+              <option key={index}>{stat}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div className="row justify-content-start" style={{ width: "100%" }}>
+        <div className="col-12 col-lg-12 text-start">
+          <h2 className="popup-heading-2 text-start">Client Notes</h2>
+        </div>
+        <div className="col-lg-12 col-12 text-start">
+          <textarea
+            ref={notesRef}
+            type=""
+            className="popup-inputs-4"
+            placeholder="Enter Text"
+            style={{ resize: "none" }}
+          ></textarea>
+        </div>
       </div>
       <div
         className="row justify-content-start d-flex"

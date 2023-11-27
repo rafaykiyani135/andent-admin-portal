@@ -121,14 +121,7 @@ function UserAccounts() {
       <table className="andent-table">
         <thead>
           <tr>
-            <th
-              scope="col"
-              className=" box-size-2"
-              style={{ borderRadius: "4px 0px 0px 0px" }}
-            >
-              Id
-            </th>
-            <th scope="col" className=" box-size-3">
+            <th scope="col" className=" box-size-3" style={{ borderRadius: "4px 0px 0px 0px" }}>
               User Name
             </th>
             <th scope="col" className=" box-size-3">
@@ -153,7 +146,6 @@ function UserAccounts() {
           {(loadingUsers || updatingRole) && <TableLoader />}
           {users?.map((row, index) => (
             <tr key={row?.id}>
-              <td className="box-size-2">{row?.id}</td>
               <td className="box-size-3">{row?.name}</td>
               <td className="box-size-3">{row?.email}</td>
               <td

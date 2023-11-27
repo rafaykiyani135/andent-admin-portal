@@ -109,14 +109,7 @@ function RolesTable(props) {
       <table className="andent-table">
         <thead>
           <tr>
-            <th
-              scope="col"
-              className=" box-size-4"
-              style={{ borderRadius: "4px 0px 0px 0px" }}
-            >
-              Id
-            </th>
-            <th scope="col" className=" box-size-4">
+            <th scope="col" className=" box-size-4" style={{ borderRadius: "4px 0px 0px 0px" }}>
               Roles
             </th>
             {doesUserHasPermission(permissions, "ROLE", "UPDATE") && (
@@ -143,7 +136,6 @@ function RolesTable(props) {
           {loadingRoles && <TableLoader />}
           {roles?.map((role, index) => (
             <tr key={role?.id}>
-              <td className="box-size-4">{role?.id}</td>
               <td className="box-size-4">{role?.name}</td>
               {doesUserHasPermission(permissions, "ROLE", "UPDATE") && (
                 <td

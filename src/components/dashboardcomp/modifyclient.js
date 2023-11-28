@@ -191,57 +191,7 @@ function ModifyClient(props) {
             </div>
           )}
         </div>
-        <div
-          className="row justify-content-center text-center"
-          style={{ marginTop: "12px" }}
-        >
-          <div className="col-lg-6 col-6 d-flex justify-content-start">
-            {invoice ? (
-              <h2 className="popup-heading-3 text-start d-flex align-items-center">
-                {invoiceName}
-                <a
-                  href={invoice}
-                  download={invoiceName}
-                  style={{ marginLeft: "10px" }}
-                >
-                  <img
-                    src={download}
-                    alt="download-icon"
-                    className="small-icon"
-                  />
-                </a>
-                <span style={{ marginLeft: "10px" }} onClick={delInvoice}>
-                  <img src={del} alt="delete-icon" className="small-icon" />
-                </span>
-              </h2>
-            ) : (
-              ""
-            )}
-          </div>
-          <div className="col-lg-6 col-6">
-            {receipt ? (
-              <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-center">
-                {receiptName}
-                <a
-                  href={receipt}
-                  download={receiptName}
-                  style={{ marginLeft: "10px" }}
-                >
-                  <img
-                    src={download}
-                    alt="download-icon"
-                    className="small-icon"
-                  />
-                </a>
-                <span style={{ marginLeft: "10px" }} onClick={delReceipt}>
-                  <img src={del} alt="delete-icon" className="small-icon" />
-                </span>
-              </h2>
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
+z
         <div
           className="row justify-content-center text-center"
           style={{ marginTop: "12px" }}

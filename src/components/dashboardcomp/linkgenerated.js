@@ -30,8 +30,8 @@ function GLink(props) {
         <div className="col-lg-12 col-12">
           <div className="link-generated">
             <h2
-              className="popup-heading-2 d-flex justify-content-start align-items-center"
-              style={{ width: "401px", marginTop: "3.5px" }}
+              className="popup-heading-2 d-flex text-start justify-content-start align-items-center"
+              style={{  marginTop: "3.5px",display:"inline-block",width:"89%",overflow:"hidden" }}
             >
               {link}{" "}
               <span style={{ position: "fixed", left: "76%", top: "65%" }}>

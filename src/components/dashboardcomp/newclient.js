@@ -231,8 +231,8 @@ function NewClient(props) {
     const notes = notesRef.current.value;
     if (
       !firstName ||
-      !lastName ||
-      !email 
+      !lastName 
+      //!email 
       //only firstname,email and lastname required for adding client. rest information the admin can modify later..
       //!number ||
       //!notes ||
@@ -400,6 +400,7 @@ function NewClient(props) {
                 className="popup-inputs-small"
                 placeholder="Enter email"
                 ref={emailRef}
+                style={{paddingRight:"30px"}}
               />
               <img
                 src={mail}
@@ -416,6 +417,7 @@ function NewClient(props) {
                 className="popup-inputs-small"
                 placeholder="Enter number"
                 ref={numberRef}
+                style={{paddingRight:"30px"}}
               />
               <img
                 src={phone}
@@ -446,6 +448,7 @@ function NewClient(props) {
                 className="popup-inputs-small"
                 placeholder="Enter email"
                 ref={emailRef}
+                style={{paddingRight:"30px"}}
               />
               <img
                 src={mail}
@@ -486,6 +489,7 @@ function NewClient(props) {
                 className="popup-inputs-small"
                 placeholder="Enter number"
                 ref={numberRef}
+                style={{paddingRight:"30px"}}
               />
               <img
                 src={phone}
@@ -563,9 +567,9 @@ function NewClient(props) {
           ""
         )}
       </div>
-      <div className="row justify-content-center new-client-updated-pad2" style={{ width: "100%" }}>
+      <div className="row justify-content-start new-client-updated-pad2" style={{ width: "100%" }}>
         <div className="col-12 col-lg-10 text-start d-flex justify-content-center justify-content-md-start">
-          <label className={`andent-button`} style={{width: isMobile? "auto" : "150px"}}>
+          <label className={`andent-button-3`} style={{width: isMobile? "auto" : "150px"}}>
             <h2 className="button-text">
               {uploadingPana ? "Uploading ..." : "Panoramex"}
             </h2>
@@ -585,8 +589,7 @@ function NewClient(props) {
               style={{ display: "none" }}
             ></button>
           </label>
-        </div>
-        {pana.length > 1 ? (
+          {pana.length > 1 ? (
           <div className="col-6 col-lg-6 text-start d-flex justify-content-end align-items-center">
             <u
               onClick={() => {
@@ -601,11 +604,12 @@ function NewClient(props) {
         ) : (
           ""
         )}
+        </div>
       </div>
         <div className="row justify-content-start text-center new-client-updated-pad" style={{width:isMobile? "100%" : "50%"}}>
-        <div className="col-lg-12 col-12 d-flex justify-content-center">
+        <div className="col-lg-12 col-12 d-flex justify-content-start">
             <label
-              className={`andent-button ${invoice ? `button-disabled` : ``}`}
+              className={`andent-button-3 ${invoice ? `button-disabled` : ``}`}
             >
               <h2 className="button-text">
                 {isMobile
@@ -661,9 +665,9 @@ function NewClient(props) {
               ""
             )}
           </div>
-          <div className="col-lg-12 col-12 d-flex justify-content-center new-client-updated-pad">
+          <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad">
             <label
-              className={`andent-button ${receipt ? `button-disabled` : ``}`}
+              className={`andent-button-3 ${receipt ? `button-disabled` : ``}`}
             >
               <h2 className="button-text">
                 {isMobile
@@ -719,9 +723,9 @@ function NewClient(props) {
               ""
             )}
           </div>
-          <div className="col-lg-12 col-12 d-flex justify-content-center new-client-updated-pad">
+          <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad">
             <label
-              className={`andent-button ${
+              className={`andent-button-3 ${
                 consentForm ? `button-disabled` : ``
               }`}
             >
@@ -773,8 +777,8 @@ function NewClient(props) {
               ""
             )}
           </div>
-          <div className="col-lg-12 col-12 d-flex justify-content-center new-client-updated-pad">
-            <label className={`andent-button ${cbct ? `button-disabled` : ``}`}>
+          <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad">
+            <label className={`andent-button-3 ${cbct ? `button-disabled` : ``}`}>
               <h2 className="button-text">
                 {isMobile
                   ? uploadingCbct

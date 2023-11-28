@@ -219,6 +219,7 @@ function LoginContent() {
                     className="popup-inputs-small"
                     placeholder="Enter Email"
                     ref={emailRef}
+                    style={{paddingRight:"35px"}}
                   />
                   <img
                     src={mail}
@@ -276,6 +277,7 @@ function LoginContent() {
                 className="popup-inputs d-flex align-items-center"
                 placeholder="Enter Password"
                 ref={passwordRef}
+                style={{paddingRight:"30px"}}
               />
               <img
                 src={pass}
@@ -294,6 +296,7 @@ function LoginContent() {
                 className="popup-inputs d-flex align-items-center"
                 placeholder="Re-Enter Password"
                 ref={confirmPasswordRef}
+                style={{paddingRight:"30px"}}
               />
               <img
                 src={pass}

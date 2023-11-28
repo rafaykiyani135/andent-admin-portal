@@ -281,17 +281,18 @@ function EditClient(props) {
   function handleClientUpdate() {
     if (
       !firstName ||
-      !lastName ||
-      !email ||
-      !number ||
-      !notes ||
-      !selectedCountry ||
-      !clStatus
+      !lastName
+      //only first and last name are mandatory to keep a record
+      //!email ||
+      //!number ||
+      //!notes ||
+      //!selectedCountry ||
+      //!clStatus
     ) {
-      toast.error("Fill all the fields");
-    } else if (!isValidNumber(number)) {
+      toast.error("Fill First and Last Name");
+    } else if (number && !isValidNumber(number)) {
       toast.error("Number is not valid");
-    } else if (number.length < 6) {
+    } else if (number && number.length < 6) {
       toast.error("Number can not have less than 6 characters");
     } else {
       const payLoad = {
@@ -444,6 +445,7 @@ function EditClient(props) {
                 placeholder="Enter email"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
+                style={{paddingRight:"30px"}}
               />
               <img
                 src={mail}
@@ -460,6 +462,7 @@ function EditClient(props) {
                 placeholder="Enter number"
                 onChange={(e) => setNumber(e.target.value)}
                 value={number}
+                style={{paddingRight:"30px"}}
               />
               <img
                 src={phone}
@@ -491,6 +494,7 @@ function EditClient(props) {
                 placeholder="Enter email"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
+                style={{paddingRight:"30px"}}
               />
               <img
                 src={mail}
@@ -532,6 +536,7 @@ function EditClient(props) {
                 placeholder="Enter number"
                 onChange={(e) => setNumber(e.target.value)}
                 value={number}
+                style={{paddingRight:"30px"}}
               />
               <img
                 src={phone}
@@ -541,11 +546,145 @@ function EditClient(props) {
             </div>
           )}
         </div>
-        <div
-          className="row justify-content-center text-center"
-          style={{ marginTop: "12px" }}
-        >
-          <div className="col-lg-6 col-12 d-flex justify-content-start">
+
+        <div className="row justify-content-start new-client-updated-pad2" style={{ width: "100%" }}>
+        <div className="col-12 col-lg-12 text-start">
+          <h2
+            className="popup-heading-2 text-start"
+            style={{ fontSize: "14px" }}
+          >
+            Upload Format (Jpg, Png, Pdf)
+          </h2>
+        </div>
+      </div>
+      <div className="row justify-content-start" style={{ width: "100%" }}>
+        {pana.length > 0 && !viewMore ? (
+          <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-start">
+            {pana[0].name}
+            <a
+              href={pana[0].url}
+              download={pana[0].url}
+              style={{ marginLeft: "10px" }}
+            >
+              <img src={download} alt="download-icon" className="small-icon" />
+            </a>
+            <span
+              style={{ marginLeft: "10px" }}
+              onClick={() => {
+                setFileTypeToBeDeleted("PANORAMEX");
+                setPanaIndex(0);
+                setPanaId(pana[0].id);
+                setShowModal(true);
+              }}
+            >
+              <img src={del} alt="delete-icon" className="small-icon" />
+            </span>
+          </h2>
+        ) : pana.length > 1 && viewMore ? (
+          pana.map((file, index) => (
+            <h2
+              key={index}
+              className="popup-heading-3 text-start d-flex align-items-center justify-content-start"
+            >
+              {file?.name}
+              <a
+                href={file?.url}
+                download={file.url}
+                style={{ marginLeft: "10px" }}
+              >
+                <img
+                  src={download}
+                  alt="download-icon"
+                  className="small-icon"
+                />
+              </a>
+              <span
+                style={{ marginLeft: "10px" }}
+                onClick={() => {
+                  setFileTypeToBeDeleted("PANORAMEX");
+                  setPanaIndex(index);
+                  setPanaId(file?.id);
+                  setShowModal(true);
+                }}
+              >
+                <img src={del} alt="delete-icon" className="small-icon" />
+              </span>
+            </h2>
+          ))
+        ) : (
+          ""
+        )}
+      </div>
+      <div className="row justify-content-start new-client-updated-pad2" style={{ width: "100%" }}>
+        <div className="col-12 col-lg-10 text-start d-flex justify-content-start justify-content-md-start">
+          <label className={`andent-button-3`} style={{width: isMobile? "auto" : "150px"}}>
+            <h2 className="button-text">
+              {uploadingPana ? "Uploading ..." : "Panoramex"}
+            </h2>
+            <span className="d-flex align-items-center">
+              <img src={upload} alt="upload-icon" className="small-icon" />
+            </span>
+            <input
+              onChange={handlePanoramexUpload}
+              multiple
+              type="file"
+              style={{ display: "none" }}
+            />
+            {/* Button triggers file input click */}
+            <button
+              disabled={uploadingPana}
+              type="button"
+              style={{ display: "none" }}
+            ></button>
+          </label>
+          {pana.length > 1 ? (
+          <div className="col-6 col-lg-6 text-start d-flex justify-content-end align-items-center">
+            <u
+              onClick={() => {
+                setViewMore(!viewMore);
+              }}
+            >
+              <h2 className="popup-heading-2">
+                {viewMore ? "View Less Uploads" : "View More Uploads"}
+              </h2>
+            </u>
+          </div>
+        ) : (
+          ""
+        )}
+        </div>
+      </div>
+        <div className="row justify-content-start text-center new-client-updated-pad" style={{width:isMobile? "100%" : "50%"}}>
+        <div className="col-lg-12 col-12 d-flex justify-content-start">
+            <label
+              className={`andent-button-3 ${invoice ? `button-disabled` : ``}`}
+            >
+              <h2 className="button-text">
+                {isMobile
+                  ? uploadingInvoice
+                    ? "Uploading ..."
+                    : "Invoice"
+                  : uploadingInvoice
+                  ? "Uploading ..."
+                  : "Upload Invoice"}
+              </h2>
+              <span className="d-flex align-items-center">
+                <img src={upload} alt="upload-icon" className="small-icon" />
+              </span>
+              <input
+                onChange={handleInvoiceUpload}
+                type="file"
+                style={{ display: "none" }}
+              />
+              {/* Button triggers file input click */}
+              <button
+                disabled={uploadingInvoice}
+                type="button"
+                style={{ display: "none" }}
+              ></button>
+            </label>
+          </div>
+          <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad2">
             {invoice ? (
               <h2 className="popup-heading-3 text-start d-flex align-items-center">
                 {invoiceName}
@@ -561,7 +700,7 @@ function EditClient(props) {
                   />
                 </a>
                 <span
-                  style={{ marginLeft: "10px" }}
+                  style={{ marginLeft: "10px", cursor: "pointer" }}
                   onClick={() => {
                     setFileTypeToBeDeleted("INVOICE");
                     setShowModal(true);
@@ -574,7 +713,36 @@ function EditClient(props) {
               ""
             )}
           </div>
-          <div className="col-lg-6 col-12 d-flex justify-content-start justify-content-md-center">
+          <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad">
+            <label
+              className={`andent-button-3 ${receipt ? `button-disabled` : ``}`}
+            >
+              <h2 className="button-text">
+                {isMobile
+                  ? uploadingReceipt
+                    ? "Uploading"
+                    : "Receipt"
+                  : uploadingReceipt
+                  ? "Uploading ..."
+                  : "Upload Receipt"}
+              </h2>
+              <span className="d-flex align-items-center">
+                <img src={upload} alt="upload-icon" className="small-icon" />
+              </span>
+              <input
+                onChange={handleReceiptChange}
+                type="file"
+                style={{ display: "none" }}
+              />
+              {/* Button triggers file input click */}
+              <button
+                disabled={uploadingReceipt}
+                type="button"
+                style={{ display: "none" }}
+              ></button>
+            </label>
+          </div>
+          <div className="col-lg-12 col-12 d-flex justify-content-start justify-content-md-center new-client-updated-pad2">
             {receipt ? (
               <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-center">
                 {receiptName}
@@ -603,75 +771,32 @@ function EditClient(props) {
               ""
             )}
           </div>
-        </div>
-        <div
-          className="row justify-content-center text-center"
-          style={{ marginTop: "12px" }}
-        >
-          <div className="col-lg-6 col-6 d-flex justify-content-center">
+          <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad">
             <label
-              className={`andent-button ${invoice ? `button-disabled` : ``}`}
+              className={`andent-button-3 ${
+                consentForm ? `button-disabled` : ``
+              }`}
             >
               <h2 className="button-text">
-                {isMobile
-                  ? uploadingInvoice
-                    ? "Uploading ..."
-                    : "Invoice"
-                  : uploadingInvoice
-                  ? "Uploading ..."
-                  : "Upload Invoice"}
+                {uploadingConcentForm ? "Uploading ..." : "Consent Form"}
               </h2>
               <span className="d-flex align-items-center">
                 <img src={upload} alt="upload-icon" className="small-icon" />
               </span>
               <input
-                onChange={handleInvoiceUpload}
+                onChange={handleConcentFormUpload}
                 type="file"
                 style={{ display: "none" }}
               />
               {/* Button triggers file input click */}
               <button
-                disabled={uploadingInvoice}
+                disabled={uploadingConcentForm}
                 type="button"
                 style={{ display: "none" }}
               ></button>
             </label>
           </div>
-          <div className="col-lg-6 col-6 d-flex justify-content-center">
-            <label
-              className={`andent-button ${receipt ? `button-disabled` : ``}`}
-            >
-              <h2 className="button-text">
-                {isMobile
-                  ? uploadingReceipt
-                    ? "Uploading"
-                    : "Receipt"
-                  : uploadingReceipt
-                  ? "Uploading ..."
-                  : "Upload Receipt"}
-              </h2>
-              <span className="d-flex align-items-center">
-                <img src={upload} alt="upload-icon" className="small-icon" />
-              </span>
-              <input
-                onChange={handleReceiptChange}
-                type="file"
-                style={{ display: "none" }}
-              />
-              {/* Button triggers file input click */}
-              <button
-                disabled={uploadingReceipt}
-                type="button"
-                style={{ display: "none" }}
-              ></button>
-            </label>
-          </div>
-        </div>
-        <div
-          className="row justify-content-center text-center"
-          style={{ marginTop: "12px" }}
-        >
-          <div className="col-lg-6 col-12 d-flex justify-content-start">
+          <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad2 ">
             {consentForm ? (
               <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-center">
                 {consentForm?.name}
@@ -700,7 +825,34 @@ function EditClient(props) {
               ""
             )}
           </div>
-          <div className="col-lg-6 col-12 d-flex justify-content-start justify-content-md-center">
+          <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad">
+            <label className={`andent-button-3 ${cbct ? `button-disabled` : ``}`}>
+              <h2 className="button-text">
+                {isMobile
+                  ? uploadingCbct
+                    ? "Uploading"
+                    : "CBCT"
+                  : uploadingCbct
+                  ? "Uploading ..."
+                  : "Upload CBCT"}
+              </h2>
+              <span className="d-flex align-items-center">
+                <img src={upload} alt="upload-icon" className="small-icon" />
+              </span>
+              <input
+                onChange={handleCbctUpload}
+                type="file"
+                style={{ display: "none" }}
+              />
+              {/* Button triggers file input click */}
+              <button
+                disabled={uploadingCbct}
+                type="button"
+                style={{ display: "none" }}
+              ></button>
+            </label>
+          </div>
+          <div className="col-lg-12 col-12 d-flex justify-content-start justify-content-md-center new-client-updated-pad2">
             {cbct ? (
               <h2 className="popup-heading-3 text-start d-flex align-items-center">
                 {cbct?.name}
@@ -730,61 +882,9 @@ function EditClient(props) {
             )}
           </div>
         </div>
-        <div className="row justify-content-center text-center mt-4">
-          <div className="col-lg-6 col-6 d-flex justify-content-center">
-            <label
-              className={`andent-button ${
-                consentForm ? `button-disabled` : ``
-              }`}
-            >
-              <h2 className="button-text">
-                {uploadingConcentForm ? "Uploading ..." : "Consent Form"}
-              </h2>
-              <span className="d-flex align-items-center">
-                <img src={upload} alt="upload-icon" className="small-icon" />
-              </span>
-              <input
-                onChange={handleConcentFormUpload}
-                type="file"
-                style={{ display: "none" }}
-              />
-              {/* Button triggers file input click */}
-              <button
-                disabled={uploadingConcentForm}
-                type="button"
-                style={{ display: "none" }}
-              ></button>
-            </label>
-          </div>
 
-          <div className="col-lg-6 col-6 d-flex justify-content-center">
-            <label className={`andent-button ${cbct ? `button-disabled` : ``}`}>
-              <h2 className="button-text">
-                {isMobile
-                  ? uploadingCbct
-                    ? "Uploading"
-                    : "CBCT"
-                  : uploadingCbct
-                  ? "Uploading ..."
-                  : "Upload CBCT"}
-              </h2>
-              <span className="d-flex align-items-center">
-                <img src={upload} alt="upload-icon" className="small-icon" />
-              </span>
-              <input
-                onChange={handleCbctUpload}
-                type="file"
-                style={{ display: "none" }}
-              />
-              {/* Button triggers file input click */}
-              <button
-                disabled={uploadingCbct}
-                type="button"
-                style={{ display: "none" }}
-              ></button>
-            </label>
-          </div>
-        </div>
+
+        
       </div>
       <div className="row justify-content-start" style={{ width: "100%" }}>
         <div className="col-12 col-lg-12">
@@ -819,113 +919,7 @@ function EditClient(props) {
           ></textarea>
         </div>
       </div>
-      <div className="row justify-content-start" style={{ width: "100%" }}>
-        <div className="col-12 col-lg-12 text-start">
-          <h2
-            className="popup-heading-2 text-start"
-            style={{ fontSize: "14px" }}
-          >
-            Upload Panoramex (Jpg, Png, Pdf)
-          </h2>
-        </div>
-      </div>
-      <div className="row justify-content-start" style={{ width: "100%" }}>
-        {pana?.length > 0 && !viewMore ? (
-          <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-start">
-            {pana[0].name}
-            <a
-              href={pana[0].url}
-              download={pana[0].url}
-              style={{ marginLeft: "10px" }}
-            >
-              <img src={download} alt="download-icon" className="small-icon" />
-            </a>
-            <span
-              style={{ marginLeft: "10px" }}
-              onClick={() => {
-                setFileTypeToBeDeleted("PANORAMEX");
-                setPanaIndex(0);
-                setPanaId(pana[0].id);
-                setShowModal(true);
-              }}
-            >
-              <img src={del} alt="delete-icon" className="small-icon" />
-            </span>
-          </h2>
-        ) : pana?.length > 1 && viewMore ? (
-          pana.map((file, index) => (
-            <h2
-              key={index}
-              className="popup-heading-3 text-start d-flex align-items-center justify-content-start"
-            >
-              {file?.name}
-              <a
-                href={file?.url}
-                download={file?.url}
-                style={{ marginLeft: "10px" }}
-              >
-                <img
-                  src={download}
-                  alt="download-icon"
-                  className="small-icon"
-                />
-              </a>
-              <span
-                style={{ marginLeft: "10px" }}
-                onClick={() => {
-                  setFileTypeToBeDeleted("PANORAMEX");
-                  setPanaIndex(index);
-                  setPanaId(file?.id);
-                  setShowModal(true);
-                }}
-              >
-                <img src={del} alt="delete-icon" className="small-icon" />
-              </span>
-            </h2>
-          ))
-        ) : (
-          ""
-        )}
-      </div>
-      <div className="row justify-content-start" style={{ width: "100%" }}>
-        <div className="col-12 col-lg-6 text-start d-flex justify-content-center justify-content-md-start">
-          <label className={`andent-button-sm`}>
-            <h2 className="button-text">
-              {uploadingPana ? "Uploading" : "Panoramex"}
-            </h2>
-            <span className="d-flex align-items-center">
-              <img src={upload} alt="upload-icon" className="small-icon" />
-            </span>
-            <input
-              onChange={handlePanoramexUpload}
-              multiple
-              type="file"
-              style={{ display: "none" }}
-            />
-            {/* Button triggers file input click */}
-            <button
-              disabled={uploadingPana}
-              type="button"
-              style={{ display: "none" }}
-            ></button>
-          </label>
-        </div>
-        {pana?.length > 1 ? (
-          <div className="col-6 col-lg-6 text-start d-flex justify-content-end align-items-center">
-            <u
-              onClick={() => {
-                setViewMore(!viewMore);
-              }}
-            >
-              <h2 className="popup-heading-2">
-                {viewMore ? "View Less Uploads" : "View More Uploads"}
-              </h2>
-            </u>
-          </div>
-        ) : (
-          ""
-        )}
-      </div>
+  
       <div
         className="row justify-content-start d-flex"
         style={{ width: "100%" }}
@@ -936,7 +930,7 @@ function EditClient(props) {
         >
           <button
             disabled={updatingClient}
-            className="andent-button"
+            className="andent-button-3"
             onClick={handleClientUpdate}
           >
             <h2 className="button-text">

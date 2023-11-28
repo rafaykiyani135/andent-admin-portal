@@ -44,7 +44,8 @@ function RolesContent() {
   }, []);
 
   return (
-    <div className="d-flex justify-content-center cl-table-pos">
+    <div className="d-flex justify-content-center cl-table-pos"
+    style={{ width: "100vw" }}>
       <div className="roles-content">
         <div className="row justify-content-start align-items-center">
           <div className="col-lg-5 col-md-12 col-12 d-flex justify-content-center justify-content-md-start">

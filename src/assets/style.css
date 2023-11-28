@@ -378,6 +378,18 @@
   height: 38px;
 }
 
+.andent-button-3 {
+  border: transparent;
+  height: 30px;
+  display: flex;
+  padding: 6px 12px 6px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 50px;
+  background: var(--primary-blue-500, #6da7a2);
+}
+
 .andent-button-2 h2 {
   color: var(--shades-white, #fff);
   /* Paragraph/P3/Semi Bold */
@@ -404,7 +416,7 @@
   transform: translate(-50%, -50%);
   display: flex;
   width: 520px !important;
-  height: 167px;
+  height: auto;
   padding: 12px 0px;
   flex-direction: column;
   align-items: center;
@@ -424,7 +436,7 @@
 .link-generated {
   display: flex;
   width: 334px;
-  height: 36px;
+  height: 70px;
   padding: 0px 12px;
   align-items: center;
   gap: 12px;
@@ -522,6 +534,8 @@
 
 .new-client-2 {
   position: fixed;
+  overflow: auto;
+  height: 90vh;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

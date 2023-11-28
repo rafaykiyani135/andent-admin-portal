@@ -69,7 +69,7 @@ function MagicLink({ sendDataToParent }) {
                 className={`magicdropdown-content ${
                   isOpen ? "open" : ""
                 } justify-content-end`}
-                style={{ gap: "4px" }}
+                style={{ gap: "4px",paddingTop:"20px" }}
               >
                 <Link
                   style={{
@@ -79,7 +79,7 @@ function MagicLink({ sendDataToParent }) {
                   }}
                   onClick={handleLanguageChange}
                 >
-                  English link
+                  English
                   <span>
                     <img
                       src={dgenerate}
@@ -93,7 +93,7 @@ function MagicLink({ sendDataToParent }) {
                   style={{ textDecoration: "none", color: "#4B5768" }}
                   onClick={handleLanguageChange}
                 >
-                  Albanian link
+                  Albanian
                   <span>
                     <img
                       src={dgenerate}
@@ -107,7 +107,7 @@ function MagicLink({ sendDataToParent }) {
                   style={{ textDecoration: "none", color: "#4B5768" }}
                   onClick={handleLanguageChange}
                 >
-                  Italian link
+                  Italian
                   <span>
                     <img
                       src={dgenerate}

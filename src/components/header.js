@@ -217,12 +217,6 @@ function Header() {
             className={`${isMobile ? "andent-logo-small" : "andent-logo"}`}
           />
         </div>
-        <div
-          className="col-lg-2 text-start d-none d-lg-block no-cont-offset3 text-center text-md-start"
-          style={{ width: "auto" }}
-        >
-          <h1 className="login-top-text">Andent Portal</h1>
-        </div>
         {user && (
           <div className="col-6 col-lg-3 d-flex justify-content-end justify-content-md-end align-items-center header-user">
             {
@@ -329,6 +323,7 @@ function Header() {
                       className="popup-inputs"
                       placeholder="Enter Password"
                       ref={oldPwdRef}
+                      style={{paddingRight:"30px"}}
                     />
                     <img
                       src={passicon}
@@ -352,6 +347,7 @@ function Header() {
                       className="popup-inputs"
                       placeholder="Enter Password"
                       ref={pwdRef}
+                      style={{paddingRight:"30px"}}
                     />
                     <img
                       src={passicon}
@@ -377,6 +373,7 @@ function Header() {
                       className="popup-inputs"
                       placeholder="Re-Enter Password"
                       ref={confirmPwdRef}
+                      style={{paddingRight:"30px"}}
                     />
                     <img
                       src={passicon}

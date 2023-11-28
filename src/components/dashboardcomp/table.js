@@ -212,10 +212,12 @@ function Table() {
       <table className="andent-table">
         <thead>
           <tr>
+            <th scope="col" className="box-size" style={{ borderRadius: "4px 0px 0px 0px" }}>
+              <h2 className="table-text-td">Created By</h2>
+            </th>
             <th
               scope="col"
               className="box-size"
-              style={{ borderRadius: "4px 0px 0px 0px" }}
             >
               <h2 className="table-text-td">Client Name</h2>
             </th>
@@ -232,9 +234,6 @@ function Table() {
             </th>
             <th scope="col" className="box-size">
               <h2 className="table-text-td">Source</h2>
-            </th>
-            <th scope="col" className="box-size">
-              <h2 className="table-text-td">Created By</h2>
             </th>
             <th scope="col" className="box-size">
               <h2 className="table-text-td">Send Invoice</h2>
@@ -260,6 +259,9 @@ function Table() {
           {loadingClients && <TableLoader />}
           {clients?.map((client, index) => (
             <tr key={client?.id}>
+              <td className="box-size">
+                <h2 className="table-text">{client?.user?.name}</h2>
+              </td>
               <td
                 className="box-size"
                 onClick={() =>
@@ -293,9 +295,6 @@ function Table() {
               </td>
               <td className="box-size">
                 <h2 className="table-text">{client?.source}</h2>
-              </td>
-              <td className="box-size">
-                <h2 className="table-text">{client?.user?.name}</h2>
               </td>
               <td className="box-size">
                 <Link

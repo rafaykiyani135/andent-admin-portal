@@ -17,17 +17,21 @@ export async function getClients(
     },
   });
 }
-export async function createClient() {
+
+export async function getClientById(clientId) {
+  const apiKey = getApiKeyFromStorage();
+  return await Axios.get(`clients/${clientId}`, {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+}
+export async function createClient(userId) {
   const createClientPayLoad = {
     firstName: "John",
     lastName: "Doe",
     source: "Manual Entry",
-    status: "Contacted",
-    country: "United Kingdom",
-    clientNotes: "Fix My Teeth",
-    email: `${Date.now()}@gmail.com`,
-    number: "0513338383",
-    userId: "b18e1c77-fa13-11ed-ac69-0a002700000c",
+    userId,
   };
   const apiKey = getApiKeyFromStorage();
   return await Axios.post("clients", createClientPayLoad, {

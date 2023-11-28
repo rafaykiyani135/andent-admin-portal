@@ -19,10 +19,11 @@ import { capitalizeFirstLetter } from "../../services/helperFunctions";
 import useData from "../../hooks/useData";
 import { isValidNumber } from "../../services/helperFunctions";
 import DeleteModal from "../modals/DeleteModal";
-
+import { getClientById } from "../../services/api/clients";
 function EditClient(props) {
-  const { editClientId, setPopUpIsOpen, clientData, fetchAllClients } = props;
-  const { clientStatuses, setClients } = useData();
+  const { editClientId, setPopUpIsOpen } = props;
+  const [clientData, setClientData] = useState([]);
+  const { clientStatuses } = useData();
   const [viewMore, setViewMore] = useState(false);
   const [invoice, setInvoice] = useState(null);
   const [pana, setPana] = useState([]);
@@ -31,10 +32,8 @@ function EditClient(props) {
   const [receiptName, setReceiptName] = useState("");
   const [uploadedInvoiceId, setUploadedInvoiceId] = useState("");
   const [uploadedReceiptId, setUploadedReceiptId] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState(
-    clientData?.country ?? "Select Country"
-  );
-  const [clStatus, setclStatus] = useState(clientData?.status ?? "New");
+  const [selectedCountry, setSelectedCountry] = useState("Select Country");
+  const [clStatus, setclStatus] = useState("New");
   const [isMobile, setIsMobile] = useState(false);
   const { user } = useContext(AuthContext);
   const [uploadingInvoice, setUploadingInvoice] = useState(false);
@@ -44,11 +43,11 @@ function EditClient(props) {
   const [cbct, setCbct] = useState(null);
   const [uploadingConcentForm, setUploadingConcentForm] = useState(false);
   const [uploadingCbct, setUploadingCbct] = useState(false);
-  const [firstName, setFirstName] = useState(clientData?.firstName);
-  const [lastName, setLastName] = useState(clientData?.lastName);
-  const [email, setEmail] = useState(clientData?.email);
-  const [number, setNumber] = useState(clientData?.number);
-  const [notes, setNotes] = useState(clientData?.notes);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [number, setNumber] = useState("");
+  const [notes, setNotes] = useState("");
   const [updatingClient, setUpdatingClient] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [fileTypeToBeDeleted, setFileTypeToBeDeleted] = useState("");
@@ -104,6 +103,16 @@ function EditClient(props) {
 
     uploadedPanoramex && setPana(uploadedPanoramex);
   }, [clientData]);
+
+  useEffect(() => {
+    getClientById(editClientId)
+      .then((res) => {
+        setClientData(res?.data?.data);
+      })
+      .catch((err) => {
+        toast.error(err?.response?.data?.message || "Failed to load Client");
+      });
+  }, [editClientId]);
 
   const handlePanoramexUpload = (e) => {
     const panoramexFiles = e.target.files;
@@ -445,7 +454,7 @@ function EditClient(props) {
                 placeholder="Enter email"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
-                style={{paddingRight:"30px"}}
+                style={{ paddingRight: "30px" }}
               />
               <img
                 src={mail}
@@ -462,7 +471,7 @@ function EditClient(props) {
                 placeholder="Enter number"
                 onChange={(e) => setNumber(e.target.value)}
                 value={number}
-                style={{paddingRight:"30px"}}
+                style={{ paddingRight: "30px" }}
               />
               <img
                 src={phone}
@@ -494,7 +503,7 @@ function EditClient(props) {
                 placeholder="Enter email"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
-                style={{paddingRight:"30px"}}
+                style={{ paddingRight: "30px" }}
               />
               <img
                 src={mail}
@@ -536,7 +545,7 @@ function EditClient(props) {
                 placeholder="Enter number"
                 onChange={(e) => setNumber(e.target.value)}
                 value={number}
-                style={{paddingRight:"30px"}}
+                style={{ paddingRight: "30px" }}
               />
               <img
                 src={phone}
@@ -547,49 +556,26 @@ function EditClient(props) {
           )}
         </div>
 
-        <div className="row justify-content-start new-client-updated-pad2" style={{ width: "100%" }}>
-        <div className="col-12 col-lg-12 text-start">
-          <h2
-            className="popup-heading-2 text-start"
-            style={{ fontSize: "14px" }}
-          >
-            Upload Format (Jpg, Png, Pdf)
-          </h2>
-        </div>
-      </div>
-      <div className="row justify-content-start" style={{ width: "100%" }}>
-        {pana.length > 0 && !viewMore ? (
-          <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-start">
-            {pana[0].name}
-            <a
-              href={pana[0].url}
-              download={pana[0].url}
-              style={{ marginLeft: "10px" }}
-            >
-              <img src={download} alt="download-icon" className="small-icon" />
-            </a>
-            <span
-              style={{ marginLeft: "10px" }}
-              onClick={() => {
-                setFileTypeToBeDeleted("PANORAMEX");
-                setPanaIndex(0);
-                setPanaId(pana[0].id);
-                setShowModal(true);
-              }}
-            >
-              <img src={del} alt="delete-icon" className="small-icon" />
-            </span>
-          </h2>
-        ) : pana.length > 1 && viewMore ? (
-          pana.map((file, index) => (
+        <div
+          className="row justify-content-start new-client-updated-pad2"
+          style={{ width: "100%" }}
+        >
+          <div className="col-12 col-lg-12 text-start">
             <h2
-              key={index}
-              className="popup-heading-3 text-start d-flex align-items-center justify-content-start"
+              className="popup-heading-2 text-start"
+              style={{ fontSize: "14px" }}
             >
-              {file?.name}
+              Upload Format (Jpg, Png, Pdf)
+            </h2>
+          </div>
+        </div>
+        <div className="row justify-content-start" style={{ width: "100%" }}>
+          {pana.length > 0 && !viewMore ? (
+            <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-start">
+              {pana[0].name}
               <a
-                href={file?.url}
-                download={file.url}
+                href={pana[0].url}
+                download={pana[0].url}
                 style={{ marginLeft: "10px" }}
               >
                 <img
@@ -602,60 +588,99 @@ function EditClient(props) {
                 style={{ marginLeft: "10px" }}
                 onClick={() => {
                   setFileTypeToBeDeleted("PANORAMEX");
-                  setPanaIndex(index);
-                  setPanaId(file?.id);
+                  setPanaIndex(0);
+                  setPanaId(pana[0].id);
                   setShowModal(true);
                 }}
               >
                 <img src={del} alt="delete-icon" className="small-icon" />
               </span>
             </h2>
-          ))
-        ) : (
-          ""
-        )}
-      </div>
-      <div className="row justify-content-start new-client-updated-pad2" style={{ width: "100%" }}>
-        <div className="col-12 col-lg-10 text-start d-flex justify-content-start justify-content-md-start">
-          <label className={`andent-button-3`} style={{width: isMobile? "auto" : "150px"}}>
-            <h2 className="button-text">
-              {uploadingPana ? "Uploading ..." : "Panoramex"}
-            </h2>
-            <span className="d-flex align-items-center">
-              <img src={upload} alt="upload-icon" className="small-icon" />
-            </span>
-            <input
-              onChange={handlePanoramexUpload}
-              multiple
-              type="file"
-              style={{ display: "none" }}
-            />
-            {/* Button triggers file input click */}
-            <button
-              disabled={uploadingPana}
-              type="button"
-              style={{ display: "none" }}
-            ></button>
-          </label>
-          {pana.length > 1 ? (
-          <div className="col-6 col-lg-6 text-start d-flex justify-content-end align-items-center">
-            <u
-              onClick={() => {
-                setViewMore(!viewMore);
-              }}
-            >
-              <h2 className="popup-heading-2">
-                {viewMore ? "View Less Uploads" : "View More Uploads"}
+          ) : pana.length > 1 && viewMore ? (
+            pana.map((file, index) => (
+              <h2
+                key={index}
+                className="popup-heading-3 text-start d-flex align-items-center justify-content-start"
+              >
+                {file?.name}
+                <a
+                  href={file?.url}
+                  download={file.url}
+                  style={{ marginLeft: "10px" }}
+                >
+                  <img
+                    src={download}
+                    alt="download-icon"
+                    className="small-icon"
+                  />
+                </a>
+                <span
+                  style={{ marginLeft: "10px" }}
+                  onClick={() => {
+                    setFileTypeToBeDeleted("PANORAMEX");
+                    setPanaIndex(index);
+                    setPanaId(file?.id);
+                    setShowModal(true);
+                  }}
+                >
+                  <img src={del} alt="delete-icon" className="small-icon" />
+                </span>
               </h2>
-            </u>
-          </div>
-        ) : (
-          ""
-        )}
+            ))
+          ) : (
+            ""
+          )}
         </div>
-      </div>
-        <div className="row justify-content-start text-center new-client-updated-pad" style={{width:isMobile? "100%" : "50%"}}>
-        <div className="col-lg-12 col-12 d-flex justify-content-start">
+        <div
+          className="row justify-content-start new-client-updated-pad2"
+          style={{ width: "100%" }}
+        >
+          <div className="col-12 col-lg-10 text-start d-flex justify-content-start justify-content-md-start">
+            <label
+              className={`andent-button-3`}
+              style={{ width: isMobile ? "auto" : "150px" }}
+            >
+              <h2 className="button-text">
+                {uploadingPana ? "Uploading ..." : "Panoramex"}
+              </h2>
+              <span className="d-flex align-items-center">
+                <img src={upload} alt="upload-icon" className="small-icon" />
+              </span>
+              <input
+                onChange={handlePanoramexUpload}
+                multiple
+                type="file"
+                style={{ display: "none" }}
+              />
+              {/* Button triggers file input click */}
+              <button
+                disabled={uploadingPana}
+                type="button"
+                style={{ display: "none" }}
+              ></button>
+            </label>
+            {pana.length > 1 ? (
+              <div className="col-6 col-lg-6 text-start d-flex justify-content-end align-items-center">
+                <u
+                  onClick={() => {
+                    setViewMore(!viewMore);
+                  }}
+                >
+                  <h2 className="popup-heading-2">
+                    {viewMore ? "View Less Uploads" : "View More Uploads"}
+                  </h2>
+                </u>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+        <div
+          className="row justify-content-start text-center new-client-updated-pad"
+          style={{ width: isMobile ? "100%" : "50%" }}
+        >
+          <div className="col-lg-12 col-12 d-flex justify-content-start">
             <label
               className={`andent-button-3 ${invoice ? `button-disabled` : ``}`}
             >
@@ -826,7 +851,9 @@ function EditClient(props) {
             )}
           </div>
           <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad">
-            <label className={`andent-button-3 ${cbct ? `button-disabled` : ``}`}>
+            <label
+              className={`andent-button-3 ${cbct ? `button-disabled` : ``}`}
+            >
               <h2 className="button-text">
                 {isMobile
                   ? uploadingCbct
@@ -882,9 +909,6 @@ function EditClient(props) {
             )}
           </div>
         </div>
-
-
-        
       </div>
       <div className="row justify-content-start" style={{ width: "100%" }}>
         <div className="col-12 col-lg-12">
@@ -919,7 +943,7 @@ function EditClient(props) {
           ></textarea>
         </div>
       </div>
-  
+
       <div
         className="row justify-content-start d-flex"
         style={{ width: "100%" }}

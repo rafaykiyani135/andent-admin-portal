@@ -45,7 +45,7 @@ function Content() {
 
   function handleAddClient() {
     setNewcl(true);
-    createClient()
+    createClient(user.id)
       .then((res) => {
         setNewClientId(res?.data?.data?.id);
         // console.log(res?.data?.data?.id);

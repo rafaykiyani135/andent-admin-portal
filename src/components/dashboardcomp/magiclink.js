@@ -21,9 +21,9 @@ function MagicLink({ sendDataToParent }) {
         toast.success("Magic Link Generated");
         const genereatedLinks = res.data.data;
         var linkToWrite = genereatedLinks?.albanian;
-        if (selectedLanguage === "Italian link") {
+        if (selectedLanguage === "Italian") {
           linkToWrite = genereatedLinks?.italian;
-        } else if (selectedLanguage === "English link") {
+        } else if (selectedLanguage === "English") {
           linkToWrite = genereatedLinks?.english;
         }
         navigator.clipboard.writeText(linkToWrite);

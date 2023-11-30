@@ -117,6 +117,12 @@
   color: #6da7a2;
 }
 
+.pagination .page-item.active .page-link {
+  background-color: #6DA7A2;
+  border-color: #6DA7A2;
+  color: #fff; /* text color */
+}
+
 .header-user-textbox {
   color: #4e4e50 !important;
   text-align: start;

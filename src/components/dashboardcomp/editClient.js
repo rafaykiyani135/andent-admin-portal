@@ -332,6 +332,7 @@ function EditClient(props) {
   }
 
   const delInvoice = () => {
+    document.getElementById('my-file-1').value = "";
     if (uploadedInvoiceId) {
       deleteClientFile(uploadedInvoiceId)
         .then((res) => {
@@ -349,6 +350,7 @@ function EditClient(props) {
   };
 
   const delReceipt = () => {
+    document.getElementById('my-file-2').value = "";
     if (uploadedReceiptId) {
       deleteClientFile(uploadedReceiptId)
         .then((res) => {
@@ -366,6 +368,7 @@ function EditClient(props) {
   };
 
   const delConsentForm = () => {
+    document.getElementById('my-file-3').value = "";
     if (consentForm) {
       deleteClientFile(consentForm.fileId)
         .then((res) => {
@@ -380,6 +383,7 @@ function EditClient(props) {
     }
   };
   const delCbct = () => {
+    document.getElementById('my-file-4').value = "";
     if (cbct) {
       deleteClientFile(cbct.fileId)
         .then((res) => {
@@ -393,6 +397,7 @@ function EditClient(props) {
   };
 
   const delPana = (index, fileId) => {
+    document.getElementById('my-file-').value = "";
     if (pana?.length === 2) {
       setViewMore(false);
     }
@@ -647,6 +652,7 @@ function EditClient(props) {
                 <img src={upload} alt="upload-icon" className="small-icon" />
               </span>
               <input
+                id='my-file-'
                 onChange={handlePanoramexUpload}
                 multiple
                 type="file"
@@ -697,6 +703,7 @@ function EditClient(props) {
                 <img src={upload} alt="upload-icon" className="small-icon" />
               </span>
               <input
+                id="my-file-1"
                 onChange={handleInvoiceUpload}
                 type="file"
                 style={{ display: "none" }}
@@ -755,6 +762,7 @@ function EditClient(props) {
                 <img src={upload} alt="upload-icon" className="small-icon" />
               </span>
               <input
+                id="my-file-2"
                 onChange={handleReceiptChange}
                 type="file"
                 style={{ display: "none" }}
@@ -809,6 +817,7 @@ function EditClient(props) {
                 <img src={upload} alt="upload-icon" className="small-icon" />
               </span>
               <input
+                id="my-file-3"
                 onChange={handleConcentFormUpload}
                 type="file"
                 style={{ display: "none" }}
@@ -867,6 +876,7 @@ function EditClient(props) {
                 <img src={upload} alt="upload-icon" className="small-icon" />
               </span>
               <input
+                id="my-file-4"
                 onChange={handleCbctUpload}
                 type="file"
                 style={{ display: "none" }}

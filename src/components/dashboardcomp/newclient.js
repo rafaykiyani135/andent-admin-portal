@@ -384,6 +384,7 @@ function NewClient(props) {
           <div>
             <h2 className="popup-heading-2 text-start">First Name</h2>
             <input
+              tabindex="1"
               className="popup-inputs-small"
               placeholder="Enter First Name"
               ref={firstNameRef}
@@ -393,6 +394,7 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Last Name</h2>
               <input
+                tabindex="2"
                 className="popup-inputs-small"
                 placeholder="Enter Last Name"
                 ref={lastNameRef}
@@ -402,6 +404,7 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Email</h2>
               <input
+                tabindex="3"
                 className="popup-inputs-small"
                 placeholder="Enter email"
                 ref={emailRef}
@@ -418,6 +421,7 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Number</h2>
               <input
+                tabindex="4"
                 type="number"
                 className="popup-inputs-small"
                 placeholder="Enter number"
@@ -434,6 +438,7 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Country</h2>
               <select
+                tabindex="5"
                 value={selectedCountry}
                 onChange={handleCountryChange}
                 className="popup-inputs-small-dropdown"

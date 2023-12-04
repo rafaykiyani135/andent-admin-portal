@@ -165,7 +165,7 @@ function Content() {
           <div className="col-lg-5 col-md-12 col-12 d-flex justify-content-center justify-content-md-start">
             <div className="search-bar-container">
               <input
-                placeholder="Search Client Name or Email"
+                placeholder="Search Client Name or Number"
                 className="searchbar searchbar-text"
                 onChange={debouncedResults}
               />

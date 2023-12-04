@@ -119,7 +119,6 @@ function Invoice(props) {
           <div className="d-flex align-items-center">
             <input
               className="popup-inputs"
-              readOnly={true}
               placeholder={email}
             />
             <img

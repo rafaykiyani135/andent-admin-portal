@@ -57,7 +57,7 @@ function Sidebar() {
               />
               <span>
                 <h2 className="sidebar-text" style={{ marginTop: "6px" }}>
-                  All Client
+                  All Clients
                 </h2>
               </span>
             </NavLink>

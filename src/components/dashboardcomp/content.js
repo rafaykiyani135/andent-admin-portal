@@ -181,7 +181,7 @@ function Content() {
             </div>
           </div>
           <div className="col-lg-2 col-md-6 col-4 d-flex align-items-center largetext-pos-2">
-            <h2 className="client-top-text">All clients</h2>
+            <h2 className="client-top-text"></h2>
           </div>
           {doesUserHasPermission(permissions, "MAGIC", "CREATE") && (
             <div

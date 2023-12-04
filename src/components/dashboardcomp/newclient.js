@@ -419,17 +419,16 @@ function NewClient(props) {
           )}
           {isMobile ? (
             <div style={{ marginTop: "8px" }}>
-              <h2 className="popup-heading-2 text-start">Number</h2>
+              <h2 className="popup-heading-2 text-start">Email</h2>
               <input
-                tabindex="4"
-                type="number"
+                tabindex="3"
                 className="popup-inputs-small"
-                placeholder="Enter number"
-                ref={numberRef}
+                placeholder="Enter email"
+                ref={emailRef}
                 style={{paddingRight:"30px"}}
               />
               <img
-                src={phone}
+                src={mail}
                 alt="mail-icon"
                 className="small-icon client-mail-icon"
               />
@@ -452,23 +451,24 @@ function NewClient(props) {
         </div>
         <div className="col-md-6 col-12 text-start mob-top-pad">
           {isMobile ? (
-            <div style={{ marginTop: "8px" }}>
-              <h2 className="popup-heading-2 text-start">Email</h2>
+            <div>
+              <h2 className="popup-heading-2 text-start">Number</h2>
               <input
-                tabindex="3"
+                tabindex="4"
+                type="number"
                 className="popup-inputs-small"
-                placeholder="Enter email"
-                ref={emailRef}
+                placeholder="Enter number"
+                ref={numberRef}
                 style={{paddingRight:"30px"}}
               />
               <img
-                src={mail}
+                src={phone}
                 alt="mail-icon"
                 className="small-icon client-mail-icon"
               />
             </div>
           ) : (
-            <div style={{ marginTop: "8px" }}>
+            <div>
               <h2 className="popup-heading-2 text-start">Last Name</h2>
               <input
                 tabindex="2"
@@ -894,7 +894,7 @@ function NewClient(props) {
           className="col-12 col-lg-12 text-start d-flex justify-content-center"
           style={{ gap: "24px" }}
         >
-          <button className="andent-button" onClick={handleClientCreate}>
+          <button tabindex="8" className="andent-button" onClick={handleClientCreate}>
             <h2 className="button-text">
               Add Client
               <span

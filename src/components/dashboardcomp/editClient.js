@@ -506,7 +506,7 @@ function EditClient(props) {
         </div>
         <div className="col-md-6 col-12 text-start mob-top-pad">
           {isMobile ? (
-            <div style={{ marginTop: "8px" }}>
+            <div>
               <h2 className="popup-heading-2 text-start">Number</h2>
               <input
                 tabindex="4"
@@ -523,7 +523,7 @@ function EditClient(props) {
               />
             </div>
           ) : (
-            <div style={{ marginTop: "8px" }}>
+            <div>
               <h2 className="popup-heading-2 text-start">Last Name</h2>
               <input
                 tabindex="2"
@@ -974,6 +974,7 @@ function EditClient(props) {
           style={{ gap: "24px" }}
         >
           <button
+            tabindex="8"
             disabled={updatingClient}
             className="andent-button-3"
             onClick={handleClientUpdate}

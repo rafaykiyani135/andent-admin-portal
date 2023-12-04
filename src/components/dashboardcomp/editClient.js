@@ -446,6 +446,7 @@ function EditClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Last Name</h2>
               <input
+                tabindex="2"
                 className="popup-inputs-small"
                 placeholder="Enter Last Name"
                 onChange={(e) => setLastName(e.target.value)}
@@ -472,16 +473,17 @@ function EditClient(props) {
           )}
           {isMobile ? (
             <div style={{ marginTop: "8px" }}>
-              <h2 className="popup-heading-2 text-start">Number</h2>
+              <h2 className="popup-heading-2 text-start">Email</h2>
               <input
+                tabindex="3"
                 className="popup-inputs-small"
-                placeholder="Enter number"
-                onChange={(e) => setNumber(e.target.value)}
-                value={number}
+                placeholder="Enter email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
                 style={{ paddingRight: "30px" }}
               />
               <img
-                src={phone}
+                src={mail}
                 alt="mail-icon"
                 className="small-icon client-mail-icon"
               />
@@ -504,23 +506,24 @@ function EditClient(props) {
         </div>
         <div className="col-md-6 col-12 text-start mob-top-pad">
           {isMobile ? (
-            <div>
-              <h2 className="popup-heading-2 text-start">Email</h2>
+            <div style={{ marginTop: "8px" }}>
+              <h2 className="popup-heading-2 text-start">Number</h2>
               <input
+                tabindex="4"
                 className="popup-inputs-small"
-                placeholder="Enter email"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
+                placeholder="Enter number"
+                onChange={(e) => setNumber(e.target.value)}
+                value={number}
                 style={{ paddingRight: "30px" }}
               />
               <img
-                src={mail}
+                src={phone}
                 alt="mail-icon"
                 className="small-icon client-mail-icon"
               />
             </div>
           ) : (
-            <div>
+            <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Last Name</h2>
               <input
                 tabindex="2"
@@ -535,6 +538,7 @@ function EditClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Country</h2>
               <select
+                tabindex="5"
                 value={selectedCountry}
                 onChange={handleCountryChange}
                 className="popup-inputs-small-dropdown"
@@ -931,6 +935,7 @@ function EditClient(props) {
         </div>
         <div className="col-12 col-lg-6">
           <select
+            tabindex="6"
             value={clStatus}
             onChange={handleStatusChange}
             className="popup-inputs-small-dropdown"
@@ -949,6 +954,7 @@ function EditClient(props) {
         </div>
         <div className="col-lg-12 col-12 text-start">
           <textarea
+            tabindex="7"
             onChange={(e) => setNotes(e.target.value)}
             value={notes}
             type=""

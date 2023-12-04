@@ -394,6 +394,7 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Last Name</h2>
               <input
+                tabindex="2"
                 className="popup-inputs-small"
                 placeholder="Enter Last Name"
                 ref={lastNameRef}
@@ -420,6 +421,7 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Number</h2>
               <input
+                tabindex="4"
                 type="number"
                 className="popup-inputs-small"
                 placeholder="Enter number"
@@ -450,9 +452,10 @@ function NewClient(props) {
         </div>
         <div className="col-md-6 col-12 text-start mob-top-pad">
           {isMobile ? (
-            <div>
+            <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Email</h2>
               <input
+                tabindex="3"
                 className="popup-inputs-small"
                 placeholder="Enter email"
                 ref={emailRef}
@@ -465,7 +468,7 @@ function NewClient(props) {
               />
             </div>
           ) : (
-            <div>
+            <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Last Name</h2>
               <input
                 tabindex="2"
@@ -479,6 +482,7 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Country</h2>
               <select
+                tabindex="5"
                 value={selectedCountry}
                 onChange={handleCountryChange}
                 className="popup-inputs-small-dropdown"
@@ -856,6 +860,7 @@ function NewClient(props) {
         </div>
         <div className="col-12 col-lg-6">
           <select
+            tabindex="6"
             onChange={handleStatusChange}
             value={clStatus}
             className="popup-inputs-small-dropdown"
@@ -872,6 +877,7 @@ function NewClient(props) {
         </div>
         <div className="col-lg-12 col-12 text-start">
           <textarea
+            tabindex="7"
             ref={notesRef}
             type=""
             className="popup-inputs-4"

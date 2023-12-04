@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import DeleteModal from "../modals/DeleteModal";
 
 function Invoice(props) {
-  const { email, id } = props.clientInvoiceData;
+  const { id } = props.clientInvoiceData;
   const { setInvoiceOpen } = props;
   const { user } = useContext(AuthContext);
   const [file, setFile] = useState("");
@@ -23,6 +23,7 @@ function Invoice(props) {
   const [uploadingInvoice, setUploadingInvoice] = useState(false);
   const [uploadedInvoiceId, setUploadedInvoiceId] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [email, setEmail] = useState(props.clientInvoiceData.email);
   const [desc, setDesc] = useState(
     "Dear Sir/Ma'am,\n\nKindly review the attached invoice and let us know if you have any queries.\n\nBest Regards,\nAndent Clinic."
   );
@@ -50,6 +51,7 @@ function Invoice(props) {
       });
   };
   const delInvoice = () => {
+    document.getElementById('my-file').value = "";
     setShowModal(false);
     if (uploadedInvoiceId) {
       deleteClientFile(uploadedInvoiceId)
@@ -79,7 +81,6 @@ function Invoice(props) {
     const payLoad = {
       email,
       subject: "Andent incoive for your dental procedure",
-      description: desc,
       body: desc,
       clientId: id,
       clientFileId: uploadedInvoiceId,
@@ -119,7 +120,10 @@ function Invoice(props) {
           <div className="d-flex align-items-center">
             <input
               className="popup-inputs"
-              placeholder={email}
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
             <img
               src={mailicon}
@@ -202,6 +206,7 @@ function Invoice(props) {
               <img src={upload} alt="upload-icon" className="small-icon" />
             </span>
             <input
+              id="my-file"
               onChange={handleInvoiceUpload}
               type="file"
               style={{ display: "none" }}

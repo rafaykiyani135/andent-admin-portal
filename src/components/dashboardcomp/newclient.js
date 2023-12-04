@@ -394,7 +394,6 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Last Name</h2>
               <input
-                tabindex="2"
                 className="popup-inputs-small"
                 placeholder="Enter Last Name"
                 ref={lastNameRef}
@@ -421,7 +420,6 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Number</h2>
               <input
-                tabindex="4"
                 type="number"
                 className="popup-inputs-small"
                 placeholder="Enter number"
@@ -470,6 +468,7 @@ function NewClient(props) {
             <div>
               <h2 className="popup-heading-2 text-start">Last Name</h2>
               <input
+                tabindex="2"
                 className="popup-inputs-small"
                 placeholder="Enter Last Name"
                 ref={lastNameRef}
@@ -495,6 +494,7 @@ function NewClient(props) {
             <div style={{ marginTop: "8px" }}>
               <h2 className="popup-heading-2 text-start">Number</h2>
               <input
+                tabindex="4"
                 type="number"
                 className="popup-inputs-small"
                 placeholder="Enter number"

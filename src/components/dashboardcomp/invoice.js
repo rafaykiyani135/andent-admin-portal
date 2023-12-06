@@ -29,26 +29,36 @@ function Invoice(props) {
   );
 
   const handleInvoiceUpload = (e) => {
-    const invoiceFile = e.target.files[0];
-    setUploadingInvoice(true);
-    const payLoad = {
-      clientId: id,
-      file: invoiceFile,
-      type: "INVOICE",
-      userId: user.id,
-    };
-    uploadClientFile(payLoad)
-      .then((res) => {
-        setUploadingInvoice(false);
-        setFile(res?.data?.data?.url);
-        setFileName(res?.data?.data?.name);
-        setUploadedInvoiceId(res?.data?.data?.id);
-        toast.success("Invoice Uploaded");
-      })
-      .catch((err) => {
-        setUploadingInvoice(false);
-        toast.error(err?.response?.data?.message ?? "Failed to upload invoice");
-      });
+    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
+    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
+
+
+    if(allowedExtensions.includes(fileExtension)){
+      const invoiceFile = e.target.files[0];
+      setUploadingInvoice(true);
+      const payLoad = {
+        clientId: id,
+        file: invoiceFile,
+        type: "INVOICE",
+        userId: user.id,
+      };
+      uploadClientFile(payLoad)
+        .then((res) => {
+          setUploadingInvoice(false);
+          setFile(res?.data?.data?.url);
+          setFileName(res?.data?.data?.name);
+          setUploadedInvoiceId(res?.data?.data?.id);
+          toast.success("Invoice Uploaded");
+        })
+        .catch((err) => {
+          setUploadingInvoice(false);
+          toast.error(err?.response?.data?.message ?? "Failed to upload invoice");
+        });
+    }
+    else{
+      toast.error("Supported file formats : png,jpg,jpeg & pdf")
+    }
+   
   };
   const delInvoice = () => {
     document.getElementById('my-file').value = "";

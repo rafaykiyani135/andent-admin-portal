@@ -51,7 +51,12 @@ function NewClient(props) {
   const handlePanoramexUpload = (e) => {
     const panoramexFiles = e.target.files;
     setUploadingPana(true);
-    // Create an array to store promises for each file upload
+
+    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
+    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
+
+    if(allowedExtensions.includes(fileExtension)){
+      // Create an array to store promises for each file upload
     const uploadPromises = [];
     const responses = [];
 
@@ -91,6 +96,12 @@ function NewClient(props) {
           err?.response?.data?.message ?? "Failed to upload one or more files"
         );
       });
+    }
+    else{
+      setUploadingPana(false);
+      toast.error("Supported file formats : png,jpg,jpeg & pdf")
+    }
+    
   };
 
   useEffect(() => {
@@ -127,59 +138,86 @@ function NewClient(props) {
   };
 
   const handleInvoiceUpload = (e) => {
-    const invoiceFile = e.target.files[0];
-    setUploadingInvoice(true);
-    const payLoad = {
-      clientId: newClientId,
-      file: invoiceFile,
-      type: "INVOICE",
-      userId: user.id,
-    };
-    uploadClientFile(payLoad)
-      .then((res) => {
-        setUploadingInvoice(false);
-        setInvoice(res?.data?.data?.url);
-        setInvoiceName(res?.data?.data?.name);
-        setUploadedInvoiceId(res?.data?.data?.id);
-        toast.success("Invoice Uploaded");
-      })
-      .catch((err) => {
-        setUploadingInvoice(false);
-        toast.error(err?.response?.data?.message ?? "Failed to upload invoice");
-      });
+
+    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
+    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
+
+
+    if(allowedExtensions.includes(fileExtension)){
+        const invoiceFile = e.target.files[0];
+      setUploadingInvoice(true);
+      const payLoad = {
+        clientId: newClientId,
+        file: invoiceFile,
+        type: "INVOICE",
+        userId: user.id,
+      };
+      uploadClientFile(payLoad)
+        .then((res) => {
+          setUploadingInvoice(false);
+          setInvoice(res?.data?.data?.url);
+          setInvoiceName(res?.data?.data?.name);
+          setUploadedInvoiceId(res?.data?.data?.id);
+          toast.success("Invoice Uploaded");
+        })
+        .catch((err) => {
+          setUploadingInvoice(false);
+          toast.error(err?.response?.data?.message ?? "Failed to upload invoice");
+        });
+    }
+    else{
+    toast.error("Supported file formats : png,jpg,jpeg & pdf")
+    }
+
+    
   };
 
   const handleReceiptUpload = (e) => {
-    const receiptFile = e.target.files[0];
-    setUploadingReceipt(true);
-    const payLoad = {
-      clientId: newClientId,
-      file: receiptFile,
-      type: "RECEIPT",
-      userId: user.id,
-    };
-    uploadClientFile(payLoad)
-      .then((res) => {
-        setUploadingReceipt(false);
-        setReceipt(res?.data?.data?.url);
-        setReceiptName(res?.data?.data?.name);
-        toast.success("Receipt Uploaded");
-        setUploadedReceiptId(res?.data?.data?.id);
-      })
-      .catch((err) => {
-        setUploadingReceipt(false);
-        toast.error(err?.response?.data?.message ?? "Failed to upload receipt");
-      });
+
+    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
+    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
+
+    if(allowedExtensions.includes(fileExtension)){
+      const receiptFile = e.target.files[0];
+      setUploadingReceipt(true);
+      const payLoad = {
+        clientId: newClientId,
+        file: receiptFile,
+        type: "RECEIPT",
+        userId: user.id,
+      };
+      uploadClientFile(payLoad)
+        .then((res) => {
+          setUploadingReceipt(false);
+          setReceipt(res?.data?.data?.url);
+          setReceiptName(res?.data?.data?.name);
+          toast.success("Receipt Uploaded");
+          setUploadedReceiptId(res?.data?.data?.id);
+        })
+        .catch((err) => {
+          setUploadingReceipt(false);
+          toast.error(err?.response?.data?.message ?? "Failed to upload receipt");
+        });
+    }
+    else{
+        toast.error("Supported file formats : png,jpg,jpeg & pdf")
+    }
+
   };
 
   const handleConcentFormUpload = (e) => {
-    const formFile = e.target.files[0];
-    setUploadingConcentForm(true);
-    const payLoad = {
-      clientId: newClientId,
-      file: formFile,
-      type: "CONSENT_FORM",
-      userId: user.id,
+
+    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
+    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
+
+    if(allowedExtensions.includes(fileExtension)){
+          const formFile = e.target.files[0];
+        setUploadingConcentForm(true);
+        const payLoad = {
+          clientId: newClientId,
+          file: formFile,
+          type: "CONSENT_FORM",
+          userId: user.id,
     };
     uploadClientFile(payLoad)
       .then((res) => {
@@ -197,30 +235,47 @@ function NewClient(props) {
           err?.response?.data?.message ?? "Failed to upload Consent Form"
         );
       });
+    }
+    else{
+      toast.error("Supported file formats : png,jpg,jpeg & pdf")
+    }
+    
   };
   const handleCbctUpload = (e) => {
-    const file = e.target.files[0];
-    setUploadingCbct(true);
-    const payLoad = {
-      clientId: newClientId,
-      file: file,
-      type: "CBCT",
-      userId: user.id,
-    };
-    uploadClientFile(payLoad)
-      .then((res) => {
-        setUploadingCbct(false);
-        setCbct({
-          url: res?.data?.data?.url,
-          name: res?.data?.data?.name,
-          fileId: res?.data?.data?.id,
+
+    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
+    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
+
+
+    if(allowedExtensions.includes(fileExtension)){
+      const file = e.target.files[0];
+      setUploadingCbct(true);
+      const payLoad = {
+        clientId: newClientId,
+        file: file,
+        type: "CBCT",
+        userId: user.id,
+      };
+      uploadClientFile(payLoad)
+        .then((res) => {
+          setUploadingCbct(false);
+          setCbct({
+            url: res?.data?.data?.url,
+            name: res?.data?.data?.name,
+            fileId: res?.data?.data?.id,
+          });
+          toast.success("CBCT Uploaded");
+        })
+        .catch((err) => {
+          setUploadingCbct(false);
+          toast.error(err?.response?.data?.message ?? "Failed to upload CBCT");
         });
-        toast.success("CBCT Uploaded");
-      })
-      .catch((err) => {
-        setUploadingCbct(false);
-        toast.error(err?.response?.data?.message ?? "Failed to upload CBCT");
-      });
+    }
+    else{
+      toast.error("Supported file formats : png,jpg,jpeg & pdf")
+    }
+
+   
   };
 
   function handleClientCreate() {

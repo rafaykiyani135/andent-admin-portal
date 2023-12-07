@@ -6,14 +6,19 @@ import { useRef, useState } from "react";
 import mail from "../../assets/data/mailicon.png";
 import phone from "../../assets/data/phone.png";
 import { useEffect, useContext } from "react";
-import { countries, statuses } from "../../constants";
+import { countries, imageExtensions, statuses } from "../../constants";
 import { deleteClientFile, uploadClientFile } from "../../services/api/clients";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../context/AuthProvider";
 import { updateClient } from "../../services/api/clients";
 import useData from "../../hooks/useData";
-import { isValidNumber } from "../../services/helperFunctions";
+import {
+  getFileExtension,
+  isValidNumber,
+} from "../../services/helperFunctions";
 import DeleteModal from "../modals/DeleteModal";
+import ImagePreview from "../modals/ImagePreview";
+import PdfPreview from "../modals/PdfPreview";
 
 function NewClient(props) {
   const { newClientId, popUpIsOpen, setPopUpIsOpen } = props;
@@ -39,6 +44,10 @@ function NewClient(props) {
   const [uploadingCbct, setUploadingCbct] = useState(false);
   const [uploadingPana, setUploadingPana] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [previewImage, setPreviewImage] = useState(false);
+  const [previewPdf, setPreviewPdf] = useState(false);
+  const [previewFileName, setPreviewFileName] = useState("");
+  const [previewFileUrl, setPreviewFileUrl] = useState("");
   const [fileTypeToBeDeleted, setFileTypeToBeDeleted] = useState("");
   const [panaIndex, setPanaIndex] = useState(null);
   const [panaId, setPanaId] = useState("");
@@ -48,60 +57,80 @@ function NewClient(props) {
   const numberRef = useRef();
   const notesRef = useRef();
 
+  const handleFilePreview = (fileData) => {
+    const { name, url } = fileData;
+
+    if (imageExtensions.includes(getFileExtension(name))) {
+      setPreviewImage(true);
+    } else if (getFileExtension(name) === "pdf") {
+      setPreviewPdf(true);
+    }
+
+    setPreviewFileName(name);
+    setPreviewFileUrl(url);
+  };
+
   const handlePanoramexUpload = (e) => {
     const panoramexFiles = e.target.files;
     setUploadingPana(true);
 
-    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
-    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
+    const allowedExtensions = [
+      "pdf",
+      "jpg",
+      "jpeg",
+      "png",
+      "PDF",
+      "JPG",
+      "JPEG",
+      "PNG",
+    ];
+    const fileExtension = getFileExtension(e.target.files[0].name);
 
-    if(allowedExtensions.includes(fileExtension)){
+    if (allowedExtensions.includes(fileExtension)) {
       // Create an array to store promises for each file upload
-    const uploadPromises = [];
-    const responses = [];
+      const uploadPromises = [];
+      const responses = [];
 
-    // Iterate over each file and create a payload for each
-    for (const file of panoramexFiles) {
-      const payLoad = {
-        clientId: newClientId,
-        file,
-        type: "PANORAMEX",
-        userId: user.id,
-      };
+      // Iterate over each file and create a payload for each
+      for (const file of panoramexFiles) {
+        const payLoad = {
+          clientId: newClientId,
+          file,
+          type: "PANORAMEX",
+          userId: user.id,
+        };
 
-      // Push the promise returned by uploadClientFile to the array
-      const uploadPromise = uploadClientFile(payLoad)
-        .then((res) => {
-          responses.push(res.data.data); // Capture the response for each file
+        // Push the promise returned by uploadClientFile to the array
+        const uploadPromise = uploadClientFile(payLoad)
+          .then((res) => {
+            responses.push(res.data.data); // Capture the response for each file
+          })
+          .catch((err) => {
+            responses.push(null); // Capture null for failed uploads
+          });
+
+        uploadPromises.push(uploadPromise);
+      }
+
+      // Use Promise.all to wait for all file uploads to complete
+      Promise.all(uploadPromises)
+        .then(() => {
+          // All files uploaded successfully
+          setUploadingPana(false);
+          setPana((prevPana) => [...prevPana, ...responses]);
+          toast.success("All files uploaded successfully");
         })
         .catch((err) => {
-          responses.push(null); // Capture null for failed uploads
+          // Handle any error that occurred during the parallel uploads
+          setUploadingPana(false);
+          toast.error(
+            err?.response?.data?.message ?? "Failed to upload one or more files"
+          );
         });
-
-      uploadPromises.push(uploadPromise);
-    }
-
-    // Use Promise.all to wait for all file uploads to complete
-    Promise.all(uploadPromises)
-      .then(() => {
-        // All files uploaded successfully
-        setUploadingPana(false);
-        setPana((prevPana) => [...prevPana, ...responses]);
-        toast.success("All files uploaded successfully");
-      })
-      .catch((err) => {
-        // Handle any error that occurred during the parallel uploads
-        setUploadingPana(false);
-        toast.error(
-          err?.response?.data?.message ?? "Failed to upload one or more files"
-        );
-      });
-    }
-    else{
+    } else {
       setUploadingPana(false);
-      toast.error("Supported file formats : png,jpg,jpeg & pdf")
+      toast.error("Supported file formats : png,jpg,jpeg & pdf");
     }
-    
   };
 
   useEffect(() => {
@@ -112,23 +141,6 @@ function NewClient(props) {
     }
   }, []);
 
-  useEffect(() => {
-    setInvoice(null);
-    setInvoiceName("");
-    setReceipt(null);
-    setReceiptName("");
-    setPana([]);
-    setConsentForm(null);
-    setCbct(null);
-    setSelectedCountry("Select Country");
-    setclStatus("New");
-    firstNameRef.current.value = "";
-    lastNameRef.current.value = "";
-    emailRef.current.value = "";
-    numberRef.current.value = "";
-    notesRef.current.value = "";
-  }, [popUpIsOpen]);
-
   const handleCountryChange = (event) => {
     setSelectedCountry(event.target.value);
   };
@@ -138,13 +150,20 @@ function NewClient(props) {
   };
 
   const handleInvoiceUpload = (e) => {
+    const allowedExtensions = [
+      "pdf",
+      "jpg",
+      "jpeg",
+      "png",
+      "PDF",
+      "JPG",
+      "JPEG",
+      "PNG",
+    ];
+    const fileExtension = e.target.files[0].name.split(".").pop().toLowerCase();
 
-    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
-    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
-
-
-    if(allowedExtensions.includes(fileExtension)){
-        const invoiceFile = e.target.files[0];
+    if (allowedExtensions.includes(fileExtension)) {
+      const invoiceFile = e.target.files[0];
       setUploadingInvoice(true);
       const payLoad = {
         clientId: newClientId,
@@ -162,22 +181,29 @@ function NewClient(props) {
         })
         .catch((err) => {
           setUploadingInvoice(false);
-          toast.error(err?.response?.data?.message ?? "Failed to upload invoice");
+          toast.error(
+            err?.response?.data?.message ?? "Failed to upload invoice"
+          );
         });
+    } else {
+      toast.error("Supported file formats : png,jpg,jpeg & pdf");
     }
-    else{
-    toast.error("Supported file formats : png,jpg,jpeg & pdf")
-    }
-
-    
   };
 
   const handleReceiptUpload = (e) => {
+    const allowedExtensions = [
+      "pdf",
+      "jpg",
+      "jpeg",
+      "png",
+      "PDF",
+      "JPG",
+      "JPEG",
+      "PNG",
+    ];
+    const fileExtension = getFileExtension(e.target.files[0].name);
 
-    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
-    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
-
-    if(allowedExtensions.includes(fileExtension)){
+    if (allowedExtensions.includes(fileExtension)) {
       const receiptFile = e.target.files[0];
       setUploadingReceipt(true);
       const payLoad = {
@@ -196,58 +222,71 @@ function NewClient(props) {
         })
         .catch((err) => {
           setUploadingReceipt(false);
-          toast.error(err?.response?.data?.message ?? "Failed to upload receipt");
+          toast.error(
+            err?.response?.data?.message ?? "Failed to upload receipt"
+          );
         });
+    } else {
+      toast.error("Supported file formats : png,jpg,jpeg & pdf");
     }
-    else{
-        toast.error("Supported file formats : png,jpg,jpeg & pdf")
-    }
-
   };
 
   const handleConcentFormUpload = (e) => {
+    const allowedExtensions = [
+      "pdf",
+      "jpg",
+      "jpeg",
+      "png",
+      "PDF",
+      "JPG",
+      "JPEG",
+      "PNG",
+    ];
+    const fileExtension = e.target.files[0].name.split(".").pop().toLowerCase();
 
-    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
-    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
-
-    if(allowedExtensions.includes(fileExtension)){
-          const formFile = e.target.files[0];
-        setUploadingConcentForm(true);
-        const payLoad = {
-          clientId: newClientId,
-          file: formFile,
-          type: "CONSENT_FORM",
-          userId: user.id,
-    };
-    uploadClientFile(payLoad)
-      .then((res) => {
-        setUploadingConcentForm(false);
-        setConsentForm({
-          url: res?.data?.data?.url,
-          name: res?.data?.data?.name,
-          fileId: res?.data?.data?.id,
+    if (allowedExtensions.includes(fileExtension)) {
+      const formFile = e.target.files[0];
+      setUploadingConcentForm(true);
+      const payLoad = {
+        clientId: newClientId,
+        file: formFile,
+        type: "CONSENT_FORM",
+        userId: user.id,
+      };
+      uploadClientFile(payLoad)
+        .then((res) => {
+          setUploadingConcentForm(false);
+          setConsentForm({
+            url: res?.data?.data?.url,
+            name: res?.data?.data?.name,
+            fileId: res?.data?.data?.id,
+          });
+          toast.success("Consent Form Uploaded");
+        })
+        .catch((err) => {
+          setUploadingConcentForm(false);
+          toast.error(
+            err?.response?.data?.message ?? "Failed to upload Consent Form"
+          );
         });
-        toast.success("Consent Form Uploaded");
-      })
-      .catch((err) => {
-        setUploadingConcentForm(false);
-        toast.error(
-          err?.response?.data?.message ?? "Failed to upload Consent Form"
-        );
-      });
+    } else {
+      toast.error("Supported file formats : png,jpg,jpeg & pdf");
     }
-    else{
-      toast.error("Supported file formats : png,jpg,jpeg & pdf")
-    }
-    
   };
   const handleCbctUpload = (e) => {
+    const allowedExtensions = [
+      "pdf",
+      "jpg",
+      "jpeg",
+      "png",
+      "PDF",
+      "JPG",
+      "JPEG",
+      "PNG",
+    ];
+    const fileExtension = e.target.files[0].name.split(".").pop().toLowerCase();
 
-    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
-    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
-
-
-    if(allowedExtensions.includes(fileExtension)){
+    if (allowedExtensions.includes(fileExtension)) {
       const file = e.target.files[0];
       setUploadingCbct(true);
       const payLoad = {
@@ -270,12 +309,9 @@ function NewClient(props) {
           setUploadingCbct(false);
           toast.error(err?.response?.data?.message ?? "Failed to upload CBCT");
         });
+    } else {
+      toast.error("Supported file formats : png,jpg,jpeg & pdf");
     }
-    else{
-      toast.error("Supported file formats : png,jpg,jpeg & pdf")
-    }
-
-   
   };
 
   function handleClientCreate() {
@@ -286,8 +322,8 @@ function NewClient(props) {
     const notes = notesRef.current.value;
     if (
       !firstName ||
-      !lastName 
-      //!email 
+      !lastName
+      //!email
       //only firstname,email and lastname required for adding client. rest information the admin can modify later..
       //!number ||
       //!notes ||
@@ -323,7 +359,7 @@ function NewClient(props) {
   }
 
   const delInvoice = () => {
-    document.getElementById('my-file1').value = "";
+    document.getElementById("my-file1").value = "";
     if (uploadedInvoiceId) {
       deleteClientFile(uploadedInvoiceId)
         .then((res) => {
@@ -341,7 +377,7 @@ function NewClient(props) {
   };
 
   const delReceipt = () => {
-    document.getElementById('my-file2').value = "";
+    document.getElementById("my-file2").value = "";
     if (uploadedReceiptId) {
       deleteClientFile(uploadedReceiptId)
         .then((res) => {
@@ -358,7 +394,7 @@ function NewClient(props) {
     }
   };
   const delConsentForm = () => {
-    document.getElementById('my-file3').value = "";
+    document.getElementById("my-file3").value = "";
     if (consentForm) {
       deleteClientFile(consentForm.fileId)
         .then((res) => {
@@ -373,7 +409,7 @@ function NewClient(props) {
     }
   };
   const delCbct = () => {
-    document.getElementById('my-file4').value = "";
+    document.getElementById("my-file4").value = "";
     if (cbct) {
       deleteClientFile(cbct.fileId)
         .then((res) => {
@@ -387,7 +423,7 @@ function NewClient(props) {
   };
 
   const delPana = (index, fileId) => {
-    document.getElementById('my-file').value = "";
+    document.getElementById("my-file").value = "";
     if (pana.length === 2) {
       setViewMore(false);
     }
@@ -463,7 +499,7 @@ function NewClient(props) {
                 className="popup-inputs-small"
                 placeholder="Enter email"
                 ref={emailRef}
-                style={{paddingRight:"30px"}}
+                style={{ paddingRight: "30px" }}
               />
               <img
                 src={mail}
@@ -480,7 +516,7 @@ function NewClient(props) {
                 className="popup-inputs-small"
                 placeholder="Enter email"
                 ref={emailRef}
-                style={{paddingRight:"30px"}}
+                style={{ paddingRight: "30px" }}
               />
               <img
                 src={mail}
@@ -514,7 +550,7 @@ function NewClient(props) {
                 className="popup-inputs-small"
                 placeholder="Enter number"
                 ref={numberRef}
-                style={{paddingRight:"30px"}}
+                style={{ paddingRight: "30px" }}
               />
               <img
                 src={phone}
@@ -558,7 +594,7 @@ function NewClient(props) {
                 className="popup-inputs-small"
                 placeholder="Enter number"
                 ref={numberRef}
-                style={{paddingRight:"30px"}}
+                style={{ paddingRight: "30px" }}
               />
               <img
                 src={phone}
@@ -568,49 +604,31 @@ function NewClient(props) {
             </div>
           )}
         </div>
-        <div className="row justify-content-start new-client-updated-pad2" style={{ width: "100%" }}>
-        <div className="col-12 col-lg-12 text-start">
-          <h2
-            className="popup-heading-2 text-start"
-            style={{ fontSize: "14px" }}
-          >
-            Upload Format (Jpg, Png, Pdf)
-          </h2>
-        </div>
-      </div>
-      <div className="row justify-content-start" style={{ width: "100%" }}>
-        {pana.length > 0 && !viewMore ? (
-          <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-start">
-            {pana[0].name}
-            <a
-              href={pana[0].url}
-              download={pana[0].url}
-              style={{ marginLeft: "10px" }}
-            >
-              <img src={download} alt="download-icon" className="small-icon" />
-            </a>
-            <span
-              style={{ marginLeft: "10px" }}
-              onClick={() => {
-                setFileTypeToBeDeleted("PANORAMEX");
-                setPanaIndex(0);
-                setPanaId(pana[0].id);
-                setShowModal(true);
-              }}
-            >
-              <img src={del} alt="delete-icon" className="small-icon" />
-            </span>
-          </h2>
-        ) : pana.length > 1 && viewMore ? (
-          pana.map((file, index) => (
+        <div
+          className="row justify-content-start new-client-updated-pad2"
+          style={{ width: "100%" }}
+        >
+          <div className="col-12 col-lg-12 text-start">
             <h2
-              key={index}
-              className="popup-heading-3 text-start d-flex align-items-center justify-content-start"
+              className="popup-heading-2 text-start"
+              style={{ fontSize: "14px" }}
             >
-              {file?.name}
+              Upload Format (Jpg, Png, Pdf)
+            </h2>
+          </div>
+        </div>
+        <div className="row justify-content-start" style={{ width: "100%" }}>
+          {pana.length > 0 && !viewMore ? (
+            <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-start">
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={() => handleFilePreview(pana[0])}
+              >
+                {pana[0].name}
+              </span>
               <a
-                href={file?.url}
-                download={file.url}
+                href={pana[0].url}
+                download={pana[0].url}
                 style={{ marginLeft: "10px" }}
               >
                 <img
@@ -623,61 +641,106 @@ function NewClient(props) {
                 style={{ marginLeft: "10px" }}
                 onClick={() => {
                   setFileTypeToBeDeleted("PANORAMEX");
-                  setPanaIndex(index);
-                  setPanaId(file?.id);
+                  setPanaIndex(0);
+                  setPanaId(pana[0].id);
                   setShowModal(true);
                 }}
               >
                 <img src={del} alt="delete-icon" className="small-icon" />
               </span>
             </h2>
-          ))
-        ) : (
-          ""
-        )}
-      </div>
-      <div className="row justify-content-start new-client-updated-pad2" style={{ width: "100%" }}>
-        <div className="col-12 col-lg-10 text-start d-flex justify-content-center justify-content-md-start">
-          <label className={`andent-button-3`} style={{width: isMobile? "auto" : "150px"}}>
-            <h2 className="button-text">
-              {uploadingPana ? "Uploading ..." : "Panoramex"}
-            </h2>
-            <span className="d-flex align-items-center">
-              <img src={upload} alt="upload-icon" className="small-icon" />
-            </span>
-            <input
-              id='my-file'
-              onInput={handlePanoramexUpload}
-              multiple
-              type="file"
-              style={{ display: "none" }}
-            />
-            {/* Button triggers file input click */}
-            <button
-              disabled={uploadingPana}
-              type="button"
-              style={{ display: "none" }}
-            ></button>
-          </label>
-          {pana.length > 1 ? (
-          <div className="col-6 col-lg-6 text-start d-flex justify-content-end align-items-center">
-            <u
-              onClick={() => {
-                setViewMore(!viewMore);
-              }}
-            >
-              <h2 className="popup-heading-2">
-                {viewMore ? "View Less Uploads" : "View More Uploads"}
+          ) : pana.length > 1 && viewMore ? (
+            pana.map((file, index) => (
+              <h2
+                key={index}
+                className="popup-heading-3 text-start d-flex align-items-center justify-content-start"
+              >
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleFilePreview(file)}
+                >
+                  {file?.name}
+                </span>
+
+                <a
+                  href={file?.url}
+                  download={file.url}
+                  style={{ marginLeft: "10px" }}
+                >
+                  <img
+                    src={download}
+                    alt="download-icon"
+                    className="small-icon"
+                  />
+                </a>
+                <span
+                  style={{ marginLeft: "10px" }}
+                  onClick={() => {
+                    setFileTypeToBeDeleted("PANORAMEX");
+                    setPanaIndex(index);
+                    setPanaId(file?.id);
+                    setShowModal(true);
+                  }}
+                >
+                  <img src={del} alt="delete-icon" className="small-icon" />
+                </span>
               </h2>
-            </u>
-          </div>
-        ) : (
-          ""
-        )}
+            ))
+          ) : (
+            ""
+          )}
         </div>
-      </div>
-        <div className="row justify-content-start text-center new-client-updated-pad" style={{width:isMobile? "100%" : "50%"}}>
-        <div className="col-lg-12 col-12 d-flex justify-content-start">
+        <div
+          className="row justify-content-start new-client-updated-pad2"
+          style={{ width: "100%" }}
+        >
+          <div className="col-12 col-lg-10 text-start d-flex justify-content-center justify-content-md-start">
+            <label
+              className={`andent-button-3`}
+              style={{ width: isMobile ? "auto" : "150px" }}
+            >
+              <h2 className="button-text">
+                {uploadingPana ? "Uploading ..." : "Panoramex"}
+              </h2>
+              <span className="d-flex align-items-center">
+                <img src={upload} alt="upload-icon" className="small-icon" />
+              </span>
+              <input
+                id="my-file"
+                onChange={handlePanoramexUpload}
+                multiple
+                type="file"
+                style={{ display: "none" }}
+              />
+              {/* Button triggers file input click */}
+              <button
+                disabled={uploadingPana}
+                type="button"
+                style={{ display: "none" }}
+              ></button>
+            </label>
+            {pana.length > 1 ? (
+              <div className="col-6 col-lg-6 text-start d-flex justify-content-end align-items-center">
+                <u
+                  onClick={() => {
+                    setViewMore(!viewMore);
+                  }}
+                >
+                  <h2 className="popup-heading-2">
+                    {viewMore ? "View Less Uploads" : "View More Uploads"}
+                  </h2>
+                </u>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+        <div
+          className="row justify-content-start text-center new-client-updated-pad"
+          style={{ width: isMobile ? "100%" : "50%" }}
+        >
+          <div className="col-lg-12 col-12 d-flex justify-content-start">
             <label
               className={`andent-button-3 ${invoice ? `button-disabled` : ``}`}
             >
@@ -694,7 +757,7 @@ function NewClient(props) {
                 <img src={upload} alt="upload-icon" className="small-icon" />
               </span>
               <input
-                id='my-file1'
+                id="my-file1"
                 onChange={handleInvoiceUpload}
                 type="file"
                 style={{ display: "none" }}
@@ -710,7 +773,14 @@ function NewClient(props) {
           <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad2">
             {invoice ? (
               <h2 className="popup-heading-3 text-start d-flex align-items-center">
-                {invoiceName}
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() =>
+                    handleFilePreview({ name: invoiceName, url: invoice })
+                  }
+                >
+                  {invoiceName}
+                </span>
                 <a
                   href={invoice}
                   download={invoice}
@@ -753,7 +823,7 @@ function NewClient(props) {
                 <img src={upload} alt="upload-icon" className="small-icon" />
               </span>
               <input
-                id='my-file2'
+                id="my-file2"
                 onChange={handleReceiptUpload}
                 type="file"
                 style={{ display: "none" }}
@@ -769,7 +839,15 @@ function NewClient(props) {
           <div className="col-lg-12 col-12 d-flex justify-content-start justify-content-md-center new-client-updated-pad2">
             {receipt ? (
               <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-center">
-                {receiptName}
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() =>
+                    handleFilePreview({ name: receiptName, url: receipt })
+                  }
+                >
+                  {receiptName}
+                </span>
+
                 <a
                   href={receipt}
                   download={receipt}
@@ -808,7 +886,7 @@ function NewClient(props) {
                 <img src={upload} alt="upload-icon" className="small-icon" />
               </span>
               <input
-                id='my-file3'
+                id="my-file3"
                 onChange={handleConcentFormUpload}
                 type="file"
                 style={{ display: "none" }}
@@ -824,7 +902,12 @@ function NewClient(props) {
           <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad2 ">
             {consentForm ? (
               <h2 className="popup-heading-3 text-start d-flex align-items-center justify-content-center">
-                {consentForm?.name}
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleFilePreview(consentForm)}
+                >
+                  {consentForm?.name}
+                </span>
                 <a
                   href={consentForm?.url}
                   download={consentForm?.url}
@@ -851,7 +934,9 @@ function NewClient(props) {
             )}
           </div>
           <div className="col-lg-12 col-12 d-flex justify-content-start new-client-updated-pad">
-            <label className={`andent-button-3 ${cbct ? `button-disabled` : ``}`}>
+            <label
+              className={`andent-button-3 ${cbct ? `button-disabled` : ``}`}
+            >
               <h2 className="button-text">
                 {isMobile
                   ? uploadingCbct
@@ -865,7 +950,7 @@ function NewClient(props) {
                 <img src={upload} alt="upload-icon" className="small-icon" />
               </span>
               <input
-                id='my-file4'
+                id="my-file4"
                 onChange={handleCbctUpload}
                 type="file"
                 style={{ display: "none" }}
@@ -881,7 +966,12 @@ function NewClient(props) {
           <div className="col-lg-12 col-12 d-flex justify-content-start justify-content-md-center new-client-updated-pad2">
             {cbct ? (
               <h2 className="popup-heading-3 text-start d-flex align-items-center">
-                {cbct?.name}
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleFilePreview(cbct)}
+                >
+                  {cbct?.name}
+                </span>
                 <a
                   href={cbct?.url}
                   download={cbct?.url}
@@ -949,7 +1039,11 @@ function NewClient(props) {
           className="col-12 col-lg-12 text-start d-flex justify-content-center"
           style={{ gap: "24px" }}
         >
-          <button tabindex="8" className="andent-button" onClick={handleClientCreate}>
+          <button
+            tabindex="8"
+            className="andent-button"
+            onClick={handleClientCreate}
+          >
             <h2 className="button-text">
               Add Client
               <span
@@ -970,6 +1064,22 @@ function NewClient(props) {
         setShowModal={setShowModal}
         modalDescription={"Are you sure you want to delete this file?"}
         onConfirm={handleFileDelete}
+      />
+      <ImagePreview
+        {...{
+          previewImage,
+          setPreviewImage,
+          previewFileName,
+          previewFileUrl,
+        }}
+      />
+      <PdfPreview
+        {...{
+          previewPdf,
+          setPreviewPdf,
+          previewFileName,
+          previewFileUrl,
+        }}
       />
     </>
   );

@@ -231,13 +231,15 @@ function Content() {
         <div className={`${link ? `gen-link` : `d-none`}`} ref={menuRef3}>
           <GLink generatedLink={dataFromChild} />
         </div>
-        <div className={`${newcl ? `new-client` : `d-none`}`} ref={menuRef2}>
-          <NewClient
-            newClientId={newClientId}
-            popUpIsOpen={newcl}
-            setPopUpIsOpen={setNewcl}
-          />
-        </div>
+        {newcl && (
+          <div className={`${newcl ? `new-client` : `d-none`}`} ref={menuRef2}>
+            <NewClient
+              newClientId={newClientId}
+              popUpIsOpen={newcl}
+              setPopUpIsOpen={setNewcl}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

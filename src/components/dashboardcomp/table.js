@@ -212,13 +212,14 @@ function Table() {
       <table className="andent-table">
         <thead>
           <tr>
-            <th scope="col" className="box-size" style={{ borderRadius: "4px 0px 0px 0px" }}>
-              <h2 className="table-text-td">Created By</h2>
-            </th>
             <th
               scope="col"
               className="box-size"
+              style={{ borderRadius: "4px 0px 0px 0px" }}
             >
+              <h2 className="table-text-td">Created By</h2>
+            </th>
+            <th scope="col" className="box-size">
               <h2 className="table-text-td">Client Name</h2>
             </th>
             <th
@@ -421,12 +422,15 @@ function Table() {
         />
       )}
 
-      <div className={`${invoiceOpen ? `invoice` : `d-none`}`} ref={menuRef}>
-        <Invoice
-          setInvoiceOpen={setInvoiceOpen}
-          clientInvoiceData={clientInvoiceData}
-        />
-      </div>
+      {invoiceOpen && (
+        <div className={`${invoiceOpen ? `invoice` : `d-none`}`} ref={menuRef}>
+          <Invoice
+            setInvoiceOpen={setInvoiceOpen}
+            clientInvoiceData={clientInvoiceData}
+          />
+        </div>
+      )}
+
       {newcl2 && (
         <div className={`${newcl2 ? `new-client-2` : `d-none`}`} ref={menuRef2}>
           <EditClient

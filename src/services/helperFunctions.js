@@ -38,3 +38,7 @@ export const groupPermissionsByName = (permissions) => {
 export const isValidNumber = (number) => {
   return RegExp(/^[0-9]+$/).test(number);
 };
+
+export const getFileExtension = (fileName) => {
+  return fileName.split(".")?.pop()?.toLowerCase();
+};

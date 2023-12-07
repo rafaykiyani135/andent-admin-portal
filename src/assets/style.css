@@ -118,8 +118,8 @@
 }
 
 .pagination .page-item.active .page-link {
-  background-color: #6DA7A2;
-  border-color: #6DA7A2;
+  background-color: #6da7a2;
+  border-color: #6da7a2;
   color: #fff; /* text color */
 }
 
@@ -432,10 +432,10 @@
   animation: inv-fade-in 0.5s ease-in;
 }
 
-.new-client-updated-pad{
+.new-client-updated-pad {
   padding-top: 25px;
 }
-.new-client-updated-pad2{
+.new-client-updated-pad2 {
   padding-top: 10px;
 }
 
@@ -808,4 +808,21 @@
 .dropdown-content-navbar.open {
   display: flex;
   animation: fade-in 0.3s ease-in;
+}
+
+.previewContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.previewContainer img {
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.previewContainer .pagesInfo {
+  margin: 0;
+  margin-left: 1rem;
 }

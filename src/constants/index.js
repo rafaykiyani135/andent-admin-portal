@@ -17,3 +17,5 @@ export const statuses = [
   "Procedure Done",
   "Contact Again",
 ];
+
+export const imageExtensions = ["jpg", "jpeg", "png"];

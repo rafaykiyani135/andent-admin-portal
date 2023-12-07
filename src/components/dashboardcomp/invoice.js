@@ -4,7 +4,7 @@ import upload from "../../assets/data/upload.png";
 import invwhite from "../../assets/data/invoicewhite.png";
 import mailicon from "../../assets/data/mailicon.png";
 import excl from "../../assets/data/exclamation.png";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import {
   uploadClientFile,
@@ -17,23 +17,36 @@ import DeleteModal from "../modals/DeleteModal";
 function Invoice(props) {
   const { id } = props.clientInvoiceData;
   const { setInvoiceOpen } = props;
+
   const { user } = useContext(AuthContext);
   const [file, setFile] = useState("");
   const [fileName, setFileName] = useState("");
   const [uploadingInvoice, setUploadingInvoice] = useState(false);
   const [uploadedInvoiceId, setUploadedInvoiceId] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [email, setEmail] = useState(props.clientInvoiceData.email);
+  const [email, setEmail] = useState("");
   const [desc, setDesc] = useState(
     "Dear Sir/Ma'am,\n\nKindly review the attached invoice and let us know if you have any queries.\n\nBest Regards,\nAndent Clinic."
   );
 
+  useEffect(() => {
+    setEmail(props.clientInvoiceData.email);
+  }, [props.clientInvoiceData]);
+
   const handleInvoiceUpload = (e) => {
-    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png','PDF','JPG','JPEG','PNG'];
-    const fileExtension = e.target.files[0].name.split('.').pop().toLowerCase();
+    const allowedExtensions = [
+      "pdf",
+      "jpg",
+      "jpeg",
+      "png",
+      "PDF",
+      "JPG",
+      "JPEG",
+      "PNG",
+    ];
+    const fileExtension = e.target.files[0].name.split(".").pop().toLowerCase();
 
-
-    if(allowedExtensions.includes(fileExtension)){
+    if (allowedExtensions.includes(fileExtension)) {
       const invoiceFile = e.target.files[0];
       setUploadingInvoice(true);
       const payLoad = {
@@ -52,16 +65,16 @@ function Invoice(props) {
         })
         .catch((err) => {
           setUploadingInvoice(false);
-          toast.error(err?.response?.data?.message ?? "Failed to upload invoice");
+          toast.error(
+            err?.response?.data?.message ?? "Failed to upload invoice"
+          );
         });
+    } else {
+      toast.error("Supported file formats : png,jpg,jpeg & pdf");
     }
-    else{
-      toast.error("Supported file formats : png,jpg,jpeg & pdf")
-    }
-   
   };
   const delInvoice = () => {
-    document.getElementById('my-file').value = "";
+    document.getElementById("my-file").value = "";
     setShowModal(false);
     if (uploadedInvoiceId) {
       deleteClientFile(uploadedInvoiceId)
